@@ -1,0 +1,67 @@
+{% extends 'todoapp/base.html' %}
+{%block content%}
+<div class="container my-6">
+    <h1 class="title has-text-centered">Detaliile videoconferinţei din {{todo.data}}</h1>
+</div>
+
+<section class="container section mt-6">
+    <div class="columns">
+        <div class="column block">
+            <div class="is-centered">
+                <p class="subtitle">Apelant</p>
+                <ul class="detalii">
+                    <li class="detaliu class=" detaliu"">
+                        <span class="label-primary">Nume:</span>
+                        <span>{{todo.caller}}</span>
+                    </li>
+                    <li class="detaliu">
+                        <span class="label-primary">Adresa IP:</span>
+                        <span><a href="http://{{todo.caller.id_echipament.ip}}"
+                                target="blank">{{todo.caller.id_echipament.ip}}</a></span>
+                    </li>
+                    <li class="detaliu">
+                        <span class="label-primary">Număr apel:</span>
+                        <span>{{todo.caller.id_echipament.nr_apel}}</span>
+                    </li>
+
+                    <li class="detaliu">
+                        <span class="label-primary">VMR:</span>
+                        <span>1{{todo.caller.id_echipament.nr_apel|slice:"1:"}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="column block">
+            <div class="is-centered">
+                <p class="subtitle">Apeleaza pe</p>
+                {% for call in todo.call_to.all %}
+                <ul class="block detalii">
+                    <li class="detaliu">
+                        <span class="label-primary">Nume:</span>
+                        <span>{{call}}</span>
+                    </li>
+                    <li class="detaliu">
+                        <span class="label-primary">Adresa IP:</span>
+                        <span>{{call.ip}}</span>
+                    </li>
+                    <li class="detaliu">
+                        <span class="label-primary">Tip terminal:</span>
+                        <span>{{call.model}}</span>
+                    </li>
+                    <li class="detaliu">
+                        <span class="label-primary">Număr apel:</span>
+                        <span>{{call.nr_apel}}</span>
+                    </li>
+                    <li class="detaliu">
+                        <span class="label-primary">VMR:</span>
+                        <span>1{{call.nr_apel|slice:"1:"}}</span>
+                    </li>
+                </ul>
+                <div class="fancy-line"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}

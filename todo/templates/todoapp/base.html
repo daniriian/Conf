@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  {% load static %}
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Programari videoconferinte</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.0/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
+
+    {% block extra_css %} {% endblock %}
+  </head>
+
+  <body>
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="{%static '/img/mj.png'%}" />
+        </a>
+      </div>
+
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="/"> Acasa </a>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <form method="GET" action="/">
+              {%csrf_token%}
+              <div class="field has-addons">
+                <div class="control">
+                  <input
+                    name="xfrom"
+                    class="input"
+                    type="date"
+                    value=""
+                    id="xfrom"
+                  />
+                </div>
+                <div class="control">
+                  <button type="submit" class="button is-link">Cauta</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="navbar-item">
+            <form method="GET" action="/add_conference">
+              {%csrf_token%}
+              <div class="field has-addons">
+                <div class="control">
+                  <button
+                    type="submit"
+                    class="button is-link is-rounded"
+                    name="add_conference"
+                  >
+                    Programare noua
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="navbar-item">
+            {% if request.user.is_authenticated %}
+            <a href="\users\login" class="navbar-item is-link">Log out</a>
+            {% else %}
+            <a href="\users\login" class="navbar-item is-link">Log in</a>
+            {%endif%}
+          </div>
+        </div>
+      </div>
+    </nav>
+    {% block content %} {% endblock content %}
+    <script src="/static/script.js"></script>
+    {% block extra_js %} {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{% extends 'todoapp/base.html' %} {% block extra_css %} {{form.media.css }}
+{%endblock %} {% block extra_js %} {{ form.media.js }} {%endblock %}
+{% block content %}
+
+<section class="section">
+  <h1 class="title is-1 has-text-centered">Adauga o videoconferinta noua</h1>
+
+  <form action="" method="POST" class="container column is-half-desktop">
+    {% csrf_token %}
+
+    <div class="columns is-centered block">
+      <div class="column is-6">
+        <label for="caller" class="label">Apelant</label>
+        <div class="select" id="caller">
+          {% block caller %} {% endblock caller %}
+        </div>
+      </div>
+
+      <div class="column is-6">
+        <label for="call_to" class="label">Apeleaza pe</label>
+        <div class="select is-multiple" id="call_to">{{form.call_to}}</div>
+      </div>
+    </div>
+
+    <div class="columns is-centered block">
+      <div class="column is-3">
+        <label for="start_time" class="label">Ora start</label>
+        <input name="start_time" class="input" id="start_time" type="time" value="{{todo.start_time}}" />
+      </div>
+
+      <div class="column is-3">
+        <label for="end_time" class="label">Ora stop</label>
+        <input name="end_time" id="end_time" class="input" type="time" value="{{todo.end_time}}" />
+      </div>
+
+      <div class="column">
+        <label for="data" class="label">Data</label>
+        {{form.data}}
+      </div>
+    </div>
+    {% block button %} {% endblock button %}
+  </form>
+</section>
+
+{% endblock %}

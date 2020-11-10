@@ -1,0 +1,80 @@
+{% extends 'todoapp/base.html' %} {% block content %}
+<section class="section">
+  {% if messages %} {% for message in messages %}
+  <article
+    class="message {% if message.tags == 'success' %} is-success {% else %} is-danger {% endif %}"
+  >
+    <div class="message-header">
+      <p>{{message.tags}} !</p>
+    </div>
+    <div class="message-body">{{ message }}</div>
+  </article>
+  {% endfor %} {% endif %}
+
+  <table class="table is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th>Ora apelului</th>
+        <th>Data apel</th>
+        <th>Apelant</th>
+        <th>Apeleaza pe</th>
+        <th>Stare</th>
+        <th>Sterge Programarea</th>
+        <th>Adaugat de</th>
+        <th></th>
+      </tr>
+    </thead>
+    {% for todo in todos %}
+    <tr>
+      <td>
+        {{todo.start_time}} - {% if todo.end_time %} {{todo.end_time}} {%else%}
+        '' {%endif%}
+      </td>
+      <td>{{todo.data|date:"d M Y" }}</td>
+
+      <td>
+        {% if todo.completed == True %}
+        <span style="text-decoration: line-through">{{ todo.caller }}</span>
+        {% else %}
+        <a href="/{{todo.id}}/detalii"> {{todo.caller}} </a>
+
+        {%endif%}
+      </td>
+      <td>
+        {% for call in todo.call_to.all %}
+        <p>{{call}}</p>
+        {% endfor %}
+      </td>
+
+      <td>
+        {% if todo.completed == True %}
+        <i class="far fa-check-circle"></i>
+        <a
+          href="{% url 'mark_incomplete' todo.id %}"
+          class="button is-link is-light"
+          >Efectuata DA/NU</a
+        >
+        {% else %}
+        <i class="far fa-circle"></i>
+        <a
+          href="{% url 'mark_complete' todo.id %}"
+          class="button is-link is-light"
+          >Efectuata DA/NU</a
+        >
+        {% endif %}
+      </td>
+      <td>
+        <a href="{% url 'delete' todo.id %}" class="button is-danger">Sterge</a>
+      </td>
+      <td>
+        {{todo.adaugat_de.nume}} {{todo.adaugat_de.prenume}}
+        <p>({{todo.adaugat_de.instanta}})</p>
+      </td>
+      <td>
+        <a href="{% url 'edit' todo.id %}" class="button is-info">Editeaza </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% endblock %}

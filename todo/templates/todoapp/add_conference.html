@@ -1,0 +1,12 @@
+{% extends 'todoapp/conference_base.html' %}
+{% block caller %}
+<select name="caller">
+  {% for id, name in form.caller.field.choices %}
+  <option value="{{id}}">{{name}}</option>
+  {%endfor%}
+</select>
+{% endblock %}
+
+{% block button %}
+<input class="button is-link is-medium is-fullwidth" type="submit" value="Adauga" />
+{% endblock %}
