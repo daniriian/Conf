@@ -3,7 +3,7 @@
 {% block caller %}
 <select name="caller">
   {% for id, name in form.caller.field.choices %}
-  {% if caller.id == form.caller.id %}
+  {% if id == todo.caller.id %}
   <option value="{{id}}" selected>{{name}}</option>
   {% else %}
   <option value="{{id}}">{{name}}</option>
