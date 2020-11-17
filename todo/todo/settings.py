@@ -21,7 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4$+#te6a40%10h7-rxiwbbamd_00(3r4$+2+dl_cic=xtj^mas'
+
+# Read secret key from a file
+with open('../secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -84,8 +87,12 @@ AUTHENTICATION_BACKENDS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'videoconferinte',
+        'USER': 'admin_v',
+        'PASSWORD': '22043Nicu!',
+        'HOST': '10.15.63.19',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     },
     'usersTRCJ': {
         'ENGINE': 'sql_server.pyodbc',

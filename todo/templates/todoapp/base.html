@@ -15,6 +15,10 @@
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
 
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
 
     {% block extra_css %} {% endblock %}
@@ -35,20 +39,20 @@
 
         <div class="navbar-end">
           <div class="navbar-item">
-            <form method="GET" action="/">
+            <form method="GET" action="/" id="search_form">
               {%csrf_token%}
               <div class="field has-addons">
                 <div class="control">
-                  <input
-                    name="xfrom"
-                    class="input"
-                    type="date"
-                    value=""
-                    id="xfrom"
-                  />
+                  <input name="xfrom" class="input" value="" id="xfrom" />
                 </div>
                 <div class="control">
-                  <button type="submit" class="button is-link">Cauta</button>
+                  <button
+                    type="submit"
+                    class="button is-link"
+                    id="search_button"
+                  >
+                    Cauta
+                  </button>
                 </div>
               </div>
             </form>
@@ -81,6 +85,8 @@
         </div>
       </div>
     </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     {% block content %} {% endblock content %}
     <script src="/static/script.js"></script>
     {% block extra_js %} {% endblock %}

@@ -4,6 +4,7 @@ from .forms import TodoForm
 from django.contrib import messages
 from datetime import datetime
 from django.views import generic
+from django.http import JsonResponse
 # Create your views here.
 
 

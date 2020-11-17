@@ -1,10 +1,35 @@
 const x = (function () {
-  const search_date = document.getElementById('xfrom');
-  search_date.style.color = 'red';
+  // const search_date = document.getElementById('xfrom');
+
+  // search_date.style.color = 'red';
   let today = new Date();
   let currDate = today.toISOString().slice(0, 10);
-  search_date.value = currDate;
-  search_date.dateFormat = 'd/m/Y';
+  var search_date = flatpickr('#xfrom', {
+    dateFormat: 'd.m.Y',
+    defaultDate: today,
+  });
+
+  // search_date.value = currDate;
+  // search_date.dateFormat = 'd/m/Y';
+
+  const searchForm = document.getElementById('search_form');
+  const searchButton = document.getElementById('search_button');
+
+  const handleSearchFormSubmit = (event) => {
+    event.preventDefault();
+    console.log(event.target);
+    let selectedDate = searchForm.elements['xfrom'].value;
+    console.log(selectedDate);
+
+    let sd = selectedDate.split('.');
+    let YMD_Date = sd[2] + '-' + sd[1] + '-' + sd[0];
+    console.log(YMD_Date);
+
+    // Afisez lista de programari din data selectata
+    return YMD_Date;
+  };
+
+  searchForm.addEventListener('submit', handleSearchFormSubmit);
 
   function unfade(element) {
     var op = 0.1; // initial opacity

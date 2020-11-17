@@ -21,8 +21,8 @@ class MyUserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, utilizator, nume, prenume, password=None):
-        user = self.create_user(utilizator, nume, prenume, password)
+    def create_superuser(self, utilizator, nume, prenume, instanta=None, password=None):
+        user = self.create_user(utilizator, nume, prenume, instanta, password)
         user.is_admin = True
         user.save()
         return user
@@ -34,7 +34,7 @@ class MyUser(AbstractBaseUser):
     prenume = models.CharField(max_length=50, null=False)
     telefon = models.CharField(max_length=10, null=True)
     instanta = models.ForeignKey(
-        'todoapp.Instanta', to_field='id_Ecris', on_delete=models.CASCADE, null=False)
+        'todoapp.Instanta', to_field='id_Ecris', on_delete=models.CASCADE, null=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 

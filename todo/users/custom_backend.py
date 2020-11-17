@@ -3,6 +3,7 @@ from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.hashers import check_password
 import hashlib
 from .models import MyUser
+from todoapp.models import Instanta
 from django.contrib.auth import get_user_model
 
 
@@ -67,6 +68,7 @@ class CustomBackend(BaseBackend):
                 user = User(utilizator=utilizator.lower(),
                             nume=result[1], prenume=result[2])
                 # user.is_staff = True
+                user.instanta = Instanta.objects.get(id_Ecris=instanta)
                 user.is_admin = False
                 user.save()
             return user
