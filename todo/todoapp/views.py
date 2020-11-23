@@ -4,7 +4,12 @@ from .forms import TodoForm
 from django.contrib import messages
 from datetime import datetime
 from django.views import generic
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from .serializers import TodoSerializer, TodoCreateSerializer
+from rest_framework.response import Response
+
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 # Create your views here.
 
 
@@ -133,19 +138,17 @@ def add_conference(request):
         return redirect('filter_by_date')
 
 
-def filter_by_date(request):
+# @api_view(['POST'])
+# def TodoCreateView(request, *args, **kwargs):
+#     serializer = TodoCreateSerializer(request.POST)
+#     print(serializer)
+#     return Response(serializer.data, status=201)
 
-    xfrom = request.GET.get('xfrom')
-    if (xfrom):
-        todos = Todo.objects.filter(data=xfrom).order_by(
-            'data', 'start_time', 'caller')
-    else:
-        todos = Todo.objects.all().order_by(
-            'data', 'start_time', 'caller')
 
-    context = {
-        'todos': todos,
+@api_view(['GET'])
+def todoListView(request, *args, **kwargs):
 
-    }
+    qs = Todo.objects.all()
+    serializer = TodoSerializer(qs, many=True)
 
-    return render(request, "todoapp/home.html", context)
+    return Response(serializer.data, status=200)

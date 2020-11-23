@@ -3,7 +3,7 @@ const x = (function () {
 
   // search_date.style.color = 'red';
   let today = new Date();
-  let currDate = today.toISOString().slice(0, 10);
+  // let currDate = today.toISOString().slice(0, 10);
   var search_date = flatpickr('#xfrom', {
     dateFormat: 'd.m.Y',
     defaultDate: today,
@@ -13,20 +13,33 @@ const x = (function () {
   // search_date.dateFormat = 'd/m/Y';
 
   const searchForm = document.getElementById('search_form');
-  const searchButton = document.getElementById('search_button');
+  // const searchButton = document.getElementById('search_button');
 
   const handleSearchFormSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target);
     let selectedDate = searchForm.elements['xfrom'].value;
-    console.log(selectedDate);
+
+    let formData = new FormData(searchForm);
+    console.log(searchForm, formData);
 
     let sd = selectedDate.split('.');
     let YMD_Date = sd[2] + '-' + sd[1] + '-' + sd[0];
-    console.log(YMD_Date);
 
-    // Afisez lista de programari din data selectata
-    return YMD_Date;
+    console.log(YMD_Date);
+    // formData.elements['xfrom'].value = YMD_Date;
+
+    // Sent AJAX request to home "/" url
+
+    const method = 'GET';
+    const action = searchForm.getAttribute('action');
+    let xhr = new XMLHttpRequest();
+    xhr.open(method, action, true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
+      const serverResponse = xhr.response;
+      console.log(serverResponse);
+    };
+    xhr.send(formData);
   };
 
   searchForm.addEventListener('submit', handleSearchFormSubmit);

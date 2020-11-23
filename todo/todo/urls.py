@@ -20,6 +20,6 @@ from users import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include('todoapp.urls')),
+    path("api/todos/", include('todoapp.urls')),
     path('users/', include('users.urls')),
 ]
