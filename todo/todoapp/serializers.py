@@ -14,15 +14,14 @@ class TodoCreateSerializer(serializers.ModelSerializer):
 
 
 class TerminalSerializer(serializers.ModelSerializer):
-    terminalName = serializers.CharField(many=True)
 
     class Meta:
         model = Terminal
-        fields = ['nume']
+        fields = '__all__'
 
 
 class TodoSerializer(serializers.ModelSerializer):
-    call_to = serializers.TerminalSerializer(many=True, read_only=True)
+    call_to = TerminalSerializer(many=True, read_only=True)
 
     class Meta:
         model = Todo

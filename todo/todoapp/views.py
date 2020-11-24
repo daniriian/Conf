@@ -138,11 +138,11 @@ def add_conference(request):
         return redirect('filter_by_date')
 
 
-# @api_view(['POST'])
-# def TodoCreateView(request, *args, **kwargs):
-#     serializer = TodoCreateSerializer(request.POST)
-#     print(serializer)
-#     return Response(serializer.data, status=201)
+@api_view(['POST'])
+def TodoCreateView(request, *args, **kwargs):
+    serializer = TodoCreateSerializer(request.POST)
+    print(serializer)
+    return Response(serializer.data, status=201)
 
 
 @api_view(['GET'])
