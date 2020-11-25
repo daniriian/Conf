@@ -8,7 +8,13 @@ import {
   Button,
 } from 'react-bootstrap';
 
-const Header = () => {
+
+
+const renderAddVideoconferenceForm = () => {
+
+}
+
+const Header = (props) => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/">Videoconferinţe</Navbar.Brand>
@@ -41,7 +47,8 @@ const Header = () => {
         </Nav>
         <Form inline>
           <FormControl type="text" placeholder="Data" className="mr-sm-2" />
-          <Button variant="outline-success">Caută</Button>
+          <Button variant="outline-success" className="mr-sm-2">Caută</Button>
+          <Button variant="success" onClick={props.renderAddVideoconferenceForm}>Adaugă</Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>
