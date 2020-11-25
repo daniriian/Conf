@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Todo from '../todo/todo';
 import { getTodos } from '../../utils/utils';
+import { Table } from 'react-bootstrap';
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -15,7 +16,7 @@ const TodoList = () => {
   }, []);
 
   return (
-    <table>
+    <Table striped bordered hover size="sm">
       <thead>
         <tr>
           <th>Ora Start</th>
@@ -31,7 +32,6 @@ const TodoList = () => {
       </thead>
       <tbody>
         {todos.map((item, index) => {
-          console.log(typeof item.data);
           return (
             <Todo
               ora_start={item.start_time}
@@ -39,12 +39,13 @@ const TodoList = () => {
               data={item.data}
               caller={item.caller}
               destinatar={item.call_to}
+              efectuat={item.completed}
               key={index}
             />
           );
         })}
       </tbody>
-    </table>
+    </Table>
   );
 };
 
