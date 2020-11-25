@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button'
 
 const format_data = (data) => {
   let sd = data.split('-');
@@ -35,14 +36,19 @@ const Todo = (props) => {
       <td>
         <div className="mb-3">
           <Form.Check type="checkbox" isValid>
-            <Form.Check.Input type="checkbox" />
+            <Form.Check.Input type="checkbox" checked={props.efectuat} />
           </Form.Check>
         </div>
-        {props.efectuat}
+
       </td>
-      <td>{props.caller}</td>
-      <td>{props.caller}</td>
-      <td>{props.caller}</td>
+      <td>
+        <div>
+          {props.adaugat_de}
+        </div>
+        <div>{props.user_location}</div>
+      </td>    {/* Adaugat de */}
+      <td><Button variant="primary">Modifică</Button></td>    {/* Buton modifica */}
+      <td><Button variant="danger">Şterge</Button></td>    {/* Buton sterge */}
     </tr>
   );
 };

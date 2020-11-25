@@ -32,14 +32,17 @@ const TodoList = () => {
       </thead>
       <tbody>
         {todos.map((item, index) => {
+          console.log(item.caller.id_echipament.nume)
           return (
             <Todo
               ora_start={item.start_time}
               ora_stop={item.end_time}
               data={item.data}
-              caller={item.caller}
+              caller={item.caller.id_echipament.nume}
               destinatar={item.call_to}
               efectuat={item.completed}
+              adaugat_de={item.adaugat_de.nume + ' ' + item.adaugat_de.prenume}
+              user_location={item.adaugat_de.instanta.nume}
               key={index}
             />
           );
