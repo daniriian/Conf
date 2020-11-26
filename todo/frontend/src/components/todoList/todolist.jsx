@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Todo from '../todo/todo';
-import { getTodos } from '../../utils/utils';
+import { getData } from '../../utils/utils';
 import { Table } from 'react-bootstrap';
 
 const TodoList = () => {
@@ -12,7 +12,7 @@ const TodoList = () => {
         setTodos(response, status);
       }
     };
-    getTodos(myCallback);
+    getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/');
   }, []);
 
   return (
@@ -32,7 +32,6 @@ const TodoList = () => {
       </thead>
       <tbody>
         {todos.map((item, index) => {
-          console.log(item.caller.id_echipament.nume)
           return (
             <Todo
               ora_start={item.start_time}
