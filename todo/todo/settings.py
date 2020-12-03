@@ -97,7 +97,7 @@ DATABASES = {
         'NAME': 'videoconferinte',
         'USER': 'admin_v',
         'PASSWORD': '22043Nicu!',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'HOST': '10.15.63.19',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     },
     'usersTRCJ': {
