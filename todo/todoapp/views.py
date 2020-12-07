@@ -5,7 +5,7 @@ from django.contrib import messages
 from datetime import datetime
 from django.views import generic
 from django.http import JsonResponse, HttpResponse
-from .serializers import TodoSerializer, TodoCreateSerializer, SalaJudecataSerializer
+from .serializers import TodoSerializer, TodoCreateSerializer, SalaJudecataSerializer, TerminalSerializer
 from rest_framework.response import Response
 
 from rest_framework.decorators import api_view, renderer_classes
@@ -159,4 +159,12 @@ def callersView(request, *args, **kwargs):
     qs = SalaJudecata.objects.all()
     serializer = SalaJudecataSerializer(qs, many=True)
 
+    return Response(serializer.data, status=200)
+
+
+@api_view(['GET'])
+def terminalsView(request, *args, **kwargs):
+    qs = Terminal.objects.all()
+
+    serializer = TerminalSerializer(qs, many=True)
     return Response(serializer.data, status=200)

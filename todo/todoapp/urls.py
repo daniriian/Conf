@@ -4,7 +4,8 @@ from . import views
 urlpatterns = [
     path("", views.todoListView),
     path("create/", views.TodoCreateView),
-    path("callers/", views.callersView)
+    path("callers/", views.callersView),
+    path("terminals/", views.terminalsView),
     #     path('delete/<int:todo_id>', views.delete, name='delete'),
     #     path('mark_complete/<int:todo_id>',
     #          views.mark_complete, name='mark_complete'),
