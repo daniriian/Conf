@@ -12,7 +12,6 @@ const format_data = (data) => {
 const Todo = (props) => {
   let ora_start = props.ora_start.substr(0, 5);
   let ora_stop = props.ora_stop.substr(0, 5);
-  console.log(props.efectuat);
 
   return (
     <tr>

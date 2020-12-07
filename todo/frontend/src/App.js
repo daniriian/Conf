@@ -4,6 +4,8 @@ import Header from './components/header/header.jsx';
 import TodoList from './components/todoList/todolist.jsx';
 import AddConferenceForm from './components/addConferenceForm/addConferenceForm';
 
+import 'normalize.css'; // Note this
+
 function App() {
   // global state
   const [confFormVisible, setConfFormVisible] = useState(true);
@@ -14,6 +16,8 @@ function App() {
 
   const handleClose = () => {
     setConfFormVisible(false);
+    //todo
+    // reset step position
   };
 
   return (

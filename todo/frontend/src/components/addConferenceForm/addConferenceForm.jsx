@@ -22,18 +22,20 @@ const AddConferenceForm = ({ handleClose, visible }) => {
   };
 
   const handlePrev = () => {
-    console.log('next');
     if (stepIndex > 1) {
       setStepIndex(stepIndex - 1);
     }
   };
 
   const handleRetrieveDate = (date) => {
+    //todo
+    //get data from form and send it to server
     console.log('-*-*-*-*-*-*-*', date);
   };
 
   useEffect(() => {
     //incarca lista de apelanti din bd utilizand axios
+    console.log("UseEffect from modalForm")
     axios
       .get('http://127.0.0.1:8000/api/todos/callers/')
       .then((response) => {
@@ -43,11 +45,14 @@ const AddConferenceForm = ({ handleClose, visible }) => {
         }, 100);
       })
       .catch((err) => alert(err));
-  }, []);
+    return () => {
+      setStepIndex(1);
+    }
+  }, [visible]);
 
   return (
-    <Modal show={visible}>
-      <Modal.Header closeButton onClick={handleClose}>
+    <Modal show={visible} onHide={handleClose}>
+      <Modal.Header closeButton>
         <Modal.Title>Adaugă Videoconferinţă</Modal.Title>
       </Modal.Header>
 
@@ -66,14 +71,14 @@ const AddConferenceForm = ({ handleClose, visible }) => {
                   })}
                 </Form.Control>
               ) : (
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              )
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                )
             ) : (
-              //afisez form pentru data si interval orar
-              <DateTimeSelector retrieveDate={handleRetrieveDate} />
-            )}
+                //afisez form pentru data si interval orar
+                <DateTimeSelector retrieveDate={handleRetrieveDate} />
+              )}
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -87,8 +92,8 @@ const AddConferenceForm = ({ handleClose, visible }) => {
             Înapoi
           </Button>
         ) : (
-          ''
-        )}
+            ''
+          )}
         <Button variant="primary" onClick={handleNext}>
           Înainte
         </Button>
