@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import DateTimeSelector from '../dateTimeSelector/dateTimeSelector';
+import CallTolist from '../callToList/call_to_list';
 
 import axios from 'axios';
 
@@ -11,8 +12,11 @@ const steps = {
 };
 
 const AddConferenceForm = ({ handleClose, visible }) => {
-  const [dataReady, setDataReady] = useState(false);
   const [apelanti, setApelanti] = useState([]);
+  const [callerDataReady, setCallerDataReady] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [startTime, setStartTime] = useState('08:00');
+  const [endTime, setEndTime] = useState('08:10');
   const [stepIndex, setStepIndex] = useState(1);
 
   const handleNext = () => {
@@ -33,21 +37,27 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     console.log('-*-*-*-*-*-*-*', date);
   };
 
+  const handleGetDateStartTimeEndTime = ({ date, start, end }) => {
+    setSelectedDate(date);
+    setStartTime(start);
+    setEndTime(end);
+  };
+
   useEffect(() => {
     //incarca lista de apelanti din bd utilizand axios
-    console.log("UseEffect from modalForm")
+    // console.log('UseEffect from modalForm');
     axios
       .get('http://127.0.0.1:8000/api/todos/callers/')
       .then((response) => {
         setApelanti(response.data);
         setTimeout(function () {
-          setDataReady(true);
+          setCallerDataReady(true);
         }, 100);
       })
       .catch((err) => alert(err));
     return () => {
       setStepIndex(1);
-    }
+    };
   }, [visible]);
 
   return (
@@ -62,7 +72,7 @@ const AddConferenceForm = ({ handleClose, visible }) => {
             <Form.Label>{steps[stepIndex]}</Form.Label>
 
             {stepIndex === 1 ? (
-              dataReady ? (
+              callerDataReady ? (
                 <Form.Control as="select" custom>
                   {apelanti.map((apelant, index) => {
                     return (
@@ -71,14 +81,19 @@ const AddConferenceForm = ({ handleClose, visible }) => {
                   })}
                 </Form.Control>
               ) : (
-                  <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                )
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              )
+            ) : stepIndex === 2 ? (
+              //afisez form pentru data si interval orar
+              <DateTimeSelector
+                retrieveDate={handleRetrieveDate}
+                getDateStartTimeEndTime={handleGetDateStartTimeEndTime}
+              />
             ) : (
-                //afisez form pentru data si interval orar
-                <DateTimeSelector retrieveDate={handleRetrieveDate} />
-              )}
+              <CallTolist />
+            )}
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -92,8 +107,8 @@ const AddConferenceForm = ({ handleClose, visible }) => {
             Înapoi
           </Button>
         ) : (
-            ''
-          )}
+          ''
+        )}
         <Button variant="primary" onClick={handleNext}>
           Înainte
         </Button>

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import TimePicker from 'react-times';
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -11,12 +11,12 @@ import 'react-times/css/material/default.css';
 // or you can use classic theme
 import 'react-times/css/classic/default.css';
 
-import './styles.css'
+import './styles.css';
 
 const DateTimeSelector = (props) => {
   const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState("08:00")
-  const [endTime, setEndTime] = useState("09:00")
+  const [startTime, setStartTime] = useState('08:00');
+  const [endTime, setEndTime] = useState('09:00');
 
   const handleSetStartDate = (selectedDate) => {
     props.retrieveDate(selectedDate);
@@ -24,16 +24,23 @@ const DateTimeSelector = (props) => {
   };
 
   const handleStartTimeChange = ({ hour, minute }) => {
-    setStartTime(hour + ":" + minute)
-  }
+    setStartTime(hour + ':' + minute);
+  };
 
   const handleEndTimeChange = ({ hour, minute }) => {
-    setEndTime(hour + ":" + minute)
-  }
+    setEndTime(hour + ':' + minute);
+  };
+
+  useEffect(() => {
+    return () => {
+      console.log('terminating date time');
+      //save selected date, start Time and endTime in addConferenceForm component
+      props.getDateStartTimeEndTime({ startDate, startTime, endTime });
+    };
+  });
 
   return (
     <div>
-
       {/* <input type="time"></input> */}
       <Container>
         <Row>
@@ -48,7 +55,8 @@ const DateTimeSelector = (props) => {
 
         <Row>
           <Col>
-            <TimePicker colorPalette="dark" // main color, default "light"
+            <TimePicker
+              colorPalette="dark" // main color, default "light"
               time={startTime} // initial time, default current time
               theme="material"
               minuteStep={5}
@@ -60,7 +68,8 @@ const DateTimeSelector = (props) => {
           </Col>
 
           <Col>
-            <TimePicker colorPalette="dark" // main color, default "light"
+            <TimePicker
+              colorPalette="dark" // main color, default "light"
               time={endTime} // initial time, default current time
               theme="material"
               // or
@@ -70,8 +79,6 @@ const DateTimeSelector = (props) => {
             />
           </Col>
         </Row>
-
-
       </Container>
     </div>
   );
