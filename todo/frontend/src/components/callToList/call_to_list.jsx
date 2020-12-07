@@ -3,25 +3,34 @@ import { Form, Spinner } from 'react-bootstrap';
 
 import axios from 'axios';
 
-const CallTolist = () => {
+const CallTolist = ({ activeTerminals, getActiveTerminals }) => {
   const url_terminale = 'http://127.0.0.1:8000/api/todos/terminals/';
   const [isLoading, setIsLoading] = useState(true);
   const [listaTerminale, setListaTerminale] = useState([]);
   const [selectedTerminals, setSelectedTerminals] = useState([]);
 
   useEffect(() => {
+    console.log("Mounting - activeTerminals = ", selectedTerminals)
     axios
       .get(url_terminale)
       .then((response) => response.data)
       .then((data) => {
-        setListaTerminale(data);
-        setIsLoading(false);
+        setListaTerminale(data)
       })
+      .then(setIsLoading(false))
+      .then(setSelectedTerminals(activeTerminals))
+
       .catch((err) => console.log(err));
+
+
   }, []);
 
   const handleChange = (e) => {
-    console.log(e.target.options.id);
+    const selected = []
+    for (let elem of e.target.selectedOptions) {
+      selected.push(elem.id)
+    }
+    getActiveTerminals(selected)
   };
 
   return (
@@ -31,18 +40,23 @@ const CallTolist = () => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <Form.Control as="select" custom multiple onChange={handleChange}>
-          {listaTerminale.map((terminal, index) => {
-            return (
-              <option key={index} id={terminal.id}>
-                {terminal.nume}
-              </option>
-            );
-          })}
-        </Form.Control>
-      )}
+          <Form.Control as="select" custom multiple onChange={handleChange}>
+            {listaTerminale.map((terminal, index) => {
+              return (
+                <option key={index} id={terminal.id} selected={activeTerminals.includes(terminal.id)}>
+                  {terminal.nume + ' ' + terminal.id + ' ' + activeTerminals.includes(terminal.id)}
+                </option>
+              );
+            })}
+          </Form.Control>
+        )}
     </div>
   );
 };
 
 export default CallTolist;
+
+//props
+// activeTerminals - lista cu terminalele selectate
+
+// getActiveTerminals - function which is run on unmounting and sends selected terminals to parent
