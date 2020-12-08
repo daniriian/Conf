@@ -35,7 +35,7 @@ const DateTimeSelector = (props) => {
     return () => {
       // console.log('terminating date time');
       //save selected date, start Time and endTime in addConferenceForm component
-      props.getDateStartTimeEndTime({ startDate, startTime, endTime });
+      props.getDateStartTimeEndTime([startDate, startTime, endTime]);
     };
   });
 

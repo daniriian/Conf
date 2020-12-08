@@ -25,18 +25,18 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     if (stepIndex < 3) {
       setStepIndex(stepIndex + 1);
     } else {
-      // console.log(
-      //   'Apelanti=',
-      //   caller,
-      //   'Data=',
-      //   selectedDate,
-      //   'StartTime-',
-      //   startTime,
-      //   'EndTime=',
-      //   endTime,
-      //   'Lista Apelati=',
-      //   callTo
-      // );
+      console.log(
+        'Apelanti=',
+        caller,
+        'Data=',
+        selectedDate,
+        'StartTime-',
+        startTime,
+        'EndTime=',
+        endTime,
+        'Lista Apelati=',
+        callTo
+      );
     }
   };
 
@@ -53,16 +53,16 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     } else setCaller(null);
   };
 
-  const handleRetrieveDate = (date) => {
-    //todo
-    //get data from form and send it to server
-    console.log('-*-*-*-*-*-*-*', date);
-  };
+  // const handleRetrieveDate = (date) => {
+  //   //todo
+  //   //get data from form and send it to server
+  //   console.log('-*-*-*-*-*-*-*', date);
+  // };
 
-  const handleGetDateStartTimeEndTime = ({ date, start, end }) => {
-    setSelectedDate(date);
-    setStartTime(start);
-    setEndTime(end);
+  const handleGetDateStartTimeEndTime = (arr) => {
+    setSelectedDate(arr[0]);
+    setStartTime(arr[1]);
+    setEndTime(arr[2]);
   };
 
   const handleGetActiveTerminals = (data) => {
@@ -121,7 +121,6 @@ const AddConferenceForm = ({ handleClose, visible }) => {
             ) : stepIndex === 2 ? (
               //afisez form pentru data si interval orar
               <DateTimeSelector
-                retrieveDate={handleRetrieveDate}
                 getDateStartTimeEndTime={handleGetDateStartTimeEndTime}
               />
             ) : (
