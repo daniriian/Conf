@@ -29,9 +29,6 @@ const CallTolist = ({ activeTerminals, ...props }) => {
 
   return (
     <div>
-      <p>{typeof activeTerminals[0] + ''} </p>
-      <p>{activeTerminals.includes(56) + ''}</p>
-      <p>{activeTerminals.includes(57) + ''}</p>
       {isLoading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>

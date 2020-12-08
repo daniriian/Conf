@@ -12,17 +12,31 @@ const steps = {
 };
 
 const AddConferenceForm = ({ handleClose, visible }) => {
-  const [apelanti, setApelanti] = useState([]);
+  const [apelantiList, setApelantiList] = useState([]);
   const [callerDataReady, setCallerDataReady] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [startTime, setStartTime] = useState('08:00');
   const [endTime, setEndTime] = useState('08:10');
   const [stepIndex, setStepIndex] = useState(1);
   const [callTo, setCallTo] = useState([]);
+  const [caller, setCaller] = useState(null);
 
   const handleNext = () => {
     if (stepIndex < 3) {
       setStepIndex(stepIndex + 1);
+    } else {
+      // console.log(
+      //   'Apelanti=',
+      //   caller,
+      //   'Data=',
+      //   selectedDate,
+      //   'StartTime-',
+      //   startTime,
+      //   'EndTime=',
+      //   endTime,
+      //   'Lista Apelati=',
+      //   callTo
+      // );
     }
   };
 
@@ -30,6 +44,13 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     if (stepIndex > 1) {
       setStepIndex(stepIndex - 1);
     }
+  };
+
+  const handleCaller = (e) => {
+    const callerId = +e.target.value;
+    if (callerId > 0) {
+      setCaller(+e.target.value);
+    } else setCaller(null);
   };
 
   const handleRetrieveDate = (date) => {
@@ -52,11 +73,11 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     //incarca lista de apelanti din bd utilizand axios
     axios
       .get('http://127.0.0.1:8000/api/todos/callers/')
-      .then((response) => {
-        setApelanti(response.data);
-        setTimeout(function () {
-          setCallerDataReady(true);
-        }, 100);
+      .then((response) => response.data)
+      .then((data) => {
+        // data.unshift(null)
+        setApelantiList(data);
+        setCallerDataReady(true);
       })
       .catch((err) => alert(err));
     return () => {
@@ -65,7 +86,12 @@ const AddConferenceForm = ({ handleClose, visible }) => {
   }, [visible]);
 
   return (
-    <Modal show={visible} onHide={handleClose}>
+    <Modal
+      show={visible}
+      onHide={handleClose}
+      backdrop="static"
+      keyboard={false}
+    >
       <Modal.Header closeButton>
         <Modal.Title>Adaugă Videoconferinţă</Modal.Title>
       </Modal.Header>
@@ -77,10 +103,13 @@ const AddConferenceForm = ({ handleClose, visible }) => {
 
             {stepIndex === 1 ? (
               callerDataReady ? (
-                <Form.Control as="select" custom>
-                  {apelanti.map((apelant, index) => {
+                <Form.Control as="select" custom onChange={handleCaller}>
+                  <option value={0}>Alegeti...</option>
+                  {apelantiList.map((apelant, index) => {
                     return (
-                      <option key={index}>{apelant.id_echipament.nume}</option>
+                      <option key={index} value={apelant.id}>
+                        {apelant.id_echipament.nume}
+                      </option>
                     );
                   })}
                 </Form.Control>
@@ -117,7 +146,7 @@ const AddConferenceForm = ({ handleClose, visible }) => {
           ''
         )}
         <Button variant="primary" onClick={handleNext}>
-          Înainte
+          {stepIndex === 3 ? 'Adaugă' : 'Înainte'}
         </Button>
       </Modal.Footer>
     </Modal>
