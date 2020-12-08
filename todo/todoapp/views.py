@@ -83,66 +83,73 @@ def showTodoDetail(request, todo_id):
         return redirect('filter_by_date')
 
 
-def add_conference(request):
+def add_conference(request, *args, **kwargs):
+    print("bvcxbcvx", request.data)
 
-    if request.user.is_authenticated:
-        print("USER IS AUTHENTICATED")
 
-        if request.method == 'GET':
-            form = TodoForm()
-            return render(request, 'todoapp/add_conference.html', {'form': form})
-        else:
-            form = TodoForm(request.POST or None)
-            if form.is_valid():
-                startTime = form.cleaned_data.get('start_time')
-                endTime = form.cleaned_data.get('end_time')
-                current_data = form.cleaned_data.get('data')
-                caller = form.cleaned_data.get('caller')
-                apeleazaPe = form.cleaned_data.get('call_to')
-                todos = Todo.objects.filter(data=current_data)
+# def add_conference(request):
 
-                err_message = ""
+#     if request.user.is_authenticated:
+#         print("USER IS AUTHENTICATED")
 
-                for t in todos:
-                    if (startTime >= t.start_time and startTime < t.end_time) or (endTime > t.start_time and endTime <= t.end_time):
+#         if request.method == 'GET':
+#             form = TodoForm()
+#             return render(request, 'todoapp/add_conference.html', {'form': form})
+#         else:
+#             form = TodoForm(request.POST or None)
+#             if form.is_valid():
+#                 startTime = form.cleaned_data.get('start_time')
+#                 endTime = form.cleaned_data.get('end_time')
+#                 current_data = form.cleaned_data.get('data')
+#                 caller = form.cleaned_data.get('caller')
+#                 apeleazaPe = form.cleaned_data.get('call_to')
+#                 todos = Todo.objects.filter(data=current_data)
 
-                        if caller == t.caller:
-                            print("Apelantul nu este liber in intervalul specificat")
+#                 err_message = ""
 
-                            err_message = 'Apelantul nu este liber in intervalul specificat !!!'
-                        else:
-                            for app in apeleazaPe:
-                                if app in t.call_to.all():
-                                    print(
-                                        f"Destinatarul apelului nu este liber in intervalul specificat")
-                                    err_message = 'Destinatarul apelului nu este liber in intervalul specificat !!!'
+#                 for t in todos:
+#                     if (startTime >= t.start_time and startTime < t.end_time) or (endTime > t.start_time and endTime <= t.end_time):
 
-                if (err_message):
-                    messages.error(request, err_message)
-                    return redirect('filter_by_date')
-                else:
+#                         if caller == t.caller:
+#                             print("Apelantul nu este liber in intervalul specificat")
 
-                    instance = form.save(commit=False)
-                    instance.adaugat_de = request.user
-                    instance.save()
-                    form.save_m2m()  # salveaza in db relatia many to many intre todo si call_to
+#                             err_message = 'Apelantul nu este liber in intervalul specificat !!!'
+#                         else:
+#                             for app in apeleazaPe:
+#                                 if app in t.call_to.all():
+#                                     print(
+#                                         f"Destinatarul apelului nu este liber in intervalul specificat")
+#                                     err_message = 'Destinatarul apelului nu este liber in intervalul specificat !!!'
 
-                    # todos = Todo.objects.all()
-                    messages.success(
-                        request, ('Programarea a fost adaugata !'))
-                    return redirect('filter_by_date')
-    else:
-        print('USER CAN NOT ADD TODO')
-        messages.error(
-            request, ('Utilizator necunoscut, nu se pot adauga programari !!!'))
-        return redirect('filter_by_date')
+#                 if (err_message):
+#                     messages.error(request, err_message)
+#                     return redirect('filter_by_date')
+#                 else:
+
+#                     instance = form.save(commit=False)
+#                     instance.adaugat_de = request.user
+#                     instance.save()
+#                     form.save_m2m()  # salveaza in db relatia many to many intre todo si call_to
+
+#                     # todos = Todo.objects.all()
+#                     messages.success(
+#                         request, ('Programarea a fost adaugata !'))
+#                     return redirect('filter_by_date')
+#     else:
+#         print('USER CAN NOT ADD TODO')
+#         messages.error(
+#             request, ('Utilizator necunoscut, nu se pot adauga programari !!!'))
+#         return redirect('filter_by_date')
 
 
 @api_view(['POST'])
 def TodoCreateView(request, *args, **kwargs):
-    serializer = TodoCreateSerializer(request.POST)
-    print(serializer)
-    return Response(serializer.data, status=201)
+    serializer = TodoCreateSerializer(data=request.data, many=True)
+    print(request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
 
 
 @api_view(['GET'])
