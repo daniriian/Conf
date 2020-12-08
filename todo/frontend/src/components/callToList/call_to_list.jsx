@@ -3,53 +3,54 @@ import { Form, Spinner } from 'react-bootstrap';
 
 import axios from 'axios';
 
-const CallTolist = ({ activeTerminals, getActiveTerminals }) => {
+const CallTolist = ({ activeTerminals, ...props }) => {
   const url_terminale = 'http://127.0.0.1:8000/api/todos/terminals/';
   const [isLoading, setIsLoading] = useState(true);
   const [listaTerminale, setListaTerminale] = useState([]);
-  const [selectedTerminals, setSelectedTerminals] = useState([]);
 
   useEffect(() => {
-    console.log("Mounting - activeTerminals = ", selectedTerminals)
     axios
       .get(url_terminale)
       .then((response) => response.data)
       .then((data) => {
-        setListaTerminale(data)
+        setListaTerminale(data);
       })
       .then(setIsLoading(false))
-      .then(setSelectedTerminals(activeTerminals))
-
       .catch((err) => console.log(err));
-
-
   }, []);
 
   const handleChange = (e) => {
-    const selected = []
+    const selected = [];
     for (let elem of e.target.selectedOptions) {
-      selected.push(elem.id)
+      selected.push(+elem.id); //converted to int
     }
-    getActiveTerminals(selected)
+    props.setActiveTerminals(selected);
   };
 
   return (
     <div>
+      <p>{typeof activeTerminals[0] + ''} </p>
+      <p>{activeTerminals.includes(56) + ''}</p>
+      <p>{activeTerminals.includes(57) + ''}</p>
       {isLoading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-          <Form.Control as="select" custom multiple onChange={handleChange}>
-            {listaTerminale.map((terminal, index) => {
-              return (
-                <option key={index} id={terminal.id} selected={activeTerminals.includes(terminal.id)}>
-                  {terminal.nume + ' ' + terminal.id + ' ' + activeTerminals.includes(terminal.id)}
-                </option>
-              );
-            })}
-          </Form.Control>
-        )}
+        <Form.Control as="select" custom multiple onChange={handleChange}>
+          {listaTerminale.map((terminal, index) => {
+            return (
+              <option
+                key={index}
+                id={terminal.id}
+                selected={activeTerminals.includes(terminal.id)}
+              >
+                {terminal.nume}
+              </option>
+            );
+          })}
+        </Form.Control>
+      )}
     </div>
   );
 };

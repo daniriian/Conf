@@ -18,7 +18,7 @@ const AddConferenceForm = ({ handleClose, visible }) => {
   const [startTime, setStartTime] = useState('08:00');
   const [endTime, setEndTime] = useState('08:10');
   const [stepIndex, setStepIndex] = useState(1);
-  const [callTo, setCallTo] = useState([])
+  const [callTo, setCallTo] = useState([]);
 
   const handleNext = () => {
     if (stepIndex < 3) {
@@ -45,14 +45,11 @@ const AddConferenceForm = ({ handleClose, visible }) => {
   };
 
   const handleGetActiveTerminals = (data) => {
-    // console.log('getting active terminals from form', data)
-    console.log("CALL TO = ", data)
-    setCallTo(data)
-  }
+    setCallTo(data);
+  };
 
   useEffect(() => {
     //incarca lista de apelanti din bd utilizand axios
-    // console.log('UseEffect from modalForm');
     axios
       .get('http://127.0.0.1:8000/api/todos/callers/')
       .then((response) => {
@@ -88,10 +85,10 @@ const AddConferenceForm = ({ handleClose, visible }) => {
                   })}
                 </Form.Control>
               ) : (
-                  <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                )
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              )
             ) : stepIndex === 2 ? (
               //afisez form pentru data si interval orar
               <DateTimeSelector
@@ -99,8 +96,11 @@ const AddConferenceForm = ({ handleClose, visible }) => {
                 getDateStartTimeEndTime={handleGetDateStartTimeEndTime}
               />
             ) : (
-                  <CallTolist activeTerminals={callTo} getActiveTerminals={handleGetActiveTerminals} />
-                )}
+              <CallTolist
+                activeTerminals={callTo}
+                setActiveTerminals={handleGetActiveTerminals}
+              />
+            )}
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -114,8 +114,8 @@ const AddConferenceForm = ({ handleClose, visible }) => {
             Înapoi
           </Button>
         ) : (
-            ''
-          )}
+          ''
+        )}
         <Button variant="primary" onClick={handleNext}>
           Înainte
         </Button>
