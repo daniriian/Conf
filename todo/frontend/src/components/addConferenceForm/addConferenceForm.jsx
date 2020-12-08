@@ -153,3 +153,17 @@ const AddConferenceForm = ({ handleClose, visible }) => {
 };
 
 export default AddConferenceForm;
+
+// post format for adding todo
+// [
+//   {
+//     id: 8,
+//     caller: 1,
+//     start_time: '08:50:00',
+//     end_time: '10:00:00',
+//     data: '2020-12-25',
+//     call_to: [55, 65],
+//     completed: false,
+//     adaugat_de: 4,
+//   },
+// ];
