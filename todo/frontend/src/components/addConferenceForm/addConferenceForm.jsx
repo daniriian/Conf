@@ -5,6 +5,8 @@ import CallTolist from '../callToList/call_to_list';
 
 import axios from 'axios';
 
+const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
+
 const steps = {
   1: 'Apelant',
   2: 'Data si intervalul orar',
@@ -20,6 +22,15 @@ const AddConferenceForm = ({ handleClose, visible }) => {
   const [stepIndex, setStepIndex] = useState(1);
   const [callTo, setCallTo] = useState([]);
   const [caller, setCaller] = useState(null);
+
+  const obj = {
+    caller: caller,
+    start_time: startTime,
+    end_time: endTime,
+    data: selectedDate,
+    call_to: callTo,
+    adaugat_de: 6,
+  };
 
   const handleNext = () => {
     if (stepIndex < 3) {
@@ -37,6 +48,19 @@ const AddConferenceForm = ({ handleClose, visible }) => {
         'Lista Apelati=',
         callTo
       );
+
+      obj.data = obj.data.toISOString().substring(0, 10);
+
+      const objJSON = JSON.stringify(obj);
+      console.log(objJSON);
+
+      //sending post request to server at http://127.0.0.1:8000/api/todos/create/
+      axios
+        .post(postUrl, objJSON)
+        .then((response) =>
+          console.log('RASPUNSUL: SERVERULUI ESTE :: ', response)
+        )
+        .catch((err) => console.log(err));
     }
   };
 

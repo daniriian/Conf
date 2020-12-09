@@ -145,10 +145,11 @@ def add_conference(request, *args, **kwargs):
 @api_view(['POST'])
 def TodoCreateView(request, *args, **kwargs):
     serializer = TodoCreateSerializer(data=request.data, many=True)
-    print(request.data)
+    print(f'********************** {serializer}')
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=201)
+    print(Response(serializer.errors, status=400))
     return Response(serializer.errors, status=400)
 
 

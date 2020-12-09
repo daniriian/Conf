@@ -19,7 +19,7 @@ const DateTimeSelector = (props) => {
   const [endTime, setEndTime] = useState('09:00');
 
   const handleSetStartDate = (selectedDate) => {
-    props.retrieveDate(selectedDate);
+    // props.retrieveDate(selectedDate);
     setStartDate(selectedDate);
   };
 
