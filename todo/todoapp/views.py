@@ -83,8 +83,8 @@ def showTodoDetail(request, todo_id):
         return redirect('filter_by_date')
 
 
-def add_conference(request, *args, **kwargs):
-    print("bvcxbcvx", request.data)
+# def add_conference(request, *args, **kwargs):
+#     print("bvcxbcvx", request.data)
 
 
 # def add_conference(request):
@@ -144,12 +144,13 @@ def add_conference(request, *args, **kwargs):
 
 @api_view(['POST'])
 def TodoCreateView(request, *args, **kwargs):
-    serializer = TodoCreateSerializer(data=request.data, many=True)
+    serializer = TodoCreateSerializer(data=request.data)
     print(f'********************** {serializer}')
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=201)
-    print(Response(serializer.errors, status=400))
+    else:
+        print('NOT VALID')
     return Response(serializer.errors, status=400)
 
 

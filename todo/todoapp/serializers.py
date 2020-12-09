@@ -3,17 +3,6 @@ from .models import Todo, Terminal, SalaJudecata, Instanta
 from users.models import MyUser
 
 
-class TodoCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Todo
-        fields = ['caller', 'start_time', 'end_time',
-                  'data', 'call_to', 'completed', 'adaugat_de']
-
-    def validate(self, value):
-        print(value)
-        return value
-
-
 class TerminalSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -48,7 +37,7 @@ class MyUserSerializer(serializers.ModelSerializer):
 
 class TodoSerializer(serializers.ModelSerializer):
     caller = SalaJudecataSerializer(read_only=True)
-    call_to = TerminalSerializer(many=True, read_only=True)
+    call_to = TerminalSerializer(read_only=True, many=True)
     adaugat_de = MyUserSerializer(read_only=True)
 
     class Meta:
@@ -58,3 +47,15 @@ class TodoSerializer(serializers.ModelSerializer):
 
     def get_call_to(self, obj):
         return obj.call_to.all()
+
+
+class TodoCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Todo
+        fields = ['caller', 'start_time', 'end_time',
+                  'data', 'call_to', 'completed', 'adaugat_de']
+
+    def validate(self, value):
+        print(value)
+        return value

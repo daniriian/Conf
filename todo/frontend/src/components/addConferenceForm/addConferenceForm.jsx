@@ -24,11 +24,13 @@ const AddConferenceForm = ({ handleClose, visible }) => {
   const [caller, setCaller] = useState(null);
 
   const obj = {
+    id: 0,
     caller: caller,
     start_time: startTime,
     end_time: endTime,
     data: selectedDate,
     call_to: callTo,
+    completed: false,
     adaugat_de: 6,
   };
 
@@ -38,25 +40,31 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     } else {
       console.log(
         'Apelanti=',
-        caller,
+        typeof obj.caller,
         'Data=',
-        selectedDate,
+        typeof obj.selectedDate,
         'StartTime-',
-        startTime,
+        typeof obj.startTime,
         'EndTime=',
-        endTime,
+        typeof obj.endTime,
         'Lista Apelati=',
-        callTo
+        typeof obj.callTo,
+        'Utilizator=',
+        typeof obj.adaugat_de
       );
 
       obj.data = obj.data.toISOString().substring(0, 10);
 
       const objJSON = JSON.stringify(obj);
-      console.log(objJSON);
+      // console.log(objJSON);
 
       //sending post request to server at http://127.0.0.1:8000/api/todos/create/
       axios
-        .post(postUrl, objJSON)
+        .post(postUrl, obj, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
         .then((response) =>
           console.log('RASPUNSUL: SERVERULUI ESTE :: ', response)
         )
@@ -138,21 +146,21 @@ const AddConferenceForm = ({ handleClose, visible }) => {
                   })}
                 </Form.Control>
               ) : (
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              )
+                  <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                )
             ) : stepIndex === 2 ? (
               //afisez form pentru data si interval orar
               <DateTimeSelector
                 getDateStartTimeEndTime={handleGetDateStartTimeEndTime}
               />
             ) : (
-              <CallTolist
-                activeTerminals={callTo}
-                setActiveTerminals={handleGetActiveTerminals}
-              />
-            )}
+                  <CallTolist
+                    activeTerminals={callTo}
+                    setActiveTerminals={handleGetActiveTerminals}
+                  />
+                )}
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -166,8 +174,8 @@ const AddConferenceForm = ({ handleClose, visible }) => {
             Înapoi
           </Button>
         ) : (
-          ''
-        )}
+            ''
+          )}
         <Button variant="primary" onClick={handleNext}>
           {stepIndex === 3 ? 'Adaugă' : 'Înainte'}
         </Button>
