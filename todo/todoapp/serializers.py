@@ -3,6 +3,17 @@ from .models import Todo, Terminal, SalaJudecata, Instanta
 from users.models import MyUser
 
 
+class TodoCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todo
+        fields = ['id', 'caller', 'start_time', 'end_time',
+                  'data', 'call_to', 'completed', 'adaugat_de']
+
+    def validate(self, value):
+        print(value)
+        return value
+
+
 class TerminalSerializer(serializers.ModelSerializer):
 
     class Meta:
