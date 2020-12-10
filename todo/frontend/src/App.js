@@ -16,8 +16,6 @@ function App() {
 
   const handleClose = () => {
     setConfFormVisible(false);
-    //todo
-    // reset step position
   };
 
   const handleAddFormVisible = () => {

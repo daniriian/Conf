@@ -16,8 +16,6 @@ const Todo = (props) => {
 
   const handleDelete = (e, todo_id) => {
     e.preventDefault();
-    console.log('deleting...');
-    console.log(todo_id);
     //send delete request
     axios.delete("http://127.0.0.1:8000/api/todos/delete/",
       { data: { id: todo_id } },

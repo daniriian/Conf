@@ -184,3 +184,10 @@ def TodoDeleteView(request, *args, **kwargs):
     qs = Todo.objects.get(id=request.data["id"])
     qs.delete()
     return Response({}, status=200)
+
+
+@api_view(['GET'])
+def todoDetailsView(request, todo_id, *args, **kwargs):
+    qs = Todo.objects.get(id=todo_id)
+    serializer = TodoSerializer(qs)
+    return Response(serializer.data, status=200)
