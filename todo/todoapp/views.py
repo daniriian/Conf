@@ -13,15 +13,15 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 # Create your views here.
 
 
-def delete(request, todo_id):
-    if request.user.is_authenticated:
-        todo = Todo.objects.get(id=todo_id)
-        todo.delete()
-        messages.success(request, ('Videoconferinta a fost stearsa'))
-    else:
-        messages.error(
-            request, ('Utilizator necunoscut, nu se pot sterge programari !!!'))
-    return(redirect('filter_by_date'))
+# def delete(request, todo_id):
+#     if request.user.is_authenticated:
+#         todo = Todo.objects.get(id=todo_id)
+#         todo.delete()
+#         messages.success(request, ('Videoconferinta a fost stearsa'))
+#     else:
+#         messages.error(
+#             request, ('Utilizator necunoscut, nu se pot sterge programari !!!'))
+#     return(redirect('filter_by_date'))
 
 
 def mark_complete(request, todo_id):
@@ -155,7 +155,7 @@ def TodoCreateView(request, *args, **kwargs):
 @api_view(['GET'])
 def todoListView(request, *args, **kwargs):
 
-    qs = Todo.objects.all()
+    qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
     serializer = TodoSerializer(qs, many=True)
 
     return Response(serializer.data, status=200)
@@ -175,3 +175,15 @@ def terminalsView(request, *args, **kwargs):
 
     serializer = TerminalSerializer(qs, many=True)
     return Response(serializer.data, status=200)
+
+
+@api_view(['DELETE', 'POST'])
+def TodoDeleteView(request,  todo_id, *args, **kwargs):
+    obj = Todo.objects.get(id=request.todo_id)
+    print(todo_id)
+    # obj.delete()
+    return Response(status=204)
+
+    # todo = Todo.objects.get(id=todo_id)
+#         todo.delete()
+#         messages.success(request, ('Videoconferinta a fost stearsa'))

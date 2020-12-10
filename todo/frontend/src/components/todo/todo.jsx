@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 
 const format_data = (data) => {
   let sd = data.split('-');
@@ -12,6 +12,13 @@ const format_data = (data) => {
 const Todo = (props) => {
   let ora_start = props.ora_start.substr(0, 5);
   let ora_stop = props.ora_stop.substr(0, 5);
+
+  const handleDelete = (e, todo_id) => {
+    e.preventDefault();
+    console.log('deleting...');
+    console.log(todo_id);
+    //send delete request
+  };
 
   return (
     <tr>
@@ -38,16 +45,25 @@ const Todo = (props) => {
             <Form.Check.Input type="checkbox" checked={props.efectuat} />
           </Form.Check>
         </div>
-
       </td>
       <td>
-        <div>
-          {props.adaugat_de}
-        </div>
+        <div>{props.adaugat_de}</div>
         <div>{props.user_location}</div>
-      </td>    {/* Adaugat de */}
-      <td><Button variant="primary">Modifică</Button></td>    {/* Buton modifica */}
-      <td><Button variant="danger">Şterge</Button></td>    {/* Buton sterge */}
+      </td>{' '}
+      {/* Adaugat de */}
+      <td>
+        <Button variant="primary">Modifică</Button>
+      </td>{' '}
+      {/* Buton modifica */}
+      <td>
+        <Button
+          variant="danger"
+          onClick={(e) => handleDelete(e, props.todo_id)}
+        >
+          Şterge {props.todo_id}
+        </Button>
+      </td>
+      {/* Buton sterge */}
     </tr>
   );
 };

@@ -13,7 +13,7 @@ const steps = {
   3: 'Destinatar(i)',
 };
 
-const AddConferenceForm = ({ handleClose, visible }) => {
+const AddConferenceForm = ({ handleClose, visible, ...props }) => {
   const [apelantiList, setApelantiList] = useState([]);
   const [callerDataReady, setCallerDataReady] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -40,9 +40,6 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     } else {
       obj.data = obj.data.toISOString().substring(0, 10);
 
-      // const objJSON = JSON.stringify(obj);
-      // console.log(objJSON);
-
       //sending post request to server at http://127.0.0.1:8000/api/todos/create/
       axios
         .post(postUrl, obj, {
@@ -50,9 +47,12 @@ const AddConferenceForm = ({ handleClose, visible }) => {
             'Content-Type': 'application/json',
           },
         })
-        .then((response) =>
-          console.log('RASPUNSUL: SERVERULUI ESTE :: ', response)
-        )
+        .then((response) => {
+          return response.status;
+        })
+        .then((status) => {
+          status === 201 ? props.handleVisible() : console.log('err');
+        })
         .catch((err) => console.log(err));
     }
   };

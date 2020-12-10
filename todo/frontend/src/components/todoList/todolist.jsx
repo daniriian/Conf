@@ -3,17 +3,20 @@ import Todo from '../todo/todo';
 import { getData } from '../../utils/utils';
 import { Table } from 'react-bootstrap';
 
-const TodoList = () => {
+const TodoList = ({ rerender }) => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
+    console.log('Getting TODOS from Database');
     const myCallback = (response, status) => {
       if (status === 200) {
         setTodos(response, status);
       }
     };
     getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/');
-  }, []);
+  }, [rerender]);
+
+  console.log(todos);
 
   return (
     <Table striped bordered hover size="sm">
@@ -34,6 +37,7 @@ const TodoList = () => {
         {todos.map((item, index) => {
           return (
             <Todo
+              todo_id={item.id}
               ora_start={item.start_time}
               ora_stop={item.end_time}
               data={item.data}
