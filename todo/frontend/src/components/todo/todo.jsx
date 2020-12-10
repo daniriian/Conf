@@ -2,6 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios'
 
 const format_data = (data) => {
   let sd = data.split('-');
@@ -18,6 +19,13 @@ const Todo = (props) => {
     console.log('deleting...');
     console.log(todo_id);
     //send delete request
+    axios.delete("http://127.0.0.1:8000/api/todos/delete/",
+      { data: { id: todo_id } },
+      { headers: { 'Content-Type': 'application/json', } })
+      .then(response => {
+        console.log(response)
+        response.status === 200 ? props.onDelete() : console.log("Nu e 200")
+      })
   };
 
   return (

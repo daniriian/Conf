@@ -5,18 +5,23 @@ import { Table } from 'react-bootstrap';
 
 const TodoList = ({ rerender }) => {
   const [todos, setTodos] = useState([]);
+  const [hasChanged, setHasChanged] = useState(false)
 
   useEffect(() => {
-    console.log('Getting TODOS from Database');
+    // console.log('Getting TODOS from Database');
     const myCallback = (response, status) => {
       if (status === 200) {
         setTodos(response, status);
+        setHasChanged(false)
       }
     };
     getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/');
-  }, [rerender]);
 
-  console.log(todos);
+  }, [rerender, hasChanged]);
+
+  const handleOnDelete = () => {
+    setHasChanged(true)
+  }
 
   return (
     <Table striped bordered hover size="sm">
@@ -47,6 +52,7 @@ const TodoList = ({ rerender }) => {
               adaugat_de={item.adaugat_de.nume + ' ' + item.adaugat_de.prenume}
               user_location={item.adaugat_de.instanta.nume}
               key={index}
+              onDelete={handleOnDelete}
             />
           );
         })}

@@ -177,13 +177,10 @@ def terminalsView(request, *args, **kwargs):
     return Response(serializer.data, status=200)
 
 
-@api_view(['DELETE', 'POST'])
-def TodoDeleteView(request,  todo_id, *args, **kwargs):
-    obj = Todo.objects.get(id=request.todo_id)
-    print(todo_id)
-    # obj.delete()
-    return Response(status=204)
+@api_view(['DELETE'])
+def TodoDeleteView(request, *args, **kwargs):
 
-    # todo = Todo.objects.get(id=todo_id)
-#         todo.delete()
-#         messages.success(request, ('Videoconferinta a fost stearsa'))
+    print(request.data["id"])
+    qs = Todo.objects.get(id=request.data["id"])
+    qs.delete()
+    return Response({}, status=200)
