@@ -13,15 +13,11 @@ const steps = {
   3: 'Destinatar(i)',
 };
 
-const AddConferenceForm = ({ handleClose, visible, ...props }) => {
+const AddConferenceForm = ({ handleClose, visible, caller, selectedDate, startTime, endTime, callTo, ...props }) => {
   const [callersList, setCallersList] = useState([]);
   const [callerDataReady, setCallerDataReady] = useState(false);
   const [stepIndex, setStepIndex] = useState(1);
-  const [caller, setCaller] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [startTime, setStartTime] = useState('08:00');
-  const [endTime, setEndTime] = useState('08:10');
-  const [callTo, setCallTo] = useState([]);
+
 
   const obj = {
     id: 0,
@@ -65,9 +61,7 @@ const AddConferenceForm = ({ handleClose, visible, ...props }) => {
 
   const handleCaller = (e) => {
     const callerId = +e.target.value;
-    if (callerId > 0) {
-      setCaller(+e.target.value);
-    } else setCaller(null);
+    props.onSelectCallerChange(callerId)
   };
 
   // const handleRetrieveDate = (date) => {
@@ -77,14 +71,11 @@ const AddConferenceForm = ({ handleClose, visible, ...props }) => {
   // };
 
   const handleGetDateStartTimeEndTime = (arr) => {
-    setSelectedDate(arr[0]);
-    setStartTime(arr[1]);
-    setEndTime(arr[2]);
+    props.onHandleGetDateStartTimeEndTime(arr)
+
   };
 
-  const handleGetActiveTerminals = (data) => {
-    setCallTo(data);
-  };
+
 
   useEffect(() => {
     //incarca lista de apelanti din bd utilizand axios
@@ -99,8 +90,6 @@ const AddConferenceForm = ({ handleClose, visible, ...props }) => {
       .catch((err) => alert(err));
     return () => {
       setStepIndex(1);
-      setCaller(null)
-      setCallTo([])
     };
   }, [visible]);
 
@@ -145,7 +134,7 @@ const AddConferenceForm = ({ handleClose, visible, ...props }) => {
             ) : (
                   <CallTolist
                     activeTerminals={callTo}
-                    setActiveTerminals={handleGetActiveTerminals}
+                    setActiveTerminals={props.getActiveTerminals}
                   />
                 )}
           </Form.Group>
