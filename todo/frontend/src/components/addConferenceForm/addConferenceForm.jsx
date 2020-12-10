@@ -36,27 +36,18 @@ const AddConferenceForm = ({ handleClose, visible }) => {
     if (stepIndex < 3) {
       setStepIndex(stepIndex + 1);
     } else {
-      console.log(
-        'Apelanti=',
-        caller,
-        'Data=',
-        selectedDate,
-        'StartTime-',
-        startTime,
-        'EndTime=',
-        endTime,
-        'Lista Apelati=',
-        callTo
-      );
-
       obj.data = obj.data.toISOString().substring(0, 10);
 
-      const objJSON = JSON.stringify(obj);
-      console.log(objJSON);
+      // const objJSON = JSON.stringify(obj);
+      // console.log(objJSON);
 
       //sending post request to server at http://127.0.0.1:8000/api/todos/create/
       axios
-        .post(postUrl, objJSON)
+        .post(postUrl, obj, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         .then((response) =>
           console.log('RASPUNSUL: SERVERULUI ESTE :: ', response)
         )
