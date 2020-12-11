@@ -13,11 +13,19 @@ const steps = {
   3: 'Destinatar(i)',
 };
 
-const AddConferenceForm = ({ handleClose, visible, caller, selectedDate, startTime, endTime, callTo, ...props }) => {
+const AddConferenceForm = ({
+  handleClose,
+  visible,
+  caller,
+  selectedDate,
+  startTime,
+  endTime,
+  callTo,
+  ...props
+}) => {
   const [callersList, setCallersList] = useState([]);
   const [callerDataReady, setCallerDataReady] = useState(false);
   const [stepIndex, setStepIndex] = useState(1);
-
 
   const obj = {
     id: 0,
@@ -61,7 +69,7 @@ const AddConferenceForm = ({ handleClose, visible, caller, selectedDate, startTi
 
   const handleCaller = (e) => {
     const callerId = +e.target.value;
-    props.onSelectCallerChange(callerId)
+    props.onSelectCallerChange(callerId);
   };
 
   // const handleRetrieveDate = (date) => {
@@ -71,11 +79,8 @@ const AddConferenceForm = ({ handleClose, visible, caller, selectedDate, startTi
   // };
 
   const handleGetDateStartTimeEndTime = (arr) => {
-    props.onHandleGetDateStartTimeEndTime(arr)
-
+    props.onHandleGetDateStartTimeEndTime(arr);
   };
-
-
 
   useEffect(() => {
     //incarca lista de apelanti din bd utilizand axios
@@ -111,7 +116,12 @@ const AddConferenceForm = ({ handleClose, visible, caller, selectedDate, startTi
 
             {stepIndex === 1 ? (
               callerDataReady ? (
-                <Form.Control as="select" custom onChange={handleCaller}>
+                <Form.Control
+                  as="select"
+                  custom
+                  onChange={handleCaller}
+                  defaultValue={0} //implicit value on component load
+                >
                   <option value={0}>Alegeti...</option>
                   {callersList.map((apelant, index) => {
                     return (
@@ -122,21 +132,21 @@ const AddConferenceForm = ({ handleClose, visible, caller, selectedDate, startTi
                   })}
                 </Form.Control>
               ) : (
-                  <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                )
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              )
             ) : stepIndex === 2 ? (
               //afisez form pentru data si interval orar
               <DateTimeSelector
                 getDateStartTimeEndTime={handleGetDateStartTimeEndTime}
               />
             ) : (
-                  <CallTolist
-                    activeTerminals={callTo}
-                    setActiveTerminals={props.getActiveTerminals}
-                  />
-                )}
+              <CallTolist
+                activeTerminals={callTo}
+                setActiveTerminals={props.getActiveTerminals}
+              />
+            )}
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -150,8 +160,8 @@ const AddConferenceForm = ({ handleClose, visible, caller, selectedDate, startTi
             Înapoi
           </Button>
         ) : (
-            ''
-          )}
+          ''
+        )}
         <Button variant="primary" onClick={handleNext}>
           {stepIndex === 3 ? 'Adaugă' : 'Înainte'}
         </Button>

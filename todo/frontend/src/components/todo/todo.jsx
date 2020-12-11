@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios'
+import axios from 'axios';
 
 const format_data = (data) => {
   let sd = data.split('-');
@@ -17,13 +17,22 @@ const Todo = (props) => {
   const handleDelete = (e, todo_id) => {
     e.preventDefault();
     //send delete request
-    axios.delete("http://127.0.0.1:8000/api/todos/delete/",
-      { data: { id: todo_id } },
-      { headers: { 'Content-Type': 'application/json', } })
-      .then(response => {
-        console.log(response)
-        response.status === 200 ? props.onDelete() : console.log("Nu e 200")
-      })
+    axios
+      .delete(
+        'http://127.0.0.1:8000/api/todos/delete/',
+        { data: { id: todo_id } },
+        { headers: { 'Content-Type': 'application/json' } }
+      )
+      .then((response) => {
+        console.log(response);
+        response.status === 200 ? props.onDelete() : console.log('Nu e 200');
+      });
+  };
+
+  const handleModifica = (e, todo_id) => {
+    e.preventDefault();
+    console.log(todo_id);
+    props.onHandleModifica(todo_id);
   };
 
   return (
@@ -58,7 +67,12 @@ const Todo = (props) => {
       </td>{' '}
       {/* Adaugat de */}
       <td>
-        <Button variant="primary">Modifică</Button>
+        <Button
+          variant="primary"
+          onClick={(e) => handleModifica(e, props.todo_id)}
+        >
+          Modifică
+        </Button>
       </td>{' '}
       {/* Buton modifica */}
       <td>

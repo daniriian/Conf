@@ -3,25 +3,28 @@ import Todo from '../todo/todo';
 import { getData } from '../../utils/utils';
 import { Table } from 'react-bootstrap';
 
-const TodoList = ({ rerender }) => {
+const TodoList = ({ rerender, ...props }) => {
   const [todos, setTodos] = useState([]);
-  const [hasChanged, setHasChanged] = useState(false)
+  const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
     // console.log('Getting TODOS from Database');
     const myCallback = (response, status) => {
       if (status === 200) {
         setTodos(response, status);
-        setHasChanged(false)
+        setHasChanged(false);
       }
     };
     getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/');
-
   }, [rerender, hasChanged]);
 
   const handleOnDelete = () => {
-    setHasChanged(true)
-  }
+    setHasChanged(true);
+  };
+
+  const handleModifica = (id) => {
+    props.modifica(id);
+  };
 
   return (
     <Table striped bordered hover size="sm">
@@ -53,6 +56,7 @@ const TodoList = ({ rerender }) => {
               user_location={item.adaugat_de.instanta.nume}
               key={index}
               onDelete={handleOnDelete}
+              onHandleModifica={handleModifica}
             />
           );
         })}

@@ -53,11 +53,19 @@ function App() {
     setCallTo(data);
   };
 
+  const handleModifiicaVideoconferinta = (id) => {
+    console.log('ID from App.js', id);
+    handleAddButton();
+  };
+
   return (
     <div className="App">
       <div>
         <Header renderAddVideoconferenceForm={handleAddButton} />
-        <TodoList rerender={confFormVisible} />
+        <TodoList
+          rerender={confFormVisible}
+          modifica={handleModifiicaVideoconferinta}
+        />
         <AddConferenceForm
           visible={confFormVisible}
           handleClose={handleClose}
