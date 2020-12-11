@@ -30,22 +30,24 @@ function App() {
 
   useEffect(() => {
     console.log('Rendering App');
+    return () => {
+      setCallTo([]);
+    };
   }, [confFormVisible]);
 
   const handleSelectCallerChange = (callerId) => {
     if (callerId > 0) {
-      setCaller(callerId)
+      setCaller(callerId);
+    } else {
+      setCaller(null);
     }
-    else {
-      setCaller(null)
-    }
-  }
+  };
 
   const handleGetDateStartTimeEndTime = (arr) => {
     setSelectedDate(arr[0]);
     setStartTime(arr[1]);
     setEndTime(arr[2]);
-  }
+  };
 
   const handleGetActiveTerminals = (data) => {
     setCallTo(data);
@@ -65,7 +67,6 @@ function App() {
           startTime={startTime}
           endTime={endTime}
           callTo={callTo}
-
           onSelectCallerChange={handleSelectCallerChange}
           onHandleGetDateStartTimeEndTime={handleGetDateStartTimeEndTime}
           getActiveTerminals={handleGetActiveTerminals}
