@@ -11,6 +11,10 @@ const AddModifyForm = (props) => {
         }
     }
 
+    const handleBackBtn = () => {
+        setStep(step - 1)
+    }
+
     useEffect(() => {
         console.log("Mounting AddModifyForm")
 
@@ -37,7 +41,21 @@ const AddModifyForm = (props) => {
                 <Button variant="secondary" onClick={props.onClose}>
                     Renunta
                  </Button>
-                <Button variant="primary" onClick={handle_NextAddModifyBtn}>{step === 2 ? "Adauga" : "Inainte"}</Button>
+                {step > 0 ?
+                    (
+                        <Button variant="primary" onClick={handleBackBtn}>
+                            Inapoi
+                        </Button>
+                    )
+                    :
+                    ""
+                }
+                <Button
+                    variant="primary"
+                    onClick={handle_NextAddModifyBtn}
+                >
+                    {step === 2 ? "Adauga" : "Inainte"}
+                </Button>
             </Modal.Footer>
         </Modal>
     )
