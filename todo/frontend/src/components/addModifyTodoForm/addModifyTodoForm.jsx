@@ -3,6 +3,21 @@ import { Modal, Button } from 'react-bootstrap'
 
 const AddModifyForm = (props) => {
 
+    const [step, setStep] = useState(0)
+
+    const handle_NextAddModifyBtn = () => {
+        if (step < 2) {
+            setStep(step + 1)
+        }
+    }
+
+    useEffect(() => {
+        console.log("Mounting AddModifyForm")
+
+        return (() => {
+            console.log("cleaning up AddModifyForm")
+        })
+    }, [])
 
     return (
 
@@ -13,17 +28,16 @@ const AddModifyForm = (props) => {
             keyboard={false}
         >
             <Modal.Header closeButton>
-                <Modal.Title>Modal title</Modal.Title>
+                <Modal.Title>videoconferinta</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                I will not close if you click outside me. Don't even try to press
-                escape key.
-             </Modal.Body>
+                {step}
+            </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.onClose}>
-                    Close
+                    Renunta
                  </Button>
-                <Button variant="primary">Understood</Button>
+                <Button variant="primary" onClick={handle_NextAddModifyBtn}>{step === 2 ? "Adauga" : "Inainte"}</Button>
             </Modal.Footer>
         </Modal>
     )

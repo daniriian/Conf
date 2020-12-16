@@ -8,14 +8,14 @@ import 'normalize.css'; // Note this
 
 function App() {
 
-  const [showAddModifyForm, setShowAddModifyForm] = useState(false)
+  const [show_AddModifyForm, setShow_AddModifyForm] = useState(false)
 
   const handleAddButtonClick = () => {
-    setShowAddModifyForm(true)
+    setShow_AddModifyForm(true)
   }
 
   const handleAddModifyFormClose = () => {
-    setShowAddModifyForm(false)
+    setShow_AddModifyForm(false)
   }
 
   return (
@@ -23,7 +23,7 @@ function App() {
       <div>
         <Header onAddButtonClick={handleAddButtonClick} />
         <TodoList />
-        {showAddModifyForm ? <AddModifyForm onClose={handleAddModifyFormClose} /> : ""}
+        {show_AddModifyForm ? <AddModifyForm onClose={handleAddModifyFormClose} /> : ""}
 
       </div>
     </div>
