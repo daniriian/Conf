@@ -3,7 +3,7 @@ import { Form, Spinner } from 'react-bootstrap';
 
 import axios from 'axios';
 
-const CallTolist = ({ activeTerminals, ...props }) => {
+const CallTolist = (props) => {
   const url_terminale = 'http://127.0.0.1:8000/api/todos/terminals/';
   const [isLoading, setIsLoading] = useState(true);
   const [listaTerminale, setListaTerminale] = useState([]);
@@ -27,6 +27,7 @@ const CallTolist = ({ activeTerminals, ...props }) => {
     props.setActiveTerminals(selected);
   };
 
+
   return (
     <div>
       {isLoading ? (
@@ -34,20 +35,19 @@ const CallTolist = ({ activeTerminals, ...props }) => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <Form.Control as="select" custom multiple onChange={handleChange}>
-          {listaTerminale.map((terminal, index) => {
-            return (
-              <option
-                key={index}
-                id={terminal.id}
-                selected={activeTerminals.includes(terminal.id)}
-              >
-                {terminal.nume}
-              </option>
-            );
-          })}
-        </Form.Control>
-      )}
+          <Form.Control as="select" custom multiple onChange={handleChange}>
+            {listaTerminale.map((terminal, index) => {
+              return (
+                <option
+                  key={index}
+                  id={terminal.id}
+                >
+                  {terminal.nume}
+                </option>
+              );
+            })}
+          </Form.Control>
+        )}
     </div>
   );
 };

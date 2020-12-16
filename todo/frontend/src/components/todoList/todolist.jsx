@@ -23,7 +23,8 @@ const TodoList = ({ rerender, ...props }) => {
   };
 
   const handleModifica = (id) => {
-    props.modifica(id);
+    const selected_todo = (todos.filter((todo) => todo.id === id)[0])
+    props.modifica(selected_todo);
   };
 
   return (

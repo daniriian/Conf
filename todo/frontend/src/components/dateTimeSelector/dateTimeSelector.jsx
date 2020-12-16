@@ -14,11 +14,13 @@ import 'react-times/css/classic/default.css';
 import './styles.css';
 
 const DateTimeSelector = (props) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState('08:00');
-  const [endTime, setEndTime] = useState('09:00');
+  const theDate = props.startDate ? new Date(props.startDate) : new Date()
+  const theStartTime = props.startTime ? props.startTime : '08:00'
+  const [startDate, setStartDate] = useState(theDate);
+  const [startTime, setStartTime] = useState(theStartTime);
+  const [endTime, setEndTime] = useState(props.endTime || '08:30');
 
-  const handleSetStartDate = (selectedDate) => {
+  const handleStartDateChange = (selectedDate) => {
     // props.retrieveDate(selectedDate);
     setStartDate(selectedDate);
   };
@@ -32,6 +34,7 @@ const DateTimeSelector = (props) => {
   };
 
   useEffect(() => {
+    console.log("startTime from dateTimeSelector", props.startDate || new Date())
     return () => {
       // console.log('terminating date time');
       //save selected date, start Time and endTime in addConferenceForm component
@@ -47,7 +50,7 @@ const DateTimeSelector = (props) => {
           <Col>
             <DatePicker
               selected={startDate}
-              onChange={(date) => handleSetStartDate(date)}
+              onChange={(date) => handleStartDateChange(date)}
               dateFormat="dd.MM.yyyy"
             />
           </Col>

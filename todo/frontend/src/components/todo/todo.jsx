@@ -24,16 +24,15 @@ const Todo = (props) => {
         { headers: { 'Content-Type': 'application/json' } }
       )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         response.status === 200 ? props.onDelete() : console.log('Nu e 200');
       });
   };
 
-  const handleModifica = (e, todo_id) => {
-    e.preventDefault();
-    console.log(todo_id);
-    props.onHandleModifica(todo_id);
-  };
+
+  const handleCheckChange = () => {
+    console.log("Checked clicked")
+  }
 
   return (
     <tr>
@@ -57,23 +56,22 @@ const Todo = (props) => {
       <td>
         <div className="mb-3">
           <Form.Check type="checkbox" isValid>
-            <Form.Check.Input type="checkbox" checked={props.efectuat} />
+            <Form.Check.Input type="checkbox" checked={props.efectuat} onChange={handleCheckChange} />
           </Form.Check>
         </div>
       </td>
       <td>
         <div>{props.adaugat_de}</div>
         <div>{props.user_location}</div>
-      </td>{' '}
+      </td>
       {/* Adaugat de */}
       <td>
         <Button
           variant="primary"
-          onClick={(e) => handleModifica(e, props.todo_id)}
         >
           Modifică
         </Button>
-      </td>{' '}
+      </td>
       {/* Buton modifica */}
       <td>
         <Button
