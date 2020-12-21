@@ -32,7 +32,7 @@ const AddModifyForm = (props) => {
             keyboard={false}
         >
             <Modal.Header closeButton>
-                <Modal.Title>videoconferinta</Modal.Title>
+                <Modal.Title>{props.actionType === "ADD" ? "Adauga" : "Modifica"} videoconferinta</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {step}
@@ -54,7 +54,7 @@ const AddModifyForm = (props) => {
                     variant="primary"
                     onClick={handle_NextAddModifyBtn}
                 >
-                    {step === 2 ? "Adauga" : "Inainte"}
+                    {step === 2 ? (props.actionType === "ADD" ? "Adauga" : "Modifica") : "Inainte"}
                 </Button>
             </Modal.Footer>
         </Modal>

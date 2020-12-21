@@ -34,6 +34,12 @@ const Todo = (props) => {
     console.log("Checked clicked")
   }
 
+  const handleModificaTodo = () => {
+    console.log("se modifica Todo")
+    //voi returna un obiect care sa contina todo de modificat
+  }
+
+
   return (
     <tr>
       <td>{ora_start}</td>
@@ -68,6 +74,7 @@ const Todo = (props) => {
       <td>
         <Button
           variant="primary"
+          onClick={handleModificaTodo}
         >
           Modifică
         </Button>
