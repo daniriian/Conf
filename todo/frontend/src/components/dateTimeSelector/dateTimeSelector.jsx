@@ -14,36 +14,36 @@ import 'react-times/css/classic/default.css';
 import './styles.css';
 
 const DateTimeSelector = (props) => {
-  const theDate = props.startDate ? new Date(props.startDate) : new Date();
-  const theStartTime = props.startTime ? props.startTime : '08:00';
-  const [startDate, setStartDate] = useState(theDate);
-  const [startTime, setStartTime] = useState(theStartTime);
-  const [endTime, setEndTime] = useState(props.endTime || '08:30');
+  const [startDate, setStartDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const theDate = props.data ? new Date(props.data) : new Date();
+  const theStartTime = props.ora_start ? props.ora_start : '08:00';
+  const theStopTime = props.ora_stop ? props.ora_stop : "08:30"
+  console.log(props)
 
-  const handleStartDateChange = (selectedDate) => {
-    // props.retrieveDate(selectedDate);
-    setStartDate(selectedDate);
-  };
+  useEffect(() => {
+    console.log("rendering dateTimeSelector with props", props);
+    setStartDate(theDate)
+    setStartTime(theStartTime)
+    setEndTime(theStopTime)
+    console.log(theStartTime, ' ', theStopTime)
+  }, []);
+
 
   const handleStartTimeChange = ({ hour, minute }) => {
-    setStartTime(hour + ':' + minute);
+    const ora = (hour + ':' + minute);
+    // setStartTime(ora)
+    props.getDateStartTimeEndTime({ ora_start: ora })
   };
 
   const handleEndTimeChange = ({ hour, minute }) => {
-    setEndTime(hour + ':' + minute);
+    const ora = (hour + ':' + minute);
+    // setEndTime(ora)
+    props.getDateStartTimeEndTime({ ora_stop: ora })
   };
 
-  useEffect(() => {
-    console.log(
-      'startTime from dateTimeSelector',
-      props.startDate || new Date()
-    );
-    return () => {
-      // console.log('terminating date time');
-      //save selected date, start Time and endTime in addConferenceForm component
-      props.getDateStartTimeEndTime([startDate, startTime, endTime]);
-    };
-  }, []);
+
 
   return (
     <div>
@@ -53,7 +53,7 @@ const DateTimeSelector = (props) => {
           <Col>
             <DatePicker
               selected={startDate}
-              onChange={(date) => handleStartDateChange(date)}
+              onChange={(date) => props.getDateStartTimeEndTime({ data: date })}
               dateFormat="dd.MM.yyyy"
             />
           </Col>
@@ -63,7 +63,7 @@ const DateTimeSelector = (props) => {
           <Col>
             <TimePicker
               colorPalette="dark" // main color, default "light"
-              time={startTime} // initial time, default current time
+              time={theStartTime} // initial time, default current time
               theme="material"
               minuteStep={5}
               // material or
@@ -76,7 +76,7 @@ const DateTimeSelector = (props) => {
           <Col>
             <TimePicker
               colorPalette="dark" // main color, default "light"
-              time={endTime} // initial time, default current time
+              time={theStopTime} // initial time, default current time
               theme="material"
               // or
               // theme="classic"

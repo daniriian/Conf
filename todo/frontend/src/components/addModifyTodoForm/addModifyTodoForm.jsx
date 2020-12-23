@@ -30,7 +30,7 @@ const AddModifyForm = (props) => {
     return () => {
       console.log('cleaning up AddModifyForm');
     };
-  }, []);
+  }, [todo]);
 
   const handleOnChangeCaller = (id) => {
     const newTodo = { ...todo };
@@ -38,15 +38,13 @@ const AddModifyForm = (props) => {
     setTodo(newTodo);
   };
 
-  const handleGetDateStartTimeEndTime = (dateStartTimeEndTime) => {
-    const confDate = dateStartTimeEndTime;
-    const newStateObj = { ...todo };
-    newStateObj.data = confDate[0];
-    newStateObj.ora_start = confDate[1];
-    newStateObj.ora_stop = confDate[2];
-    setTodo(newStateObj);
-    console.log(newStateObj);
-  };
+  const handleGetDateStartTimeEndTime = (param) => {
+    const newTodo = { ...todo }
+    const key = (Object.keys(param)[0])
+    newTodo[key] = (Object.values(param)[0])
+    console.log(newTodo)
+    setTodo(newTodo)
+  }
 
   return (
     <Modal
@@ -69,10 +67,13 @@ const AddModifyForm = (props) => {
         ) : step === 1 ? (
           <DateTimeSelector
             getDateStartTimeEndTime={handleGetDateStartTimeEndTime}
+            data={todo.data}
+            ora_start={todo.ora_start}
+            ora_stop={todo.ora_stop}
           />
         ) : (
-          ''
-        )}
+              ''
+            )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.onClose}>
@@ -83,8 +84,8 @@ const AddModifyForm = (props) => {
             Inapoi
           </Button>
         ) : (
-          ''
-        )}
+            ''
+          )}
         <Button variant="primary" onClick={handle_NextAddModifyBtn}>
           {step === 2
             ? props.actionType === 'ADD'
