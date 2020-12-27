@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 import CallersList from '../callersList/callersList';
 import DateTimeSelector from '../dateTimeSelector/dateTimeSelector';
+import CallTolist from '../callToList/call_to_list'
 
 const AddModifyForm = (props) => {
   const [step, setStep] = useState(0);
@@ -72,7 +73,10 @@ const AddModifyForm = (props) => {
             ora_stop={todo.ora_stop}
           />
         ) : (
-              ''
+              <div>
+                <p>Aici vine lista de call_to</p>
+                <CallTolist />
+              </div>
             )}
       </Modal.Body>
       <Modal.Footer>
