@@ -3,14 +3,13 @@ import { Form, Spinner } from 'react-bootstrap';
 
 import axios from 'axios';
 
-const activeTerminals = [55, 57]
-
 const CallTolist = (props) => {
   const url_terminale = 'http://127.0.0.1:8000/api/todos/terminals/';
   const [isLoading, setIsLoading] = useState(true);
   const [listaTerminale, setListaTerminale] = useState([]);
 
   useEffect(() => {
+    console.log('Mounting CallToList component');
     axios
       .get(url_terminale)
       .then((response) => response.data)
@@ -26,9 +25,8 @@ const CallTolist = (props) => {
     for (let elem of e.target.selectedOptions) {
       selected.push(+elem.id); //converted to int
     }
-    // props.setActiveTerminals(selected);
+    props.onChange(selected);
   };
-
 
   return (
     <div>
@@ -37,20 +35,20 @@ const CallTolist = (props) => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-          <Form.Control as="select" custom multiple defaultValue={[55, 56]} onChange={handleChange}>
-            {listaTerminale.map((terminal, index) => {
-              return (
-                <option
-                  key={index}
-                  id={terminal.id}
-                  selected={activeTerminals.includes(terminal.id)}
-                >
-                  {terminal.nume}
-                </option>
-              );
-            })}
-          </Form.Control>
-        )}
+        <Form.Control as="select" custom multiple onChange={handleChange}>
+          {listaTerminale.map((terminal, index) => {
+            return (
+              <option
+                key={index}
+                id={terminal.id}
+                selected={props.selectedValues.includes(terminal.id)}
+              >
+                {terminal.nume}
+              </option>
+            );
+          })}
+        </Form.Control>
+      )}
     </div>
   );
 };
@@ -59,4 +57,3 @@ export default CallTolist;
 
 //props
 // activeTerminals - lista cu terminalele selectate
-

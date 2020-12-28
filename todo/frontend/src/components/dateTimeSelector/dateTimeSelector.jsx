@@ -14,36 +14,33 @@ import 'react-times/css/classic/default.css';
 import './styles.css';
 
 const DateTimeSelector = (props) => {
-  const [startDate, setStartDate] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const [startDate, setStartDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const theDate = props.data ? new Date(props.data) : new Date();
-  const theStartTime = props.ora_start ? props.ora_start : '08:00';
-  const theStopTime = props.ora_stop ? props.ora_stop : "08:30"
-  console.log(props)
+  const theStartTime = props.start_time ? props.start_time : '08:00';
+  const theStopTime = props.end_time ? props.end_time : '08:30';
+  console.log(props);
 
   useEffect(() => {
-    console.log("rendering dateTimeSelector with props", props);
-    setStartDate(theDate)
-    setStartTime(theStartTime)
-    setEndTime(theStopTime)
-    console.log(theStartTime, ' ', theStopTime)
+    console.log('rendering dateTimeSelector with props', props);
+    setStartDate(theDate);
+    setStartTime(theStartTime);
+    setEndTime(theStopTime);
+    console.log(theStartTime, ' ', theStopTime);
   }, []);
 
-
   const handleStartTimeChange = ({ hour, minute }) => {
-    const ora = (hour + ':' + minute);
+    const ora = hour + ':' + minute;
     // setStartTime(ora)
-    props.getDateStartTimeEndTime({ ora_start: ora })
+    props.getDateStartTimeEndTime({ start_time: ora });
   };
 
   const handleEndTimeChange = ({ hour, minute }) => {
-    const ora = (hour + ':' + minute);
+    const ora = hour + ':' + minute;
     // setEndTime(ora)
-    props.getDateStartTimeEndTime({ ora_stop: ora })
+    props.getDateStartTimeEndTime({ end_time: ora });
   };
-
-
 
   return (
     <div>

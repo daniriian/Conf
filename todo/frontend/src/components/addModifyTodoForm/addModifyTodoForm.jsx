@@ -3,21 +3,47 @@ import { Modal, Button } from 'react-bootstrap';
 
 import CallersList from '../callersList/callersList';
 import DateTimeSelector from '../dateTimeSelector/dateTimeSelector';
-import CallTolist from '../callToList/call_to_list'
+import CallTolist from '../callToList/call_to_list';
+import axios from 'axios';
 
 const AddModifyForm = (props) => {
   const [step, setStep] = useState(0);
   const [todo, setTodo] = useState({
     caller: '',
     data: '',
-    ora_start: '',
-    ora_stop: '',
+    start_time: '',
+    end_time: '',
     call_to: [],
+    completed: false,
+    adaugat_de: 6,
   });
+
+  const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
+
+  const addTodo = async (todo) => {
+    const res = await axios.post(postUrl, todo, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return res.status;
+  };
 
   const handle_NextAddModifyBtn = () => {
     if (step < 2) {
       setStep(step + 1);
+    } else if (step === 2) {
+      console.log('Adaug Todo');
+      const newTodo = { ...todo };
+      newTodo.data = newTodo.data.toISOString().substring(0, 10);
+      addTodo(newTodo)
+        .then((status) => {
+          console.log(status);
+          if (status === 201) {
+            props.onClose();
+          }
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -35,17 +61,24 @@ const AddModifyForm = (props) => {
 
   const handleOnChangeCaller = (id) => {
     const newTodo = { ...todo };
-    newTodo.caller = id;
+    newTodo.caller = +id;
     setTodo(newTodo);
   };
 
   const handleGetDateStartTimeEndTime = (param) => {
-    const newTodo = { ...todo }
-    const key = (Object.keys(param)[0])
-    newTodo[key] = (Object.values(param)[0])
-    console.log(newTodo)
-    setTodo(newTodo)
-  }
+    const newTodo = { ...todo };
+    const key = Object.keys(param)[0];
+    newTodo[key] = Object.values(param)[0];
+    console.log(newTodo);
+    setTodo(newTodo);
+  };
+
+  const handleChange = (dest) => {
+    console.log(dest);
+    const newTodo = { ...todo };
+    newTodo.call_to = dest;
+    setTodo(newTodo);
+  };
 
   return (
     <Modal
@@ -69,15 +102,18 @@ const AddModifyForm = (props) => {
           <DateTimeSelector
             getDateStartTimeEndTime={handleGetDateStartTimeEndTime}
             data={todo.data}
-            ora_start={todo.ora_start}
-            ora_stop={todo.ora_stop}
+            start_time={todo.start_time}
+            end_time={todo.end_time}
           />
         ) : (
-              <div>
-                <p>Aici vine lista de call_to</p>
-                <CallTolist />
-              </div>
-            )}
+          <div>
+            <p>Aici vine lista de call_to</p>
+            <CallTolist
+              selectedValues={todo.call_to}
+              onChange={(dest) => handleChange(dest)}
+            />
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.onClose}>
@@ -88,8 +124,8 @@ const AddModifyForm = (props) => {
             Inapoi
           </Button>
         ) : (
-            ''
-          )}
+          ''
+        )}
         <Button variant="primary" onClick={handle_NextAddModifyBtn}>
           {step === 2
             ? props.actionType === 'ADD'

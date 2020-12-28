@@ -3,7 +3,7 @@ import Todo from '../todo/todo';
 import { getData } from '../../utils/utils';
 import { Table } from 'react-bootstrap';
 
-const TodoList = ({ rerender, ...props }) => {
+const TodoList = ({ ...props }) => {
   const [todos, setTodos] = useState([]);
   const [hasChanged, setHasChanged] = useState(false);
 
@@ -12,18 +12,17 @@ const TodoList = ({ rerender, ...props }) => {
     const myCallback = (response, status) => {
       if (status === 200) {
         setTodos(response, status);
-        setHasChanged(false);
       }
     };
     getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/');
-  }, [rerender, hasChanged]);
+  }, []);
 
   const handleOnDelete = () => {
     setHasChanged(true);
   };
 
   const handleModifica = (id) => {
-    const selected_todo = (todos.filter((todo) => todo.id === id)[0])
+    const selected_todo = todos.filter((todo) => todo.id === id)[0];
     props.modifica(selected_todo);
   };
 
