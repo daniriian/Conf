@@ -18,26 +18,23 @@ function App() {
 
   const handleAddModifyForm_Close = () => {
     setShow_AddModifyForm(false);
-    setHasChanged(true);
+    setHasChanged(!hasChanged);
   };
 
-  useEffect(() => {
-    console.log('rendering APP');
-  });
 
   return (
     <div className="App">
       <div>
         <Header onAddButtonClick={handleAddButtonClick} />
-        <TodoList hasChanged={hasChanged} />
+        <TodoList refresh={hasChanged} />
         {show_AddModifyForm ? (
           <AddModifyForm
             onClose={handleAddModifyForm_Close}
             actionType={actionType}
           />
         ) : (
-          ''
-        )}
+            ''
+          )}
       </div>
     </div>
   );

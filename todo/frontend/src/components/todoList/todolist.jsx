@@ -8,14 +8,14 @@ const TodoList = ({ ...props }) => {
   const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
-    // console.log('Getting TODOS from Database');
     const myCallback = (response, status) => {
       if (status === 200) {
         setTodos(response, status);
+        setHasChanged(false);
       }
     };
     getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/');
-  }, []);
+  }, [hasChanged, props.refresh]);
 
   const handleOnDelete = () => {
     setHasChanged(true);

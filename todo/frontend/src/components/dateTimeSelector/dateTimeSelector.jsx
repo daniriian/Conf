@@ -14,21 +14,10 @@ import 'react-times/css/classic/default.css';
 import './styles.css';
 
 const DateTimeSelector = (props) => {
-  const [startDate, setStartDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+
   const theDate = props.data ? new Date(props.data) : new Date();
   const theStartTime = props.start_time ? props.start_time : '08:00';
   const theStopTime = props.end_time ? props.end_time : '08:30';
-  console.log(props);
-
-  useEffect(() => {
-    console.log('rendering dateTimeSelector with props', props);
-    setStartDate(theDate);
-    setStartTime(theStartTime);
-    setEndTime(theStopTime);
-    console.log(theStartTime, ' ', theStopTime);
-  }, []);
 
   const handleStartTimeChange = ({ hour, minute }) => {
     const ora = hour + ':' + minute;
@@ -49,7 +38,7 @@ const DateTimeSelector = (props) => {
         <Row>
           <Col>
             <DatePicker
-              selected={startDate}
+              selected={theDate}
               onChange={(date) => props.getDateStartTimeEndTime({ data: date })}
               dateFormat="dd.MM.yyyy"
             />

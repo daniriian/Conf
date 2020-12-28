@@ -12,7 +12,6 @@ import {
 const Header = (props) => {
 
   const showAddModifyForm = () => {
-    console.log("Add button clicked")
     props.onAddButtonClick()
   }
   return (

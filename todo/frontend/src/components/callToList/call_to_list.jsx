@@ -9,7 +9,6 @@ const CallTolist = (props) => {
   const [listaTerminale, setListaTerminale] = useState([]);
 
   useEffect(() => {
-    console.log('Mounting CallToList component');
     axios
       .get(url_terminale)
       .then((response) => response.data)
@@ -35,20 +34,20 @@ const CallTolist = (props) => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <Form.Control as="select" custom multiple onChange={handleChange}>
-          {listaTerminale.map((terminal, index) => {
-            return (
-              <option
-                key={index}
-                id={terminal.id}
-                selected={props.selectedValues.includes(terminal.id)}
-              >
-                {terminal.nume}
-              </option>
-            );
-          })}
-        </Form.Control>
-      )}
+          <Form.Control as="select" custom multiple onChange={handleChange}>
+            {listaTerminale.map((terminal, index) => {
+              return (
+                <option
+                  key={index}
+                  id={terminal.id}
+                  selected={props.selectedValues.includes(terminal.id)}
+                >
+                  {terminal.nume}
+                </option>
+              );
+            })}
+          </Form.Control>
+        )}
     </div>
   );
 };
