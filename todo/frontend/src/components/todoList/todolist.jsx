@@ -56,7 +56,7 @@ const TodoList = ({ ...props }) => {
               user_location={item.adaugat_de.instanta.nume}
               key={index}
               onDelete={handleOnDelete}
-              onHandleModifica={handleModifica}
+              onModifica={handleModifica}
             />
           );
         })}

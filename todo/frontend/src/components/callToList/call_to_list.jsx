@@ -34,20 +34,22 @@ const CallTolist = (props) => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-          <Form.Control as="select" custom multiple onChange={handleChange}>
-            {listaTerminale.map((terminal, index) => {
-              return (
-                <option
-                  key={index}
-                  id={terminal.id}
-                  selected={props.selectedValues.includes(terminal.id)}
-                >
-                  {terminal.nume}
-                </option>
-              );
-            })}
-          </Form.Control>
-        )}
+        <Form.Control as="select" custom multiple onChange={handleChange}>
+          {listaTerminale.map((terminal, index) => {
+            return (
+              <option
+                key={index}
+                id={terminal.id}
+                selected={props.selectedValues.some(
+                  (e) => e.id === terminal.id
+                )}
+              >
+                {terminal.nume}
+              </option>
+            );
+          })}
+        </Form.Control>
+      )}
     </div>
   );
 };

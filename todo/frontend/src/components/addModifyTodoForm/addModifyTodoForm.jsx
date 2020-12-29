@@ -8,15 +8,12 @@ import axios from 'axios';
 
 const AddModifyForm = (props) => {
   const [step, setStep] = useState(0);
-  const [todo, setTodo] = useState({
-    caller: '',
-    data: new Date(),
-    start_time: '08:45',
-    end_time: '09:20',
-    call_to: [],
-    completed: false,
-    adaugat_de: 6,
-  });
+  const [todo, setTodo] = useState(props.todo);
+
+  // useEffect(() => {
+  //   console.log('Mounting AddModifyForm');
+  //   setTodo(props.todo);
+  // }, [props.todo]);
 
   const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
 
@@ -33,22 +30,25 @@ const AddModifyForm = (props) => {
     if (step < 2) {
       setStep(step + 1);
     } else if (step === 2) {
-      const newTodo = { ...todo };
-      newTodo.data = newTodo.data.toISOString().substring(0, 10);
-      addTodo(newTodo)
-        .then((status) => {
-          if (status === 201) {
-            props.onClose();
-          }
-        })
-        .catch((err) => console.log(err));
+      if (props.actionType === 'ADD') {
+        const newTodo = { ...todo };
+        newTodo.data = newTodo.data.toISOString().substring(0, 10);
+        addTodo(newTodo)
+          .then((status) => {
+            if (status === 201) {
+              props.onClose();
+            }
+          })
+          .catch((err) => console.log(err));
+      } else if (props.actionType === 'MODIFY') {
+        console.log(todo);
+      }
     }
   };
 
   const handleBackBtn = () => {
     setStep(step - 1);
   };
-
 
   const handleOnChangeCaller = (id) => {
     const newTodo = { ...todo };
@@ -84,7 +84,7 @@ const AddModifyForm = (props) => {
       <Modal.Body>
         {step === 0 ? (
           <CallersList
-            currentCaller={todo.caller}
+            currentCaller={todo.caller.id}
             onChangeCaller={handleOnChangeCaller}
           />
         ) : step === 1 ? (
@@ -95,14 +95,14 @@ const AddModifyForm = (props) => {
             end_time={todo.end_time}
           />
         ) : (
-              <div>
-                <p>Aici vine lista de call_to</p>
-                <CallTolist
-                  selectedValues={todo.call_to}
-                  onChange={(dest) => handleChange(dest)}
-                />
-              </div>
-            )}
+          <div>
+            <p>Aici vine lista de call_to</p>
+            <CallTolist
+              selectedValues={todo.call_to}
+              onChange={(dest) => handleChange(dest)}
+            />
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.onClose}>
@@ -113,8 +113,8 @@ const AddModifyForm = (props) => {
             Inapoi
           </Button>
         ) : (
-            ''
-          )}
+          ''
+        )}
         <Button variant="primary" onClick={handle_NextAddModifyBtn}>
           {step === 2
             ? props.actionType === 'ADD'
