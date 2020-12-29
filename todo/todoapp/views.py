@@ -7,6 +7,7 @@ from django.views import generic
 from django.http import JsonResponse, HttpResponse
 from .serializers import TodoSerializer, TodoCreateSerializer, SalaJudecataSerializer, TerminalSerializer
 from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
@@ -49,29 +50,29 @@ def detalii(request, todo_id):
     return render(request, "todoapp/detalii.html", context)
 
 
-def edit(request, todo_id):
+# def edit(request, todo_id):
 
-    if request.user.is_authenticated:
-        instance = get_object_or_404(Todo, id=todo_id)
-        if request.method == 'POST':
-            todo = Todo.objects.get(id=todo_id)
+#     if request.user.is_authenticated:
+#         instance = get_object_or_404(Todo, id=todo_id)
+#         if request.method == 'POST':
+#             todo = Todo.objects.get(id=todo_id)
 
-            form = TodoForm(request.POST or None, instance=instance)
-            if form.is_valid():
-                form.save()
-                messages.success(
-                    request, ('Videoconferinta a fost modificata cu succes!'))
-                return redirect('filter_by_date')
-        else:
-            todo = Todo.objects.get(id=todo_id)
-            form = TodoForm(instance=instance)
-            return render(request, 'todoapp/edit_conference.html', {'form': form, 'todo': todo})
+#             form = TodoForm(request.POST or None, instance=instance)
+#             if form.is_valid():
+#                 form.save()
+#                 messages.success(
+#                     request, ('Videoconferinta a fost modificata cu succes!'))
+#                 return redirect('filter_by_date')
+#         else:
+#             todo = Todo.objects.get(id=todo_id)
+#             form = TodoForm(instance=instance)
+#             return render(request, 'todoapp/edit_conference.html', {'form': form, 'todo': todo})
 
-    else:
-        print('USER CAN NOT EDIT TODO')
-        messages.error(
-            request, ('Utilizator necunoscut, nu se pot modifica programari !!!'))
-        return redirect('filter_by_date')
+#     else:
+#         print('USER CAN NOT EDIT TODO')
+#         messages.error(
+#             request, ('Utilizator necunoscut, nu se pot modifica programari !!!'))
+#         return redirect('filter_by_date')
 
 
 def showTodoDetail(request, todo_id):
@@ -145,7 +146,6 @@ def showTodoDetail(request, todo_id):
 @api_view(['POST'])
 def TodoCreateView(request, *args, **kwargs):
     serializer = TodoCreateSerializer(data=request.data)
-    print(f'********************** {serializer}')
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=201)
@@ -157,7 +157,6 @@ def todoListView(request, *args, **kwargs):
 
     qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
     serializer = TodoSerializer(qs, many=True)
-
     return Response(serializer.data, status=200)
 
 
@@ -186,8 +185,19 @@ def TodoDeleteView(request, *args, **kwargs):
     return Response({}, status=200)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def todoDetailsView(request, todo_id, *args, **kwargs):
     qs = Todo.objects.get(id=todo_id)
-    serializer = TodoSerializer(qs)
-    return Response(serializer.data, status=200)
+
+    if request.method == 'GET':
+        serializer = TodoSerializer(qs)
+        return Response(serializer.data, status=200)
+
+    elif request.method == 'PUT':
+        todo_data = JSONParser().parse(request)
+        serializer = TodoCreateSerializer(Todo, data=todo_data)
+        if serializer.is_valid():
+            print(f'----------- {todo_data} --------------')
+            serializer.save()
+            return Response(todo_data, status=200)
+        return Response(serializer.errors, status=400)

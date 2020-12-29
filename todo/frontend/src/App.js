@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Header from './components/header/header.jsx';
 import TodoList from './components/todoList/todolist.jsx';
 import AddModifyForm from './components/addModifyTodoForm/addModifyTodoForm.jsx';
+import axios from 'axios';
 
 import 'normalize.css'; // Note this
 

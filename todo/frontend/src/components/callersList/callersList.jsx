@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Spinner } from 'react-bootstrap';
+import { Form, Spinner } from 'react-bootstrap';
 
 import axios from 'axios';
 
@@ -19,7 +19,6 @@ const CallersList = (props) => {
         setIsDbFetchReady(true);
       })
       .catch((err) => alert(err));
-
   }, []);
 
   const handleCaller = (e) => {
@@ -48,10 +47,10 @@ const CallersList = (props) => {
             })}
           </Form.Control>
         ) : (
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          )}
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        )}
       </Form.Group>
     </Form>
   );

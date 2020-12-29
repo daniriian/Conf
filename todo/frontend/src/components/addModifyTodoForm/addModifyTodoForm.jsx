@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 import CallersList from '../callersList/callersList';
@@ -42,6 +42,15 @@ const AddModifyForm = (props) => {
           .catch((err) => console.log(err));
       } else if (props.actionType === 'MODIFY') {
         console.log(todo);
+        axios
+          .put('http://localhost:8000/api/todos/' + todo.id, todo, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+          .then((response) => console.log(response))
+          .then(() => props.onClose())
+          .catch((err) => console.log(err));
       }
     }
   };
