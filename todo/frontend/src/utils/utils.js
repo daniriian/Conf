@@ -1,7 +1,7 @@
-export const getTodos = (callback) => {
+export const getData = (callback, method, url) => {
   const xhr = new XMLHttpRequest();
-  const method = 'GET'; // "POST"
-  const url = 'http://127.0.0.1:8000/api/todos/';
+  //const method = 'GET'; // "POST"
+  //const url = 'http://127.0.0.1:8000/api/todos/';
   const responseType = 'json';
   xhr.responseType = responseType;
   xhr.open(method, url);

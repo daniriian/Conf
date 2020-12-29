@@ -8,7 +8,12 @@ import {
   Button,
 } from 'react-bootstrap';
 
-const Header = () => {
+
+const Header = (props) => {
+
+  const showAddModifyForm = () => {
+    props.onAddButtonClick()
+  }
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/">Videoconferinţe</Navbar.Brand>
@@ -41,7 +46,8 @@ const Header = () => {
         </Nav>
         <Form inline>
           <FormControl type="text" placeholder="Data" className="mr-sm-2" />
-          <Button variant="outline-success">Caută</Button>
+          <Button variant="outline-success" className="mr-sm-2">Caută</Button>
+          <Button variant="success" onClick={showAddModifyForm}>Adaugă</Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>
