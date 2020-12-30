@@ -30,6 +30,11 @@ const DateTimeSelector = (props) => {
     props.getDateStartTimeEndTime({ end_time: ora });
   };
 
+  const handleDateChange = (data) => {
+    const newDate = data.toISOString().substring(0, 10);
+    props.getDateStartTimeEndTime({ data: newDate });
+  };
+
   return (
     <div>
       {/* <input type="time"></input> */}
@@ -38,7 +43,7 @@ const DateTimeSelector = (props) => {
           <Col>
             <DatePicker
               selected={theDate}
-              onChange={(date) => props.getDateStartTimeEndTime({ data: date })}
+              onChange={(date) => handleDateChange(date)}
               dateFormat="dd.MM.yyyy"
             />
           </Col>
@@ -76,18 +81,3 @@ const DateTimeSelector = (props) => {
 };
 
 export default DateTimeSelector;
-//PUT REQUEST Format
-// {
-// id: 78
-// caller: {
-//            id: 1 ,
-//            id_echipament: {id: 102, nume: "TRCJ - Sala 31", model: "Yealink", ip: "100.104.109.14", nr_apel: "064202904"}
-//            nr_sala: "31"
-//         }
-// data: "2020-12-01"
-// start_time: "08:45:00"
-// end_time: "09:20:00"
-// call_to: {id: 56, nume: "Penitenciarul Aiud", model: "Avaya", ip: "100.98.109.26", nr_apel: "058212101"}
-// completed: false
-// adaugat_de: 6
-// }

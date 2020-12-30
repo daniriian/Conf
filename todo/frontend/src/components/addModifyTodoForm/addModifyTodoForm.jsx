@@ -10,11 +10,6 @@ const AddModifyForm = (props) => {
   const [step, setStep] = useState(0);
   const [todo, setTodo] = useState(props.todo);
 
-  // useEffect(() => {
-  //   console.log('Mounting AddModifyForm');
-  //   setTodo(props.todo);
-  // }, [props.todo]);
-
   const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
 
   const addTodo = async (todo) => {
@@ -32,7 +27,7 @@ const AddModifyForm = (props) => {
     } else if (step === 2) {
       if (props.actionType === 'ADD') {
         const newTodo = { ...todo };
-        newTodo.data = newTodo.data.toISOString().substring(0, 10);
+        // newTodo.data = newTodo.data.toISOString().substring(0, 10);
         addTodo(newTodo)
           .then((status) => {
             if (status === 201) {
@@ -41,7 +36,7 @@ const AddModifyForm = (props) => {
           })
           .catch((err) => console.log(err));
       } else if (props.actionType === 'MODIFY') {
-        console.log(todo);
+        console.log('Todo de modificat: ', todo);
         axios
           .put('http://localhost:8000/api/todos/' + todo.id, todo, {
             headers: {
@@ -93,7 +88,7 @@ const AddModifyForm = (props) => {
       <Modal.Body>
         {step === 0 ? (
           <CallersList
-            currentCaller={todo.caller.id}
+            currentCaller={todo.caller}
             onChangeCaller={handleOnChangeCaller}
           />
         ) : step === 1 ? (
@@ -137,3 +132,28 @@ const AddModifyForm = (props) => {
 };
 
 export default AddModifyForm;
+
+//PUT REQUEST Format
+// {
+//     "caller": 2,
+//     "start_time": "11:00:00",
+//     "end_time": "12:20:00",
+//     "data": "2020-10-30",
+//     "call_to": [75, 65],
+//     "completed": false,
+//     "adaugat_de": 6
+// }
+
+// post format for adding todo
+// [
+//   {
+//     id: 8,
+//     caller: 1,
+//     start_time: '08:50:00',
+//     end_time: '10:00:00',
+//     data: '2020-12-25',
+//     call_to: [55, 65],
+//     completed: false,
+//     adaugat_de: 4,
+//   },
+// ];

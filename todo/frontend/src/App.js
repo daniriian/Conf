@@ -3,7 +3,6 @@ import './App.css';
 import Header from './components/header/header.jsx';
 import TodoList from './components/todoList/todolist.jsx';
 import AddModifyForm from './components/addModifyTodoForm/addModifyTodoForm.jsx';
-import axios from 'axios';
 
 import 'normalize.css'; // Note this
 
@@ -36,7 +35,9 @@ function App() {
 
   const handleModifica = (todo_id) => {
     const new_todo = { ...todo_id };
+    new_todo.caller = todo_id.caller.id;
     new_todo.adaugat_de = todo_id.adaugat_de.id;
+    new_todo.call_to = todo_id.call_to.map((e) => e.id);
     setCurrentTodo(new_todo);
     setActionType('MODIFY');
     setShow_AddModifyForm(true);

@@ -67,7 +67,7 @@ class Todo(models.Model):
         'users.MyUser', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.caller.nr_sala
+        return str(self.id)
 
     def clean_rowname(self):
         return self.cleaned_data['end_time']

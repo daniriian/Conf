@@ -40,9 +40,7 @@ const CallTolist = (props) => {
               <option
                 key={index}
                 id={terminal.id}
-                selected={props.selectedValues.some(
-                  (e) => e.id === terminal.id
-                )}
+                selected={props.selectedValues.includes(terminal.id)}
               >
                 {terminal.nume}
               </option>
