@@ -8,7 +8,7 @@ import 'normalize.css'; // Note this
 
 const defaultTodo = {
   caller: '',
-  data: new Date(),
+  data: new Date().toISOString().substring(0, 10),
   start_time: '08:45',
   end_time: '09:20',
   call_to: [],

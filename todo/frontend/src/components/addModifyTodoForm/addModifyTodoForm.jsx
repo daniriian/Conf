@@ -27,7 +27,6 @@ const AddModifyForm = (props) => {
     } else if (step === 2) {
       if (props.actionType === 'ADD') {
         const newTodo = { ...todo };
-        // newTodo.data = newTodo.data.toISOString().substring(0, 10);
         addTodo(newTodo)
           .then((status) => {
             if (status === 201) {
@@ -36,7 +35,7 @@ const AddModifyForm = (props) => {
           })
           .catch((err) => console.log(err));
       } else if (props.actionType === 'MODIFY') {
-        console.log('Todo de modificat: ', todo);
+        // console.log('Todo de modificat: ', todo);
         axios
           .put('http://localhost:8000/api/todos/' + todo.id, todo, {
             headers: {
