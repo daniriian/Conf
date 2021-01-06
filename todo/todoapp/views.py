@@ -58,6 +58,10 @@ def showTodoDetail(request, todo_id):
 
 
 def isFree(currentTodo, todayTodos):
+    # print('-----------------------------')
+    # print(currentTodo['data'])
+    # print('-----------------------------')
+    # print(todayTodos)
     current_start_time = (currentTodo['start_time'])
     current_end_time = (currentTodo['end_time'])
     for todo in todayTodos:
@@ -67,8 +71,7 @@ def isFree(currentTodo, todayTodos):
 
             else:
                 dest = todo.call_to.all()
-                print('---------------------------------')
-                print(dest, currentTodo['call_to'])
+
                 if currentTodo['call_to'][0] in dest:
                     print(
                         'Unul dintre destinari este ocupat in perioada specificata')
@@ -132,10 +135,19 @@ def todoDetailsView(request, todo_id, *args, **kwargs):
 
     elif request.method == 'PUT':
         todo_data = JSONParser().parse(request)
-
         serializer = TodoCreateSerializer(qs, data=todo_data)
-
+        print(todo_data['data'])
+        print('********************************************')
+        todayTodos = Todo.objects.filter(
+            data=todo_data['data']).exclude(id=qs.id)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=200)
+            print("SERIALIZER VALID")
+            result = isFree(serializer.validated_data, todayTodos)
+            print(result)
+            if result['status']:
+                serializer.save()
+                return Response(serializer.data, status=200)
+            else:
+                message = result['message']
+                return Response(message, status=400)
         return Response(serializer.errors, status=400)
