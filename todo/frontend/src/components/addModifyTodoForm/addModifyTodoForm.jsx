@@ -18,7 +18,7 @@ const AddModifyForm = (props) => {
         'Content-Type': 'application/json',
       },
     });
-    return res.status;
+    return res;
   };
 
   const handle_NextAddModifyBtn = () => {
@@ -28,12 +28,18 @@ const AddModifyForm = (props) => {
       if (props.actionType === 'ADD') {
         const newTodo = { ...todo };
         addTodo(newTodo)
+          .then((response) => {
+            console.log(response);
+            return response.status;
+          })
           .then((status) => {
             if (status === 201) {
               props.onClose();
             }
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            alert(err.response.data);
+          });
       } else if (props.actionType === 'MODIFY') {
         // console.log('Todo de modificat: ', todo);
         axios

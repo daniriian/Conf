@@ -10,7 +10,7 @@ class TodoCreateSerializer(serializers.ModelSerializer):
                   'data', 'call_to', 'completed', 'adaugat_de']
 
     def validate(self, value):
-        print(value)
+        # print(f'-------------- {value} ----------------------')
         return value
 
 

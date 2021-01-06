@@ -11,7 +11,16 @@ from rest_framework.parsers import JSONParser
 
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+
+import datetime
 # Create your views here.
+
+
+def convert_string_to_time(str):
+    if len(str) <= 5:
+        return datetime.time(hour=int(str[0:2]), minute=int(str[3:5]))
+    else:
+        return datetime.time(hour=int(str[0:2]), minute=int(str[3:5]), second=int(str[6:8]))
 
 
 def mark_complete(request, todo_id):
@@ -48,24 +57,48 @@ def showTodoDetail(request, todo_id):
         return redirect('filter_by_date')
 
 
+def isFree(currentTodo, todayTodos):
+    current_start_time = (currentTodo['start_time'])
+    current_end_time = (currentTodo['end_time'])
+    for todo in todayTodos:
+        if (current_start_time >= todo.start_time and current_start_time < todo.end_time) or (current_end_time > todo.start_time and current_end_time <= todo.end_time):
+            if (currentTodo['caller'].id == todo.caller.id):
+                return ({"status": False, "message": "Apelantul nu este liber in intervalul specificat"})
+
+            else:
+                dest = todo.call_to.all()
+                print('---------------------------------')
+                print(dest, currentTodo['call_to'])
+                if currentTodo['call_to'][0] in dest:
+                    print(
+                        'Unul dintre destinari este ocupat in perioada specificata')
+                    return ({"status": False, "message": str(currentTodo['call_to'][0]) + " este deja ocupat in perioada selectata ..."})
+    return ({"status": True, "message": "All OK"})
+
+
 @api_view(['POST'])
 def TodoCreateView(request, *args, **kwargs):
     serializer = TodoCreateSerializer(data=request.data)
+    todayTodos = Todo.objects.filter(data=request.data['data'])
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
+        result = isFree(serializer.validated_data, todayTodos)
+        if result['status']:
+            serializer.save()
+            return Response(serializer.data, status=201)
+        else:
+            message = result['message']
+            return Response(message, status=400)
     return Response(serializer.errors, status=400)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def todoListView(request, *args, **kwargs):
-
     qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
     serializer = TodoSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def callersView(request, *args, **kwargs):
     qs = SalaJudecata.objects.all()
     serializer = SalaJudecataSerializer(qs, many=True)
@@ -73,7 +106,7 @@ def callersView(request, *args, **kwargs):
     return Response(serializer.data, status=200)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def terminalsView(request, *args, **kwargs):
     qs = Terminal.objects.all()
 
@@ -81,7 +114,7 @@ def terminalsView(request, *args, **kwargs):
     return Response(serializer.data, status=200)
 
 
-@api_view(['DELETE'])
+@ api_view(['DELETE'])
 def TodoDeleteView(request, *args, **kwargs):
 
     qs = Todo.objects.get(id=request.data["id"])
@@ -89,7 +122,7 @@ def TodoDeleteView(request, *args, **kwargs):
     return Response({}, status=200)
 
 
-@api_view(['GET', 'PUT'])
+@ api_view(['GET', 'PUT'])
 def todoDetailsView(request, todo_id, *args, **kwargs):
     qs = Todo.objects.get(id=todo_id)
 
