@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 
 import CallersList from '../callersList/callersList';
 import DateTimeSelector from '../dateTimeSelector/dateTimeSelector';
@@ -9,6 +10,7 @@ import axios from 'axios';
 const AddModifyForm = (props) => {
   const [step, setStep] = useState(0);
   const [todo, setTodo] = useState(props.todo);
+  const history = useHistory();
 
   const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
 
@@ -29,13 +31,16 @@ const AddModifyForm = (props) => {
         const newTodo = { ...todo };
         addTodo(newTodo)
           .then((response) => {
-            console.log(response);
+            // console.log(response);
             return response.status;
           })
           .then((status) => {
             if (status === 201) {
               props.onClose();
             }
+          })
+          .then(() => {
+            history.push('/');
           })
           .catch((err) => {
             alert(err.response.data);
@@ -48,9 +53,12 @@ const AddModifyForm = (props) => {
               'Content-Type': 'application/json',
             },
           })
-          .then((response) => console.log(response))
+          // .then((response) => console.log(response))
           .then(() => props.onClose())
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            // console.log(err);
+            alert(err.response.data);
+          });
       }
     }
   };

@@ -30,9 +30,9 @@ const TodoList = ({ ...props }) => {
     <Table striped bordered hover size="sm">
       <thead>
         <tr>
-          <th>Ora Start</th>
-          <th>Ora Stop</th>
           <th>Data</th>
+          <th>Interval orar</th>
+          {/* <th>Ora Stop</th> */}
           <th>Apelant</th>
           <th>Destinatar(i)</th>
           <th>Efectuat</th>

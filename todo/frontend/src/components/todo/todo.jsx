@@ -3,14 +3,14 @@ import { Form } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import './todo.scss';
 
-const format_data = (data) => {
-  let sd = data.split('-');
-  let YMD_Date = sd[2] + '.' + sd[1] + '.' + sd[0];
-  return YMD_Date;
-};
+import { format_data } from '../../utils/utils';
 
 const Todo = (props) => {
+  const history = useHistory();
+
   let ora_start = props.ora_start.substr(0, 5);
   let ora_stop = props.ora_stop.substr(0, 5);
 
@@ -29,7 +29,7 @@ const Todo = (props) => {
   };
 
   const handleCheckChange = () => {
-    console.log('Checked clicked');
+    // console.log('Checked clicked');
   };
 
   const handleModificaTodo = (todo_id) => {
@@ -37,12 +37,27 @@ const Todo = (props) => {
     props.onModifica(todo_id);
   };
 
+  const handleRowClick = (e, todo_id) => {
+    e.preventDefault();
+    // console.log('Row Clicked', todo_id);
+    history.push('/videoconferinta/detalii/' + todo_id);
+  };
+
   return (
     <tr>
-      <td>{ora_start}</td>
-      <td>{ora_stop}</td>
       <td>{format_data(props.data)}</td>
-      <td>{props.caller}</td>
+      <td>
+        {ora_start} - {ora_stop}
+      </td>
+      {/* <td>{ora_stop}</td> */}
+      <td>
+        {props.caller}
+        <div className="caller">
+          <a href="/" onClick={(e) => handleRowClick(e, props.todo_id)}>
+            detalii
+          </a>
+        </div>
+      </td>
       <td>
         <Table striped bordered hover size="sm">
           <tbody>
