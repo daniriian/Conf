@@ -53,6 +53,7 @@ function App() {
       <div className="App">
         <div>
           <Header onAddButtonClick={handleAddButtonClick} />
+          <h1 className="my-5"> Programări videoconferinţe</h1>
           {show_AddModifyForm ? (
             <AddModifyForm
               todo={currentTodo}
