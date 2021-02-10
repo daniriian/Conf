@@ -1,0 +1,48 @@
+.page-title {
+  font-size: 3.5rem;
+  color: rgb(12, 66, 64);
+}
+
+.text-left {
+  width: 65%;
+  margin: 0 auto;
+  text-align: left;
+  //   border: 1px solid red;
+}
+
+.detail {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(19, 19, 37);
+  span {
+    font-weight: 400;
+    font-size: 18px;
+    color: #28a745;
+    font-weight: 700;
+  }
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.spacer {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0)
+  );
+}
+
+.title-spacer {
+  background-image: linear-gradient(
+    to right,
+    rgba(214, 126, 12, 0),
+    rgba(214, 126, 12, 0.75),
+    rgba(214, 126, 12, 0)
+  );
+}

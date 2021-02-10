@@ -14,3 +14,9 @@ export const getData = (callback, method, url) => {
   };
   xhr.send();
 };
+
+export const format_data = (data) => {
+  let sd = data.split('-');
+  let YMD_Date = sd[2] + '.' + sd[1] + '.' + sd[0];
+  return YMD_Date;
+};

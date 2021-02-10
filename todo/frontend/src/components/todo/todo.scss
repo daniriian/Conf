@@ -1,0 +1,9 @@
+.caller {
+  a {
+    color: rgb(7, 137, 189);
+    &:hover {
+      color: blue;
+      text-decoration: none;
+    }
+  }
+}

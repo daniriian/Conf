@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import './App.css';
 import Header from './components/header/header.jsx';
 import TodoList from './components/todoList/todolist.jsx';
 import AddModifyForm from './components/addModifyTodoForm/addModifyTodoForm.jsx';
+import TodoDetails from './components/todoDetails/todoDetails';
 
 import 'normalize.css'; // Note this
 
@@ -23,6 +26,7 @@ function App() {
   const [currentTodo, setCurrentTodo] = useState(defaultTodo);
 
   const handleAddButtonClick = () => {
+    // console.log('Adding a new ToDo');
     setCurrentTodo(defaultTodo);
     setShow_AddModifyForm(true);
     setActionType('ADD');
@@ -31,6 +35,7 @@ function App() {
   const handleAddModifyForm_Close = () => {
     setShow_AddModifyForm(false);
     setHasChanged(!hasChanged);
+    //redirect to Homepage
   };
 
   const handleModifica = (todo_id) => {
@@ -44,21 +49,35 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div>
-        <Header onAddButtonClick={handleAddButtonClick} />
-        <TodoList refresh={hasChanged} modifica={handleModifica} />
-        {show_AddModifyForm ? (
-          <AddModifyForm
-            todo={currentTodo}
-            onClose={handleAddModifyForm_Close}
-            actionType={actionType}
-          />
-        ) : (
-          ''
-        )}
+    <Router>
+      <div className="App">
+        <div>
+          <Header onAddButtonClick={handleAddButtonClick} />
+          <h1 className="my-5"> Programări videoconferinţe</h1>
+          {show_AddModifyForm ? (
+            <AddModifyForm
+              todo={currentTodo}
+              onClose={handleAddModifyForm_Close}
+              actionType={actionType}
+            />
+          ) : (
+            ''
+          )}
+          <Switch>
+            <Route exact path="/">
+              <TodoList refresh={hasChanged} modifica={handleModifica} />
+            </Route>
+            <Route
+              exact
+              path="/videoconferinta/detalii/:id"
+              children={<TodoDetails />}
+            >
+              {/* <h1>Detalii videoconferinta</h1> */}
+            </Route>
+          </Switch>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
