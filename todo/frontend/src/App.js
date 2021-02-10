@@ -11,7 +11,7 @@ import "normalize.css"; // Note this
 
 const defaultTodo = {
   caller: "",
-  data: new Date().toISOString().substring(0, 10),
+  data: new Date().toLocaleDateString("ro-RO").substring(0, 10),
   start_time: "08:45",
   end_time: "09:20",
   call_to: [],
@@ -25,18 +25,16 @@ function App() {
   const [hasChanged, setHasChanged] = useState(false);
   const [currentTodo, setCurrentTodo] = useState(defaultTodo);
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().substring(0, 10)
+    new Date().toLocaleDateString("ro-RO").substring(0, 10)
   );
 
   const handleAddButtonClick = () => {
-    // console.log('Adding a new ToDo');
     setCurrentTodo(defaultTodo);
     setShow_AddModifyForm(true);
     setActionType("ADD");
   };
 
   const handleSearchButtonClick = (data) => {
-    console.log("S-a modificat data", data);
     setSelectedDate(data);
   };
 

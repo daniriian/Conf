@@ -5,7 +5,7 @@ import { Spinner } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import axios from 'axios';
-import { format_data } from '../../utils/utils';
+// import { format_data } from '../../utils/utils';
 import './todoDetails.scss';
 
 const TodoDetails = () => {
@@ -24,10 +24,9 @@ const TodoDetails = () => {
   };
 
   useEffect(() => {
-    // console.log('Mounting TodoDetails with id: ', id);
     sendGetRequest()
       .then((res) => {
-        // console.log(res);
+        res.data = new Date(res.data).toLocaleDateString("ro-RO")
         setDetails(res);
       })
       .then(() => setIsLoading(false));
@@ -49,7 +48,7 @@ const TodoDetails = () => {
       ) : (
         <React.Fragment>
           <div className="text-success display-4 font-weight-bold">
-            Data: {format_data(details.data)}
+            Data: {details.data}
           </div>
           <Row className="mt-5">
             <Col>

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import './todo.scss';
 
-import { format_data } from '../../utils/utils';
+// import { format_data } from '../../utils/utils';
 
 const Todo = (props) => {
   const history = useHistory();
@@ -29,7 +29,6 @@ const Todo = (props) => {
   };
 
   const handleCheckChange = () => {
-    // console.log('Checked clicked');
   };
 
   const handleModificaTodo = (todo_id) => {
@@ -39,13 +38,12 @@ const Todo = (props) => {
 
   const handleRowClick = (e, todo_id) => {
     e.preventDefault();
-    // console.log('Row Clicked', todo_id);
     history.push('/videoconferinta/detalii/' + todo_id);
   };
 
   return (
     <tr>
-      <td>{format_data(props.data)}</td>
+      <td>{props.data}</td>
       <td>
         {ora_start} - {ora_stop}
       </td>

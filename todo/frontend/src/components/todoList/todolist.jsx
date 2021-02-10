@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Todo from '../todo/todo';
 import { Table } from 'react-bootstrap';
+import {format_data} from '../../utils/utils'
 import axios from 'axios';
 
 const TodoList = ({ xdate, ...props }) => {
@@ -8,15 +9,12 @@ const TodoList = ({ xdate, ...props }) => {
   const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
-    console.log(xdate);
     let url = '/api/todos';
     if (xdate) {
-      url = url + "?data=" + xdate
+      url = url + "?data=" + format_data(xdate)
     };
-    console.log(url);
 
     const sendGetRequest = async () => {
-      
       const response = await axios.get(url);
       return response;
     }
@@ -55,12 +53,13 @@ const TodoList = ({ xdate, ...props }) => {
       </thead>
       <tbody>
         {todos.map((item, index) => {
+          let fdata = new Date(item.data).toLocaleDateString("ro-RO")
           return (
             <Todo
               todo_id={item.id}
               ora_start={item.start_time}
               ora_stop={item.end_time}
-              data={item.data}
+              data={fdata}
               caller={item.caller.id_echipament.nume}
               destinatar={item.call_to}
               efectuat={item.completed}

@@ -83,6 +83,7 @@ def isFree(currentTodo, todayTodos):
 
 @api_view(['POST'])
 def TodoCreateView(request, *args, **kwargs):
+    print(f'--------------------{request.data}-----------------------')
     serializer = TodoCreateSerializer(data=request.data)
     todayTodos = Todo.objects.filter(data=request.data['data'])
     if serializer.is_valid():

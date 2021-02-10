@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import {format_data} from '../../utils/utils'
 
 import CallersList from '../callersList/callersList';
 import DateTimeSelector from '../dateTimeSelector/dateTimeSelector';
@@ -15,6 +16,7 @@ const AddModifyForm = (props) => {
   const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
 
   const addTodo = async (todo) => {
+    todo.data = format_data(todo.data)
     const res = await axios.post(postUrl, todo, {
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +33,6 @@ const AddModifyForm = (props) => {
         const newTodo = { ...todo };
         addTodo(newTodo)
           .then((response) => {
-            // console.log(response);
             return response.status;
           })
           .then((status) => {
@@ -46,17 +47,14 @@ const AddModifyForm = (props) => {
             alert(err.response.data);
           });
       } else if (props.actionType === 'MODIFY') {
-        // console.log('Todo de modificat: ', todo);
         axios
           .put('http://localhost:8000/api/todos/' + todo.id, todo, {
             headers: {
               'Content-Type': 'application/json',
             },
           })
-          // .then((response) => console.log(response))
           .then(() => props.onClose())
           .catch((err) => {
-            // console.log(err);
             alert(err.response.data);
           });
       }
@@ -76,7 +74,12 @@ const AddModifyForm = (props) => {
   const handleGetDateStartTimeEndTime = (param) => {
     const newTodo = { ...todo };
     const key = Object.keys(param)[0];
-    newTodo[key] = Object.values(param)[0];
+    if (key === 'data') {
+      newTodo[key] = format_data(Object.values(param)[0])
+    }
+    else {
+      newTodo[key] = Object.values(param)[0];
+    }
     setTodo(newTodo);
   };
 

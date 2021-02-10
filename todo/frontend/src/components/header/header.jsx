@@ -10,20 +10,24 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './header.scss';
+import { useHistory } from "react-router-dom";
 
 const Header = (props) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const showAddModifyForm = () => {
     props.onAddButtonClick();
   };
+  const history = useHistory()
 
   const searchDataChange = (data) => {
     setSelectedDate(data);
   };
 
-  const handleSearchClick = () => {
-    let sDate = selectedDate ? new Date (selectedDate.getTime() + Math.abs(selectedDate.getTimezoneOffset()*60000)).toISOString().substring(0,10) : '' 
+  const handleSearchClick = (e) => {
+    e.preventDefault()
+    let sDate = selectedDate ? selectedDate.toLocaleDateString("ro-RO").substring(0,10) : '' 
     props.onSearchButtonClick(sDate)
+    history.push('/')
   };
 
   return (
