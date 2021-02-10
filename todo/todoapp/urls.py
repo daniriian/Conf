@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path("", views.todoListView),
+    # path("", views.todoListViewByDate),
     path("<int:todo_id>", views.todoDetailsView),
     path("create/", views.TodoCreateView),
     path("callers/", views.callersView),

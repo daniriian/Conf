@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Navbar,
   Nav,
@@ -8,12 +8,24 @@ import {
   Button,
 } from 'react-bootstrap';
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './header.scss';
 
 const Header = (props) => {
-
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const showAddModifyForm = () => {
-    props.onAddButtonClick()
-  }
+    props.onAddButtonClick();
+  };
+
+  const searchDataChange = (data) => {
+    setSelectedDate(data);
+  };
+
+  const handleSearchClick = () => {
+    console.log('Cauta dupa data: ', selectedDate);
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/">Videoconferinţe</Navbar.Brand>
@@ -45,9 +57,23 @@ const Header = (props) => {
           </NavDropdown>
         </Nav>
         <Form inline>
-          <FormControl type="text" placeholder="Data" className="mr-sm-2" />
-          <Button variant="outline-success" className="mr-sm-2">Caută</Button>
-          <Button variant="success" onClick={showAddModifyForm}>Adaugă</Button>
+          {/* <FormControl type="date" placeholder="Data" className="mr-sm-2" /> */}
+          <DatePicker
+            selected={selectedDate}
+            onChange={searchDataChange}
+            dateFormat="dd.MM.yyyy"
+            className="mx-2 form-control"
+          />
+          <Button
+            variant="outline-success"
+            className="mr-sm-2"
+            onClick={handleSearchClick}
+          >
+            Caută
+          </Button>
+          <Button variant="success" onClick={showAddModifyForm}>
+            Adaugă
+          </Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>

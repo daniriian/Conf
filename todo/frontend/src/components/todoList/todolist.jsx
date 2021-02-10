@@ -3,18 +3,21 @@ import Todo from '../todo/todo';
 import { getData } from '../../utils/utils';
 import { Table } from 'react-bootstrap';
 
-const TodoList = ({ ...props }) => {
+const TodoList = ({ xdate, ...props }) => {
   const [todos, setTodos] = useState([]);
   const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
+    console.log(xdate);
+    const url = 'http://127.0.0.1:8000/api/todos/' + xdate;
+    console.log(url);
     const myCallback = (response, status) => {
       if (status === 200) {
         setTodos(response, status);
         setHasChanged(false);
       }
     };
-    getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/');
+    getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/' + xdate);
   }, [hasChanged, props.refresh]);
 
   const handleOnDelete = () => {

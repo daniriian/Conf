@@ -12,6 +12,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
+from rest_framework import filters
+
 import datetime
 # Create your views here.
 
@@ -96,13 +98,27 @@ def TodoCreateView(request, *args, **kwargs):
 
 @ api_view(['GET'])
 def todoListView(request, *args, **kwargs):
+    print(f'----------------{request}---------------------')
+
+    search_fields = ['data']
+    filter_backends = (filters.SearchFilter,)
+
     qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
     serializer = TodoSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 
 
+# @ api_view(['GET'])
+# def todoListViewByDate(request, *args, **kwargs):
+#     print(f"----------------{request}---------------------")
+#     qs = Todo.objects.all().filter(data=request.date)
+#     serializer = TodoSerializer(qs, many=True)
+#     return Response(serializer.data, status=200)
+
+
 @ api_view(['GET'])
 def callersView(request, *args, **kwargs):
+
     qs = SalaJudecata.objects.all()
     serializer = SalaJudecataSerializer(qs, many=True)
 

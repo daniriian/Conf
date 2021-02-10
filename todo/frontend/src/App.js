@@ -24,6 +24,9 @@ function App() {
   const [actionType, setActionType] = useState('ADD');
   const [hasChanged, setHasChanged] = useState(false);
   const [currentTodo, setCurrentTodo] = useState(defaultTodo);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().substring(0, 10)
+  );
 
   const handleAddButtonClick = () => {
     // console.log('Adding a new ToDo');
@@ -65,7 +68,11 @@ function App() {
           )}
           <Switch>
             <Route exact path="/">
-              <TodoList refresh={hasChanged} modifica={handleModifica} />
+              <TodoList
+                refresh={hasChanged}
+                modifica={handleModifica}
+                xdate={selectedDate}
+              />
             </Route>
             <Route
               exact
