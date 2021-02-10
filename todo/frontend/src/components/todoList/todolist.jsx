@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Todo from '../todo/todo';
-import { getData } from '../../utils/utils';
 import { Table } from 'react-bootstrap';
+import axios from 'axios';
 
 const TodoList = ({ xdate, ...props }) => {
   const [todos, setTodos] = useState([]);
@@ -9,16 +9,25 @@ const TodoList = ({ xdate, ...props }) => {
 
   useEffect(() => {
     console.log(xdate);
-    const url = 'http://127.0.0.1:8000/api/todos/' + xdate;
-    console.log(url);
-    const myCallback = (response, status) => {
-      if (status === 200) {
-        setTodos(response, status);
-        setHasChanged(false);
-      }
+    let url = '/api/todos';
+    if (xdate) {
+      url = url + "?data=" + xdate
     };
-    getData(myCallback, 'GET', 'http://127.0.0.1:8000/api/todos/' + xdate);
-  }, [hasChanged, props.refresh]);
+    console.log(url);
+
+    const sendGetRequest = async () => {
+      
+      const response = await axios.get(url);
+      return response;
+    }
+
+    sendGetRequest()
+    .then((res) => setTodos(res.data, res.status) )
+    .then(() => setHasChanged(false))
+    .catch(err=>console.log(err))
+
+    // getData(myCallback, 'GET', url);
+  }, [hasChanged, props.refresh, xdate]);
 
   const handleOnDelete = () => {
     setHasChanged(true);

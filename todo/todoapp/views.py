@@ -98,12 +98,16 @@ def TodoCreateView(request, *args, **kwargs):
 
 @ api_view(['GET'])
 def todoListView(request, *args, **kwargs):
-    print(f'----------------{request}---------------------')
-
-    search_fields = ['data']
-    filter_backends = (filters.SearchFilter,)
-
+    print(f'----------------{request.GET}---------------------')
     qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
+
+    selectedDate = request.GET.get('data', '')
+    if selectedDate:
+        print(selectedDate)
+        qs = qs.filter(data=selectedDate)
+    else:
+        print("Nu avem acest parametru")
+
     serializer = TodoSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 

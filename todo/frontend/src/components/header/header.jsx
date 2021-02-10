@@ -4,7 +4,6 @@ import {
   Nav,
   NavDropdown,
   Form,
-  FormControl,
   Button,
 } from 'react-bootstrap';
 
@@ -23,7 +22,8 @@ const Header = (props) => {
   };
 
   const handleSearchClick = () => {
-    console.log('Cauta dupa data: ', selectedDate);
+    let sDate = selectedDate ? new Date (selectedDate.getTime() + Math.abs(selectedDate.getTimezoneOffset()*60000)).toISOString().substring(0,10) : '' 
+    props.onSearchButtonClick(sDate)
   };
 
   return (
