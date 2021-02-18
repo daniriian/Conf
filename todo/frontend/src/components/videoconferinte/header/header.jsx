@@ -1,38 +1,34 @@
 import React, { useState } from 'react';
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Form,
-  Button,
-} from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Form, Button } from 'react-bootstrap';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './header.scss';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 const Header = (props) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const showAddModifyForm = () => {
     props.onAddButtonClick();
   };
-  const history = useHistory()
+  const history = useHistory();
 
   const searchDataChange = (data) => {
     setSelectedDate(data);
   };
 
   const handleSearchClick = (e) => {
-    e.preventDefault()
-    let sDate = selectedDate ? selectedDate.toLocaleDateString("ro-RO").substring(0,10) : '' 
-    props.onSearchButtonClick(sDate)
-    history.push('/')
+    e.preventDefault();
+    let sDate = selectedDate
+      ? selectedDate.toLocaleDateString('ro-RO').substring(0, 10)
+      : '';
+    props.onSearchButtonClick(sDate);
+    history.push('/videoconferinte');
   };
 
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="/">Videoconferinţe</Navbar.Brand>
+      <Navbar.Brand href="/videoconferinte">Videoconferinţe</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">

@@ -28,8 +28,7 @@ const Todo = (props) => {
       });
   };
 
-  const handleCheckChange = () => {
-  };
+  const handleCheckChange = () => {};
 
   const handleModificaTodo = (todo_id) => {
     //voi returna un obiect care sa contina todo de modificat
@@ -38,7 +37,7 @@ const Todo = (props) => {
 
   const handleRowClick = (e, todo_id) => {
     e.preventDefault();
-    history.push('/videoconferinta/detalii/' + todo_id);
+    history.push('/videoconferinte/detalii/' + todo_id);
   };
 
   return (

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+// import Todo from '../../components/videoconferinte/todo/todo';
 import Todo from '../todo/todo';
 import { Table } from 'react-bootstrap';
-import {format_data} from '../../utils/utils'
+import { format_data } from '../../../utils/utils';
 import axios from 'axios';
 
 const TodoList = ({ xdate, ...props }) => {
@@ -11,18 +12,18 @@ const TodoList = ({ xdate, ...props }) => {
   useEffect(() => {
     let url = '/api/todos';
     if (xdate) {
-      url = url + "?data=" + format_data(xdate)
-    };
+      url = url + '?data=' + format_data(xdate);
+    }
 
     const sendGetRequest = async () => {
       const response = await axios.get(url);
       return response;
-    }
+    };
 
     sendGetRequest()
-    .then((res) => setTodos(res.data, res.status) )
-    .then(() => setHasChanged(false))
-    .catch(err=>console.log(err))
+      .then((res) => setTodos(res.data, res.status))
+      .then(() => setHasChanged(false))
+      .catch((err) => console.log(err));
 
     // getData(myCallback, 'GET', url);
   }, [hasChanged, props.refresh, xdate]);
@@ -53,7 +54,7 @@ const TodoList = ({ xdate, ...props }) => {
       </thead>
       <tbody>
         {todos.map((item, index) => {
-          let fdata = new Date(item.data).toLocaleDateString("ro-RO")
+          let fdata = new Date(item.data).toLocaleDateString('ro-RO');
           return (
             <Todo
               todo_id={item.id}

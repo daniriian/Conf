@@ -1,7 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import TimePicker from 'react-times';
-import {format_data} from '../../utils/utils'
+import { format_data } from '../../../utils/utils';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -19,8 +19,6 @@ const DateTimeSelector = (props) => {
   const theStartTime = props.start_time ? props.start_time : '08:00';
   const theStopTime = props.end_time ? props.end_time : '08:30';
 
-
-
   const handleStartTimeChange = ({ hour, minute }) => {
     const ora = hour + ':' + minute;
     // setStartTime(ora)
@@ -34,7 +32,7 @@ const DateTimeSelector = (props) => {
   };
 
   const handleDateChange = (data) => {
-    const newDate = data.toLocaleDateString("ro-RO").substring(0, 10);
+    const newDate = data.toLocaleDateString('ro-RO').substring(0, 10);
     props.getDateStartTimeEndTime({ data: newDate });
   };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import {format_data} from '../../utils/utils'
+import { format_data } from '../../../utils/utils';
 
 import CallersList from '../callersList/callersList';
 import DateTimeSelector from '../dateTimeSelector/dateTimeSelector';
@@ -16,7 +16,7 @@ const AddModifyForm = (props) => {
   const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
 
   const addTodo = async (todo) => {
-    todo.data = format_data(todo.data)
+    todo.data = format_data(todo.data);
     const res = await axios.post(postUrl, todo, {
       headers: {
         'Content-Type': 'application/json',
@@ -75,9 +75,8 @@ const AddModifyForm = (props) => {
     const newTodo = { ...todo };
     const key = Object.keys(param)[0];
     if (key === 'data') {
-      newTodo[key] = format_data(Object.values(param)[0])
-    }
-    else {
+      newTodo[key] = format_data(Object.values(param)[0]);
+    } else {
       newTodo[key] = Object.values(param)[0];
     }
     setTodo(newTodo);
