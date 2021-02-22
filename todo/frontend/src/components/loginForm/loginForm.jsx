@@ -4,7 +4,7 @@ import styles from './loginForm.module.scss';
 
 const LoginForm = () => {
   return (
-    <div>
+    <div className={styles.loginContainer}>
       <div className={styles.login}>
         <h1>Login</h1>
         <form method="post" action="http://localhost:8000/users/login/">

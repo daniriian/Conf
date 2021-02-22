@@ -71,6 +71,7 @@ def login_view(request):
         utilizator = request.POST.get('utilizator')
         password = request.POST.get('password')
         instanta = request.POST.get('instanta')
+        print(utilizator, password, instanta)
         user = authenticate(utilizator=utilizator,
                             password=password, instanta=instanta)
 
@@ -80,7 +81,7 @@ def login_view(request):
         if user:
             login(request, user)
             messages.success(request, "V-ati autentificat cu succes")
-            return redirect("/videoconferinte")
+            return redirect("http://localhost:3000/videoconferinte")
         else:
             messages.error(request, "Corectati erorile de mai jos")
     else:
