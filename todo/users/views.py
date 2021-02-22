@@ -80,7 +80,7 @@ def login_view(request):
         if user:
             login(request, user)
             messages.success(request, "V-ati autentificat cu succes")
-            return redirect("/")
+            return redirect("/videoconferinte")
         else:
             messages.error(request, "Corectati erorile de mai jos")
     else:

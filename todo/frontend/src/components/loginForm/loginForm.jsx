@@ -7,19 +7,29 @@ const LoginForm = () => {
     <div>
       <div className={styles.login}>
         <h1>Login</h1>
-        <form method="post">
+        <form method="post" action="http://localhost:8000/users/login/">
           <input
             type="text"
-            name="u"
-            placeholder="Username"
+            name="utilizator"
+            placeholder="Utilizator"
             required="required"
           />
           <input
             type="password"
-            name="p"
-            placeholder="Password"
+            name="password"
+            placeholder="Parola"
             required="required"
           />
+          <div>
+            <select name="instanta" id="instanta">
+              <option value="TRCJ">TRCJ</option>
+              <option value="JCN">JCN</option>
+              <option value="JD">J. Dej</option>
+              <option value="JG">J. Gherla</option>
+              <option value="JH">J. Huedin</option>
+              <option value="JT">J. Turda</option>
+            </select>
+          </div>
           <button
             type="submit"
             className={`${styles.btn} ${styles.btnPrimary} ${styles.btnBlock} ${styles.btnLarge}`}
