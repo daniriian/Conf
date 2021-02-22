@@ -51,12 +51,12 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware', ]
@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'videoconferinte',
         'USER': 'admin_v',
         'PASSWORD': '22043Nicu!',
-        'HOST': '10.15.63.19',   # Or an IP Address that your DB is hosted on
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     },
     'usersTRCJ': {
@@ -107,6 +107,14 @@ DATABASES = {
         'OPTIONS': {
             'driver': 'ODBC Driver 13 for SQL Server',
         },
+    },
+    'usersTRCCJ': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'localhost',
+        'USER': 'ecris_readonly',
+        'PASSWORD': 'P@ssw0rd384',
+        'NAME': 'videoconferinte',
+        'PORT': '3306',
     },
     'usersJCN': {
         'ENGINE': 'sql_server.pyodbc',
