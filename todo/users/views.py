@@ -5,6 +5,10 @@ from django.views.decorators.http import require_POST
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.response import Response
+
+
+from rest_framework.decorators import api_view, renderer_classes
 
 from .models import MyUser
 from django.shortcuts import render
@@ -32,23 +36,59 @@ def get_csrf(request):
     return response
 
 
-@require_POST
+@api_view(['POST'])
 def login_view(request):
-    data = json.loads(request.body)
-    username = data.get('username')
-    password = data.get('password')
-    instanta = 117
+    """
+      Renders Login Form
+    """
+    # context = {}
 
-    if username is None or password is None:
-        return JsonResponse({'detail': 'Please provide username and password'}, status=400)
+    if request.method == 'POST':
+        # form = AccountAuthenticationForm(request.POST)
+        utilizator = request.data['username']
+        password = request.data['password']
+        instanta = request.data['instanta']
+        user = authenticate(utilizator=utilizator,
+                            password=password, instanta=instanta)
 
-    user = authenticate(username=username,
-                        password=password, instanta=instanta)
-    if user is None:
-        return JsonResponse({'detail': 'Invalid credentials'}, status=400)
+        # if user == (-1):
+        #     messages.error(request, "Eroare la conectarea bazei de date")
+        #     return redirect("/")
+        if user:
+            login(request, user)
+            return Response({'detail': 'Successfully logged in !!!'}, status=200)
+        else:
+            return JsonResponse({'detail': 'Invalid credentials'}, status=400)
+    else:
+        return Response({"details": "Nu este POST"})
 
-    login(request, user)
-    return JsonResponse({'detail': 'Successfully logged in !!!'})
+# @require_POST
+# def login_view(request):
+#     data = json.loads(request.body)
+#     username = data.get('username')
+#     password = data.get('password')
+#     instanta = data.get('instanta')
+
+#     print("---------------- Inside login_view ---------------------------")
+#     print(username, password, instanta)
+
+#     instanta = 117
+
+#     if username is None or password is None:
+#         print("username or password is None")
+#         return JsonResponse({'detail': 'Please provide username and password'}, status=400)
+
+#     print("Launching authentication")
+#     user = authenticate(username=username,
+#                         password=password, instanta=instanta)
+
+#     print(user)
+
+#     if user is None:
+#         return JsonResponse({'detail': 'Invalid credentials'}, status=400)
+
+#     login(request, user)
+#     return JsonResponse({'detail': 'Successfully logged in !!!'})
 
 
 def logout_view(request):
@@ -74,7 +114,7 @@ class WhoAmIView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        return JsonResponse({'username': request.user.username})
+        return Response({'username': request.user.utilizator})
 
 # def home(request):
 #     """
@@ -112,39 +152,6 @@ class WhoAmIView(APIView):
 #     logout(request)
 #     messages.success(request, "Logged Out")
 #     return redirect("home")
-
-
-# def login_view(request):
-#     """
-#       Renders Login Form
-#     """
-#     context = {}
-#     user = request.user
-
-#     if user.is_authenticated:
-#         return redirect("home")
-#     if request.POST:
-#         form = AccountAuthenticationForm(request.POST)
-#         utilizator = request.POST.get('utilizator')
-#         password = request.POST.get('password')
-#         instanta = request.POST.get('instanta')
-#         print(utilizator, password, instanta)
-#         user = authenticate(utilizator=utilizator,
-#                             password=password, instanta=instanta)
-
-#         # if user == (-1):
-#         #     messages.error(request, "Eroare la conectarea bazei de date")
-#         #     return redirect("/")
-#         if user:
-#             login(request, user)
-#             messages.success(request, "V-ati autentificat cu succes")
-#             return redirect("http://localhost:3000/videoconferinte")
-#         else:
-#             messages.error(request, "Corectati erorile de mai jos")
-#     else:
-#         form = AccountAuthenticationForm()
-#     context['login_form'] = form
-#     return render(request, "users/login.html", context)
 
 
 # def account_view(request):
