@@ -105,7 +105,7 @@ class SessionView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        return JsonResponse({'isAuthenticated': True})
+        return JsonResponse({'isAuthenticated': True, 'username': request.user.utilizator})
 
 
 class WhoAmIView(APIView):
@@ -114,7 +114,7 @@ class WhoAmIView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        return Response({'username': request.user.utilizator})
+        return Response({'username': request.user.utilizator, 'id': request.user.id})
 
 # def home(request):
 #     """

@@ -1,0 +1,43 @@
+.statusBar {
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  // background-color: red;
+  // border: 1px solid green;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.statusContainer {
+  color: #8f8f8f;
+  // border: 1px solid green;
+  text-transform: capitalize;
+  margin-right: 15px;
+}
+
+.userStatus {
+  // width: 20%;
+  min-width: 200px;
+  // border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  span {
+    margin-right: 10px;
+  }
+  //
+}
+
+.icon {
+  margin-right: 0;
+}

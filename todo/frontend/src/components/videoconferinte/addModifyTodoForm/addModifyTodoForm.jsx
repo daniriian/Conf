@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { format_data } from '../../../utils/utils';
@@ -11,13 +11,20 @@ import axios from 'axios';
 const AddModifyForm = (props) => {
   const [step, setStep] = useState(0);
   const [todo, setTodo] = useState(props.todo);
+  const [userId, setUserId] = useState(null);
   const history = useHistory();
 
   const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
 
+  useEffect(() => {
+    getUserId();
+  }, []);
+
   const addTodo = async (todo) => {
-    todo.data = format_data(todo.data);
-    const res = await axios.post(postUrl, todo, {
+    let newTodo = { ...todo };
+    newTodo.data = format_data(todo.data);
+    newTodo.adaugat_de = userId;
+    const res = await axios.post(postUrl, newTodo, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -41,7 +48,7 @@ const AddModifyForm = (props) => {
             }
           })
           .then(() => {
-            history.push('/');
+            history.push('/videoconferinte');
           })
           .catch((err) => {
             alert(err.response.data);
@@ -86,6 +93,25 @@ const AddModifyForm = (props) => {
     const newTodo = { ...todo };
     newTodo.call_to = dest;
     setTodo(newTodo);
+  };
+
+  const getUserId = () => {
+    fetch('/users/whoami/', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'same-origin',
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        // console.log('You are logged in as: ' + data.id);
+        setUserId(data.id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

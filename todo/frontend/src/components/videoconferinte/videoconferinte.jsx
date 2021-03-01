@@ -27,6 +27,7 @@ const Videoconferinte = () => {
 
   const handleAddButtonClick = () => {
     setCurrentTodo(defaultTodo);
+    //trebuise sa modific todo.adaugat_de cu id user curent
     setShow_AddModifyForm(true);
     setActionType('ADD');
   };
