@@ -3,12 +3,12 @@ from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.http import require_POST
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, renderer_classes, permission_classes
 
 from .models import MyUser
 from django.shortcuts import render
@@ -37,6 +37,7 @@ def get_csrf(request):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login_view(request):
     """
       Renders Login Form

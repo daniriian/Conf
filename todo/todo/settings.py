@@ -216,17 +216,31 @@ TIME_FORMAT = 'H:i'
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/videoconferinte'
 
 
 # CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_WHITELIST = [
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CSRF_COOKIE_NAME = "csrftoken"
 
 
 DEFAULT_RENDERER_CLASSES = [
@@ -242,5 +256,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication'
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
 }

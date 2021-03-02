@@ -9,8 +9,9 @@ from .serializers import TodoSerializer, TodoCreateSerializer, SalaJudecataSeria
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, renderer_classes, permission_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from rest_framework import filters
 
@@ -83,7 +84,6 @@ def isFree(currentTodo, todayTodos):
 
 @api_view(['POST'])
 def TodoCreateView(request, *args, **kwargs):
-    print(f'--------------------{request.data}-----------------------')
     serializer = TodoCreateSerializer(data=request.data)
     todayTodos = Todo.objects.filter(data=request.data['data'])
     if serializer.is_valid():
@@ -99,7 +99,6 @@ def TodoCreateView(request, *args, **kwargs):
 
 @ api_view(['GET'])
 def todoListView(request, *args, **kwargs):
-    print(f'----------------{request.GET}---------------------')
     qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
 
     selectedDate = request.GET.get('data', '')
@@ -139,7 +138,10 @@ def terminalsView(request, *args, **kwargs):
 
 
 @ api_view(['DELETE'])
+@permission_classes([IsAdminUser])
 def TodoDeleteView(request, *args, **kwargs):
+    print(
+        f'--------------------{request.user} {request.auth}-----------------------')
 
     qs = Todo.objects.get(id=request.data["id"])
     qs.delete()

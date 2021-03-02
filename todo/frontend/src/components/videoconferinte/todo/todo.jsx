@@ -16,16 +16,23 @@ const Todo = (props) => {
 
   const handleDelete = (e, todo_id) => {
     e.preventDefault();
+
     //send delete request
-    axios
-      .delete(
-        'http://127.0.0.1:8000/api/todos/delete/',
-        { data: { id: todo_id } },
-        { headers: { 'Content-Type': 'application/json' } }
-      )
-      .then((response) => {
-        response.status === 200 ? props.onDelete() : console.log('Nu e 200');
-      });
+    // -------------------------------------------------------------
+    // -------------------------------------------------------------
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    axios.defaults.withCredentials = true;
+    axios({
+      url: '/api/todos/delete/',
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: { id: todo_id },
+    }).then((response) => {
+      response.status === 200 ? props.onDelete() : console.log('Nu e 200');
+    });
   };
 
   const handleCheckChange = () => {};
@@ -98,7 +105,8 @@ const Todo = (props) => {
           variant="danger"
           onClick={(e) => handleDelete(e, props.todo_id)}
         >
-          Şterge {props.todo_id}
+          Şterge
+          {/* {props.todo_id} */}
         </Button>
       </td>
       {/* Buton sterge */}

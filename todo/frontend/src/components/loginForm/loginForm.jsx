@@ -8,6 +8,7 @@ const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [instanta, setInstanta] = useState('117'); //default TRCJ
 
   const login = (event) => {
     event.preventDefault();
@@ -21,7 +22,7 @@ const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
       body: JSON.stringify({
         username: username,
         password: password,
-        instanta: '117',
+        instanta: instanta,
       }),
     })
       .then((response) => {
@@ -48,6 +49,12 @@ const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
     setUsername(event.target.value);
   };
 
+  const handleInstanta = (e) => {
+    e.preventDefault();
+    console.log(typeof e.target.value);
+    setInstanta(e.target.value);
+  };
+
   return (
     <div className={styles.loginContainer}>
       <div className={styles.login}>
@@ -70,13 +77,13 @@ const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
             onChange={handlePasswordChange}
           />
           <div>
-            <select name="instanta" id="instanta">
-              <option value="TRCJ">TRCJ</option>
-              <option value="JCN">JCN</option>
-              <option value="JD">J. Dej</option>
-              <option value="JG">J. Gherla</option>
-              <option value="JH">J. Huedin</option>
-              <option value="JT">J. Turda</option>
+            <select name="instanta" id="instanta" onChange={handleInstanta}>
+              <option value="117">TRCJ</option>
+              <option value="211">JCN</option>
+              <option value="219">J. Dej</option>
+              <option value="235">J. Gherla</option>
+              <option value="242">J. Huedin</option>
+              <option value="328">J. Turda</option>
             </select>
           </div>
           <div>{error && <small className="text-danger">{error}</small>}</div>
