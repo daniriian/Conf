@@ -4,7 +4,7 @@ import { Form, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 const CallTolist = (props) => {
-  const url_terminale = 'http://127.0.0.1:8000/api/todos/terminals/';
+  const url_terminale = '/api/todos/terminals/';
   const [isLoading, setIsLoading] = useState(true);
   const [listaTerminale, setListaTerminale] = useState([]);
 

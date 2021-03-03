@@ -11,7 +11,7 @@ from rest_framework.parsers import JSONParser
 
 from rest_framework.decorators import api_view, renderer_classes, permission_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from rest_framework import filters
 
@@ -83,6 +83,7 @@ def isFree(currentTodo, todayTodos):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def TodoCreateView(request, *args, **kwargs):
     serializer = TodoCreateSerializer(data=request.data)
     todayTodos = Todo.objects.filter(data=request.data['data'])

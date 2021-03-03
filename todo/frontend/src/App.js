@@ -56,24 +56,6 @@ const App = () => {
       });
   };
 
-  // const whoami = () => {
-  //   fetch('/users/whoami/', {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     credentials: 'same-origin',
-  //   })
-  //     .then((res) => {
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       console.log('You are logged in as: ' + data.username);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
   const handleSetIsAuthenticated = (val) => {
     setIsAuthenticated(val);
   };
@@ -99,28 +81,6 @@ const App = () => {
   };
 
   return (
-    // <Router>
-    //   <Switch>
-    //     <Route exact path="/">
-    //       <h1>React Cookie Auth</h1>
-    //     </Route>
-    //   </Switch>
-    // </Router>
-
-    // <Router>
-    //   <div className="App">
-    //     <Switch>
-    //       <Route exact path="/">
-    //         <LoginForm />
-    //       </Route>
-
-    //       <Route exact path="/videoconferinte">
-    //         <Videoconferinte />
-    //       </Route>
-    //     </Switch>
-    //   </div>
-    // </Router>
-
     <div className="App">
       <UserStatus username={user} onLogout={logout} />
       {!isAuthenticated ? (
@@ -134,17 +94,6 @@ const App = () => {
       ) : (
         <div>
           <Videoconferinte />
-          {/* <div className="container mt-3">
-            <h1>React Cookie Auth</h1>
-            <p>You are logged in as {user}!</p>
-
-            <button className="btn btn-primary mr-2" onClick={whoami}>
-              WhoAmI
-            </button>
-            <button className="btn btn-danger" onClick={logout}>
-              Log out
-            </button>
-          </div> */}
         </div>
       )}
     </div>

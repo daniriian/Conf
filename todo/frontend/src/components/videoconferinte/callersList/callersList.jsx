@@ -11,7 +11,7 @@ const CallersList = (props) => {
   useEffect(() => {
     //incarca lista de apelanti din bd utilizand axios
     axios
-      .get('http://127.0.0.1:8000/api/todos/callers/')
+      .get('/api/todos/callers/')
       .then((response) => response.data)
       .then((data) => {
         // data.unshift(null)

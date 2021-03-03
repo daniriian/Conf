@@ -14,7 +14,7 @@ const AddModifyForm = (props) => {
   const [userId, setUserId] = useState(null);
   const history = useHistory();
 
-  const postUrl = 'http://127.0.0.1:8000/api/todos/create/';
+  const postUrl = '/api/todos/create/';
 
   useEffect(() => {
     getUserId();
@@ -31,6 +31,10 @@ const AddModifyForm = (props) => {
     });
     return res;
   };
+
+  axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+  axios.defaults.xsrfCookieName = 'csrftoken';
+  axios.defaults.withCredentials = true;
 
   const handle_NextAddModifyBtn = () => {
     if (step < 2) {
@@ -55,7 +59,7 @@ const AddModifyForm = (props) => {
           });
       } else if (props.actionType === 'MODIFY') {
         axios
-          .put('http://localhost:8000/api/todos/' + todo.id, todo, {
+          .put('/api/todos/' + todo.id, todo, {
             headers: {
               'Content-Type': 'application/json',
             },

@@ -14,7 +14,7 @@ const TodoDetails = () => {
   // We can use the `useParams` hook here to access
   // the dynamic pieces of the URL.
   let { id } = useParams();
-  let detailsURL = 'http://localhost:8000/api/todos/';
+  let detailsURL = '/api/todos/';
   detailsURL += id;
 
   const sendGetRequest = async () => {
@@ -26,7 +26,7 @@ const TodoDetails = () => {
   useEffect(() => {
     sendGetRequest()
       .then((res) => {
-        res.data = new Date(res.data).toLocaleDateString("ro-RO")
+        res.data = new Date(res.data).toLocaleDateString('ro-RO');
         setDetails(res);
       })
       .then(() => setIsLoading(false));
