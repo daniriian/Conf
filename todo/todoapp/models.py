@@ -9,7 +9,7 @@ class SalaJudecata(models.Model):
         'Terminal', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.id_echipament.nume
+        return self.id_echipament.nume_instanta
 
     class Meta:
         verbose_name_plural = "Sali Judecata"
@@ -40,13 +40,13 @@ class TerminaleVC(models.Model):
 
 
 class Terminal(models.Model):
-    nume = models.CharField(max_length=200, null=False)
-    model = models.CharField(max_length=200, null=True)
+    beneficiar = models.CharField(max_length=200, null=False)
+    nume_instanta = models.CharField(max_length=200, null=False)
     ip = models.CharField(max_length=200, null=False)
-    nr_apel = models.CharField(max_length=200, null=False)
+    vmr = models.CharField(max_length=200, null=False)
 
     def __str__(self):
-        return self.nume
+        return self.nume_instanta
 
     class Meta:
         verbose_name_plural = "Terminale"

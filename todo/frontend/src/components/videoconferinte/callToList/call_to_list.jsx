@@ -42,7 +42,7 @@ const CallTolist = (props) => {
                 id={terminal.id}
                 selected={props.selectedValues.includes(terminal.id)}
               >
-                {terminal.nume}
+                {terminal.nume_instanta}
               </option>
             );
           })}

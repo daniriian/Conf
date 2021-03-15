@@ -68,7 +68,7 @@ const Todo = (props) => {
             {props.destinatar.map((dest, index) => {
               return (
                 <tr key={index}>
-                  <td>{dest.nume}</td>
+                  <td>{dest.nume_instanta}</td>
                 </tr>
               );
             })}

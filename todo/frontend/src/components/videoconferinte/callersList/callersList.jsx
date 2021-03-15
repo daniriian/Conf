@@ -41,7 +41,7 @@ const CallersList = (props) => {
             {callers.map((apelant, index) => {
               return (
                 <option key={index} value={apelant.id}>
-                  {apelant.id_echipament.nume}
+                  {apelant.id_echipament.nume_instanta}
                 </option>
               );
             })}

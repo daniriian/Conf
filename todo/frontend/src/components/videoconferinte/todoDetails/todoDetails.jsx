@@ -56,15 +56,16 @@ const TodoDetails = () => {
                 <div>
                   <div className="detail title">Apelant</div>
                   <div className="detail">
-                    Instanţa: <span>{details.caller.id_echipament.nume}</span>
+                    Instanţa:{' '}
+                    <span>{details.caller.id_echipament.nume_instanta}</span>
                   </div>
 
                   <div className="detail">
                     IP: <span>{details.caller.id_echipament.ip}</span>
                   </div>
                   <div className="detail">
-                    Model echipament:{' '}
-                    <span>{details.caller.id_echipament.model}</span>
+                    VMR:
+                    <span>{details.caller.id_echipament.vmr}</span>
                   </div>
                 </div>
                 <div className="detail">
@@ -81,16 +82,14 @@ const TodoDetails = () => {
                 {details.call_to.map((dest, index) => (
                   <div key={index}>
                     <div className="detail">
-                      Nume: <span>{dest.nume}</span>
+                      Nume: <span>{dest.nume_instanta}</span>
                     </div>
-                    <div className="detail">
-                      Model: <span>{dest.model}</span>
-                    </div>
+
                     <div className="detail">
                       IP: <span>{dest.ip}</span>
                     </div>
                     <div className="detail">
-                      Nr. apel: <span>{dest.nr_apel}</span>
+                      VMR: <span>{dest.vmr}</span>
                     </div>
                     <hr className="spacer" />
                   </div>

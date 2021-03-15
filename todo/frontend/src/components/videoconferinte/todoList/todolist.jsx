@@ -61,7 +61,7 @@ const TodoList = ({ xdate, ...props }) => {
               ora_start={item.start_time}
               ora_stop={item.end_time}
               data={fdata}
-              caller={item.caller.id_echipament.nume}
+              caller={item.caller.id_echipament.nume_instanta}
               destinatar={item.call_to}
               efectuat={item.completed}
               adaugat_de={item.adaugat_de.nume + ' ' + item.adaugat_de.prenume}

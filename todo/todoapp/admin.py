@@ -22,4 +22,4 @@ class InstantaAdmin(admin.ModelAdmin):
 
 @admin.register(Terminal)
 class Terminal(ImportExportActionModelAdmin):
-    list_display = ('nume', 'ip', 'nr_apel', 'model')
+    list_display = ('beneficiar', 'nume_instanta', 'ip', 'vmr')
