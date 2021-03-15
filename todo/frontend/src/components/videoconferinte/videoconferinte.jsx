@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Header from './header/header';
@@ -24,6 +24,10 @@ const Videoconferinte = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date().toLocaleDateString('ro-RO').substring(0, 10)
   );
+
+  useEffect(() => {
+    // console.log('mounting VIDEOCONFERINTE comp...');
+  }, []);
 
   const handleAddButtonClick = () => {
     setCurrentTodo(defaultTodo);

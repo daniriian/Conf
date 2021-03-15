@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
+import { useHistory, Redirect } from 'react-router-dom';
 
 import { isResponseOk } from '../../utils/utils';
 
 import styles from './loginForm.module.scss';
 
-const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
+const LoginForm = ({ csrf, setIsAuthenticated, setUser, isIn }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [instanta, setInstanta] = useState('117'); //default TRCJ
 
-  const login = (event) => {
-    event.preventDefault();
-    fetch('/users/login/', {
+  const history = useHistory();
+
+  const login = async () => {
+    // event.preventDefault();
+    // console.log('running login async function');
+    await fetch('/users/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,14 +30,13 @@ const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
       }),
     })
       .then((response) => {
+        // console.log(response);
         isResponseOk(response);
       })
       .then((data) => {
         setIsAuthenticated(true);
         setUser(username);
-        // setUsername('');
-        // setPassword('');
-        // setError('');
+        // console.log(username);
       })
       .catch((err) => {
         console.log(err);
@@ -55,11 +58,25 @@ const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
     setInstanta(e.target.value);
   };
 
+  const logUserIn = async (e) => {
+    e.preventDefault();
+    await login()
+      .then(() => {
+        // console.log('Redirect to videoconferinte');
+        history.push('/videoconferinte');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  if (isIn) {
+    return <Redirect to="/videoconferinte" />;
+  }
+
   return (
     <div className={styles.loginContainer}>
       <div className={styles.login}>
         <h1>Login</h1>
-        <form method="post" onSubmit={login}>
+        <form>
           <input
             type="text"
             name="utilizator"
@@ -90,6 +107,7 @@ const LoginForm = ({ csrf, setIsAuthenticated, setUser }) => {
           <button
             type="submit"
             className={`${styles.btn} ${styles.btnPrimary} ${styles.btnBlock} ${styles.btnLarge}`}
+            onClick={logUserIn}
           >
             Let me in.
           </button>

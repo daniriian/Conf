@@ -1,10 +1,18 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { FaUser } from 'react-icons/fa';
 
 import styles from '../../styles/userStatus.module.scss';
 
 const UserStatus = ({ username, onLogout }) => {
+  const history = useHistory();
+  const onLogoutClick = (e) => {
+    e.preventDefault();
+    onLogout();
+    history.push('/');
+  };
+
   return (
     <div className={styles.statusBar}>
       <div className={styles.statusContainer}>
@@ -19,7 +27,7 @@ const UserStatus = ({ username, onLogout }) => {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={onLogout}
+                  onClick={onLogoutClick}
                 >
                   Log Out
                 </button>

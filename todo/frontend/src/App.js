@@ -1,4 +1,4 @@
-// import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import 'normalize.css'; // Note this
 import './App.css';
@@ -81,22 +81,25 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <UserStatus username={user} onLogout={logout} />
-      {!isAuthenticated ? (
-        <div>
-          <LoginForm
-            csrf={csrf}
-            setIsAuthenticated={handleSetIsAuthenticated}
-            setUser={setLoggedInUser}
-          />
-        </div>
-      ) : (
-        <div>
-          <Videoconferinte />
-        </div>
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <UserStatus username={user} onLogout={logout} />
+        <Switch>
+          <Route exact path="/">
+            <LoginForm
+              csrf={csrf}
+              setIsAuthenticated={handleSetIsAuthenticated}
+              setUser={setLoggedInUser}
+              isIn={isAuthenticated}
+            />
+          </Route>
+
+          <Route exact path="/videoconferinte">
+            <Videoconferinte />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 };
 
