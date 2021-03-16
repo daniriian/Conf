@@ -20,6 +20,7 @@ const TodoDetails = () => {
   const sendGetRequest = async () => {
     const response = await axios.get(detailsURL);
     const data = await response.data;
+    // console.log(data);
     return data;
   };
 
@@ -27,6 +28,7 @@ const TodoDetails = () => {
     sendGetRequest()
       .then((res) => {
         res.data = new Date(res.data).toLocaleDateString('ro-RO');
+
         setDetails(res);
       })
       .then(() => setIsLoading(false));
@@ -36,7 +38,7 @@ const TodoDetails = () => {
     <Container className="mt-5">
       <Row>
         <Col>
-          <h1 className="page-title">Detalii Videoconferinţă: {id}</h1>
+          <h1 className="page-title">Detalii Videoconferinţă:</h1>
           <hr className="spacer title-spacer" />
         </Col>
       </Row>
@@ -56,8 +58,8 @@ const TodoDetails = () => {
                 <div>
                   <div className="detail title">Apelant</div>
                   <div className="detail">
-                    Instanţa:{' '}
-                    <span>{details.caller.id_echipament.nume_instanta}</span>
+                    Instanţa:
+                    <span> {details.caller.id_echipament.nume_instanta}</span>
                   </div>
 
                   <div className="detail">
@@ -99,9 +101,12 @@ const TodoDetails = () => {
           </Row>
           <Row>
             <Col>
-              <div>Creata de :</div>
-              <div>Data si ora crearii:</div>
-              <div>Modificata de: la data</div>
+              <div>
+                Creată de {details.adaugat_de.nume} {details.adaugat_de.prenume}
+                :
+              </div>
+              {/* <div>Data si ora crearii:</div>
+              <div>Modificata de: la data</div> */}
             </Col>
           </Row>
         </React.Fragment>

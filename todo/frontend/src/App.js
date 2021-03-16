@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import 'normalize.css'; // Note this
 import './App.css';
@@ -6,6 +11,8 @@ import './App.css';
 import Videoconferinte from './components/videoconferinte/videoconferinte';
 import LoginForm from './components/loginForm/loginForm';
 import UserStatus from './components/userStatus/userStatus';
+import TodoDetails from './components/videoconferinte/todoDetails/todoDetails';
+
 import { isResponseOk } from './utils/utils';
 
 const App = () => {
@@ -94,9 +101,15 @@ const App = () => {
             />
           </Route>
 
-          <Route exact path="/videoconferinte">
-            <Videoconferinte />
+          <Route path="/videoconferinte">
+            {!isAuthenticated ? <Redirect to="/" /> : <Videoconferinte />}
           </Route>
+
+          {/* <Route
+            exact
+            path="/videoconferinte/detalii/:id"
+            children={<TodoDetails />}
+          ></Route> */}
         </Switch>
       </div>
     </Router>

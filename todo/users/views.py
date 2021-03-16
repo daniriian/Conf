@@ -63,34 +63,6 @@ def login_view(request):
     else:
         return Response({"details": "Nu este POST"})
 
-# @require_POST
-# def login_view(request):
-#     data = json.loads(request.body)
-#     username = data.get('username')
-#     password = data.get('password')
-#     instanta = data.get('instanta')
-
-#     print("---------------- Inside login_view ---------------------------")
-#     print(username, password, instanta)
-
-#     instanta = 117
-
-#     if username is None or password is None:
-#         print("username or password is None")
-#         return JsonResponse({'detail': 'Please provide username and password'}, status=400)
-
-#     print("Launching authentication")
-#     user = authenticate(username=username,
-#                         password=password, instanta=instanta)
-
-#     print(user)
-
-#     if user is None:
-#         return JsonResponse({'detail': 'Invalid credentials'}, status=400)
-
-#     login(request, user)
-#     return JsonResponse({'detail': 'Successfully logged in !!!'})
-
 
 def logout_view(request):
     if not request.user.is_authenticated:
@@ -106,6 +78,7 @@ class SessionView(APIView):
 
     @staticmethod
     def get(request, format=None):
+        print(request.user.utilizator)
         return JsonResponse({'isAuthenticated': True, 'username': request.user.utilizator})
 
 
@@ -116,66 +89,3 @@ class WhoAmIView(APIView):
     @staticmethod
     def get(request, format=None):
         return Response({'username': request.user.utilizator, 'id': request.user.id})
-
-# def home(request):
-#     """
-#       Home View Renders base.html
-#     """
-#     return render(request, "base.html", {})
-
-
-# def registration_view(request):
-#     """
-#       Renders Registration Form
-#     """
-#     context = {}
-#     if request.POST:
-#         form = RegistrationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             email = form.cleaned_data.get('email')
-#             raw_pass = form.cleaned_data.get('password1')
-#             account = authenticate(email=email, password=raw_pass)
-#             login(request, account)
-#             messages.success(
-#                 request, "You have been Registered as {}".format(request.user.username))
-#             return redirect('home')
-#         else:
-#             messages.error(request, "Please Correct Below Errors")
-#             context['registration_form'] = form
-#     else:
-#         form = RegistrationForm()
-#         context['registration_form'] = form
-#     return render(request, "users/register.html", context)
-
-
-# def logout_view(request):
-#     logout(request)
-#     messages.success(request, "Logged Out")
-#     return redirect("home")
-
-
-# def account_view(request):
-#     """
-#       Renders userprofile page "
-#     """
-#     if not request.user.is_authenticated:
-#         return redirect("login")
-#     context = {}
-#     if request.POST:
-#         form = AccountUpdateform(request.POST, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "profile Updated")
-#         else:
-#             messages.error(request, "Please Correct Below Errors")
-#     else:
-#         form = AccountUpdateform(
-#             initial={
-#                 'email': request.user.email,
-#                 'username': request.user.username,
-#             }
-#         )
-#     context['account_form'] = form
-
-#     return render(request, "users/userprofile.html", context)

@@ -22,7 +22,8 @@ const AddModifyForm = (props) => {
 
   const addTodo = async (todo) => {
     let newTodo = { ...todo };
-    newTodo.data = format_data(todo.data);
+    console.log(newTodo.data);
+    // newTodo.data = format_data(newTodo.data);
     newTodo.adaugat_de = userId;
     const res = await axios.post(postUrl, newTodo, {
       headers: {
@@ -41,8 +42,8 @@ const AddModifyForm = (props) => {
       setStep(step + 1);
     } else if (step === 2) {
       if (props.actionType === 'ADD') {
-        const newTodo = { ...todo };
-        addTodo(newTodo)
+        // const newTodo = { ...todo };
+        addTodo(todo)
           .then((response) => {
             return response.status;
           })
@@ -145,7 +146,7 @@ const AddModifyForm = (props) => {
           />
         ) : (
           <div>
-            <p>Aici vine lista de call_to</p>
+            <p>Alegeţi destinatarii din listă</p>
             <CallTolist
               selectedValues={todo.call_to}
               onChange={(dest) => handleChange(dest)}

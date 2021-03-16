@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Header from './header/header';
@@ -24,10 +24,6 @@ const Videoconferinte = () => {
   const [selectedDate, setSelectedDate] = useState(
     new Date().toLocaleDateString('ro-RO').substring(0, 10)
   );
-
-  useEffect(() => {
-    // console.log('mounting VIDEOCONFERINTE comp...');
-  }, []);
 
   const handleAddButtonClick = () => {
     setCurrentTodo(defaultTodo);
@@ -62,7 +58,6 @@ const Videoconferinte = () => {
         onAddButtonClick={handleAddButtonClick}
         onSearchButtonClick={handleSearchButtonClick}
       />
-      <h1 className="my-5"> Programări videoconferinţe</h1>
 
       {show_AddModifyForm ? (
         <AddModifyForm
@@ -76,6 +71,7 @@ const Videoconferinte = () => {
 
       <Switch>
         <Route exact path="/videoconferinte">
+          <h1 className="my-5"> Programări videoconferinţe</h1>
           <TodoList
             refresh={hasChanged}
             modifica={handleModifica}
@@ -86,9 +82,7 @@ const Videoconferinte = () => {
           exact
           path="/videoconferinte/detalii/:id"
           children={<TodoDetails />}
-        >
-          {/* <h1>Detalii videoconferinta</h1> */}
-        </Route>
+        ></Route>
       </Switch>
     </Router>
   );

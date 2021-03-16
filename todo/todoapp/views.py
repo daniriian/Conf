@@ -51,13 +51,13 @@ def detalii(request, todo_id):
     return render(request, "todoapp/detalii.html", context)
 
 
-def showTodoDetail(request, todo_id):
-    instance = get_object_or_404(Todo, todo_id)
-    if request.method == 'GET':
-        todo = Todo.objects.get(id=todo_id)
-        return render(request, 'todoapp/conference_details.html', {'todo': todo})
-    else:
-        return redirect('filter_by_date')
+# def showTodoDetail(request, todo_id):
+#     instance = get_object_or_404(Todo, todo_id)
+#     if request.method == 'GET':
+#         todo = Todo.objects.get(id=todo_id)
+#         return render(request, 'todoapp/conference_details.html', {'todo': todo})
+#     else:
+#         return redirect('filter_by_date')
 
 
 def isFree(currentTodo, todayTodos):
@@ -85,6 +85,7 @@ def isFree(currentTodo, todayTodos):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def TodoCreateView(request, *args, **kwargs):
+    print(f'*************************************************  {request.data}')
     serializer = TodoCreateSerializer(data=request.data)
     todayTodos = Todo.objects.filter(data=request.data['data'])
     if serializer.is_valid():
@@ -104,21 +105,12 @@ def todoListView(request, *args, **kwargs):
 
     selectedDate = request.GET.get('data', '')
     if selectedDate:
-        print(selectedDate)
         qs = qs.filter(data=selectedDate)
     else:
         print("Nu avem acest parametru")
 
     serializer = TodoSerializer(qs, many=True)
     return Response(serializer.data, status=200)
-
-
-# @ api_view(['GET'])
-# def todoListViewByDate(request, *args, **kwargs):
-#     print(f"----------------{request}---------------------")
-#     qs = Todo.objects.all().filter(data=request.date)
-#     serializer = TodoSerializer(qs, many=True)
-#     return Response(serializer.data, status=200)
 
 
 @ api_view(['GET'])
@@ -141,15 +133,13 @@ def terminalsView(request, *args, **kwargs):
 @ api_view(['DELETE'])
 @permission_classes([IsAdminUser])
 def TodoDeleteView(request, *args, **kwargs):
-    print(
-        f'--------------------{request.user} {request.auth}-----------------------')
-
     qs = Todo.objects.get(id=request.data["id"])
     qs.delete()
     return Response({}, status=200)
 
 
 @ api_view(['GET', 'PUT'])
+@permission_classes([IsAdminUser])
 def todoDetailsView(request, todo_id, *args, **kwargs):
     qs = Todo.objects.get(id=todo_id)
 
@@ -160,14 +150,12 @@ def todoDetailsView(request, todo_id, *args, **kwargs):
     elif request.method == 'PUT':
         todo_data = JSONParser().parse(request)
         serializer = TodoCreateSerializer(qs, data=todo_data)
-        print(todo_data['data'])
-        print('********************************************')
+
         todayTodos = Todo.objects.filter(
             data=todo_data['data']).exclude(id=qs.id)
         if serializer.is_valid():
-            print("SERIALIZER VALID")
+
             result = isFree(serializer.validated_data, todayTodos)
-            print(result)
             if result['status']:
                 serializer.save()
                 return Response(serializer.data, status=200)
@@ -175,3 +163,11 @@ def todoDetailsView(request, todo_id, *args, **kwargs):
                 message = result['message']
                 return Response(message, status=400)
         return Response(serializer.errors, status=400)
+
+
+# -------------------------------------------------------------------
+@ api_view(['GET'])
+@permission_classes([AllowAny])
+def call_to_ip(request, *args, **kwargs):
+    print("Asta e webscraperul")
+    return Response({"Message": "Web Scraper"}, status=200)

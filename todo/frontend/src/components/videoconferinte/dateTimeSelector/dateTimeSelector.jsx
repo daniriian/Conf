@@ -33,6 +33,7 @@ const DateTimeSelector = (props) => {
 
   const handleDateChange = (data) => {
     const newDate = data.toLocaleDateString('ro-RO').substring(0, 10);
+    console.log(newDate);
     props.getDateStartTimeEndTime({ data: newDate });
   };
 

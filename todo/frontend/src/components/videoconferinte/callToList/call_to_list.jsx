@@ -34,7 +34,13 @@ const CallTolist = (props) => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <Form.Control as="select" custom multiple onChange={handleChange}>
+        <Form.Control
+          as="select"
+          custom
+          multiple
+          htmlSize={12}
+          onChange={handleChange}
+        >
           {listaTerminale.map((terminal, index) => {
             return (
               <option
