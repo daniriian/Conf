@@ -23,7 +23,7 @@ const AddModifyForm = (props) => {
   const addTodo = async (todo) => {
     let newTodo = { ...todo };
     console.log(newTodo.data);
-    // newTodo.data = format_data(newTodo.data);
+    newTodo.data = format_data(newTodo.data);
     newTodo.adaugat_de = userId;
     const res = await axios.post(postUrl, newTodo, {
       headers: {

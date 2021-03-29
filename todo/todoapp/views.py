@@ -16,6 +16,11 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework import filters
 
 import datetime
+
+# from urllib.request import urlopen
+
+import socket
+import sys
 # Create your views here.
 
 
@@ -166,8 +171,33 @@ def todoDetailsView(request, todo_id, *args, **kwargs):
 
 
 # -------------------------------------------------------------------
-@ api_view(['GET'])
+@ api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
 def call_to_ip(request, *args, **kwargs):
-    print("Asta e webscraperul")
-    return Response({"Message": "Web Scraper"}, status=200)
+
+    print('Initiating the call')
+    apelant = request.query_params['apelant']
+    destinatar = request.query_params['destinatar']
+    action = request.query_params['action']
+
+    MESSAGE = ""
+
+    if (action) == "dial":
+        MESSAGE = "dial auto " + destinatar + "\r\n"
+    elif (action == "hang up"):
+        MESSAGE = "button hangup\r\n"
+
+    HOST = apelant
+    PORT = 6024
+
+    print('*******************************************')
+    print(apelant)
+   # Create a TCP/IP socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    MESSAGE = "dial auto " + destinatar + "\r\n"
+    print(f'Calling {destinatar}')
+#     # Connect the socket to the port where the server is listening
+    s.connect((HOST, PORT))
+    s.send(MESSAGE.encode())
+
+    return Response({"Message": "All OK"}, status=200)

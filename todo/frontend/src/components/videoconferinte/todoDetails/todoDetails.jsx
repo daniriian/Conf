@@ -4,6 +4,10 @@ import { Spinner } from 'react-bootstrap';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
+// import PhoneButton from '../../phoneButton/phoneButton';
+
+import TodoCard from '../todoCard/todoCard';
+
 import axios from 'axios';
 // import { format_data } from '../../utils/utils';
 import './todoDetails.scss';
@@ -89,11 +93,20 @@ const TodoDetails = () => {
 
                     <div className="detail">
                       IP: <span>{dest.ip}</span>
+                      {/* <PhoneButton onClick={(e) => handleCall(dest.ip, e)} /> */}
                     </div>
                     <div className="detail">
                       VMR: <span>{dest.vmr}</span>
+                      {/* <PhoneButton onClick={(e) => handleCall(dest.ip, e)} /> */}
                     </div>
                     <hr className="spacer" />
+
+                    <TodoCard
+                      apelant={details.caller.id_echipament.ip}
+                      sala={dest.nume_instanta}
+                      ip={dest.ip}
+                      vmr={dest.vmr}
+                    />
                   </div>
                 ))}
               </div>
@@ -102,8 +115,8 @@ const TodoDetails = () => {
           <Row>
             <Col>
               <div>
-                Creată de {details.adaugat_de.nume} {details.adaugat_de.prenume}
-                :
+                Programare creată de {details.adaugat_de.nume}
+                {details.adaugat_de.prenume}
               </div>
               {/* <div>Data si ora crearii:</div>
               <div>Modificata de: la data</div> */}
