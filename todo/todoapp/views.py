@@ -184,18 +184,15 @@ def call_to_ip(request, *args, **kwargs):
 
     if (action) == "dial":
         MESSAGE = "dial auto " + destinatar + "\r\n"
-    elif (action == "hang up"):
+    else:
         MESSAGE = "button hangup\r\n"
 
     HOST = apelant
     PORT = 6024
 
-    print('*******************************************')
-    print(apelant)
-   # Create a TCP/IP socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    MESSAGE = "dial auto " + destinatar + "\r\n"
-    print(f'Calling {destinatar}')
+    # MESSAGE = "dial auto " + destinatar + "\r\n"
+    # print(f'Calling {destinatar}')
 #     # Connect the socket to the port where the server is listening
     s.connect((HOST, PORT))
     s.send(MESSAGE.encode())

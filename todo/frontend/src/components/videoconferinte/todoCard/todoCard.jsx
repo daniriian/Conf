@@ -10,6 +10,7 @@ const TodoCard = ({ sala, ip, vmr, apelant, ...props }) => {
     let command = '';
 
     e ? (command = 'hang up') : (command = 'dial');
+    console.log(command);
     axios
       .get(
         '/api/todos/scraper',
