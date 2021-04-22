@@ -9,7 +9,7 @@ import CustomButton from "../custom-button/custom-button";
 
 import "./sign-in.scss";
 
-const SignIn = ({ history, currentUser, dispatch }) => {
+const SignIn = ({ history, dispatch, csrf }) => {
   const [credentials, setCredentials] = useState({
     instanta: "",
     utilizator: "",
@@ -29,7 +29,15 @@ const SignIn = ({ history, currentUser, dispatch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(setCurrentUser(credentials));
+    console.log(("gfsghfsdghfshgfdhgfhdhdgfhfghdf", credentials));
+    dispatch(
+      setCurrentUser(
+        credentials.instanta,
+        credentials.utilizator,
+        credentials.parola,
+        csrf
+      )
+    );
     setCredentials({
       instanta: "",
       utilizator: "",
@@ -79,6 +87,7 @@ const SignIn = ({ history, currentUser, dispatch }) => {
 
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
+  csrf: state.session.csrfToken,
 });
 
 export default withRouter(connect(mapStateToProps)(SignIn));

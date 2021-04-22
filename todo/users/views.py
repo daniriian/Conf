@@ -52,6 +52,9 @@ def login_view(request):
         user = authenticate(utilizator=utilizator,
                             password=password, instanta=instanta)
 
+        print('****************************')
+        print(utilizator, password, instanta) 
+
         # if user == (-1):
         #     messages.error(request, "Eroare la conectarea bazei de date")
         #     return redirect("/")

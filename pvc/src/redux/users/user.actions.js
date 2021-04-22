@@ -1,30 +1,27 @@
 import UserActionTypes from "./user.types";
 
-import axios from "axios";
-
-export const setCurrentUser = ({ username, password, instanta, csrf }) => {
-  return (dispatch, getState) => {
+export const setCurrentUser = (username, password, instanta, csrf) => {
+  return (dispatch) => {
     dispatch(userLogInStarted());
 
-    console.log("current state: ", getState());
-
-    axios
-      .post("/users/login/", {
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrf,
-        },
-        credentials: "same-origin",
-        body: JSON.stringify({
-          username: username,
-          password: password,
-          instanta: instanta,
-        }),
-      })
+    fetch("/users/login/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        instanta: instanta,
+      }),
+    })
       .then((res) => {
         console.log(res);
-        dispatch(userLoginSuccess(res.data));
+        return res.json();
       })
+      .then((data) => dispatch(userLoginSuccess(data)))
       .catch((err) => {
         console.log(err);
         dispatch(userLogInFailure(err));
@@ -45,3 +42,19 @@ export const userLogInFailure = (err) => ({
   type: UserActionTypes.USER_LOG_IN_FAILURE,
   payload: err,
 });
+
+export const userLogOut = () => ({
+  type: UserActionTypes.LOG_USER_OUT,
+});
+
+export const userLogOutAsync = () => {
+  return (dispatch) => {
+    fetch("/users/logout", {
+      credentials: "same-origin",
+    })
+      .then(() => dispatch(userLogOut()))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};

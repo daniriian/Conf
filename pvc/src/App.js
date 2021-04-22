@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import SignInPage from "./pages/sign-in-page/sign-in-page.jsx";
+import HomePage from "./pages/home-page/home-page";
 
 import { getSessionAsync } from "./redux/session/session.actions";
 // import { setCurrentUser } from "./redux/users/user.actions";
@@ -17,11 +18,14 @@ const App = ({ currentUser, dispatch }) => {
     <div className='App'>
       <Switch>
         <Route
-          path='/'
+          exact
+          path='/login'
           render={() =>
-            currentUser ? <Redirect to='/videoconferinte' /> : <SignInPage />
+            currentUser ? <Redirect to='/home' /> : <SignInPage />
           }
         ></Route>
+
+        <Route exact path='/home' component={HomePage}></Route>
       </Switch>
     </div>
   );
