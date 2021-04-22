@@ -1,6 +1,7 @@
 .todo-card {
-  display: inline-block;
-  width: 35rem;
+  // display: inline-block;
+  width: 90%;
+
   height: 15rem;
   background: linear-gradient(
     to bottom right,
@@ -12,6 +13,8 @@
   border-radius: 3px;
   box-shadow: 0 15px 20px rgba(#222, 0.3);
   transition: all 0.3s;
+  margin: 0 auto;
+  margin-bottom: 30px;
 
   &__title {
     font-size: 44px;

@@ -57,10 +57,12 @@ const TodoDetails = () => {
             Data: {details.data}
           </div>
           <Row className="mt-5">
-            <Col>
+            <Col className="vc-column">
               <div className="text-left">
                 <div>
-                  <div className="detail title">Apelant</div>
+                  <div className="detail">
+                    <div className="title">Apelant</div>
+                  </div>
                   <div className="detail">
                     Instanţa:
                     <span> {details.caller.id_echipament.nume_instanta}</span>
@@ -82,25 +84,11 @@ const TodoDetails = () => {
                 </div>
               </div>
             </Col>
-            <Col>
+            <Col className="vc-column">
               <div className="text-left">
                 <div className="detail title">Destinatari:</div>
                 {details.call_to.map((dest, index) => (
                   <div key={index}>
-                    <div className="detail">
-                      Nume: <span>{dest.nume_instanta}</span>
-                    </div>
-
-                    <div className="detail">
-                      IP: <span>{dest.ip}</span>
-                      {/* <PhoneButton onClick={(e) => handleCall(dest.ip, e)} /> */}
-                    </div>
-                    <div className="detail">
-                      VMR: <span>{dest.vmr}</span>
-                      {/* <PhoneButton onClick={(e) => handleCall(dest.ip, e)} /> */}
-                    </div>
-                    <hr className="spacer" />
-
                     <TodoCard
                       apelant={details.caller.id_echipament.ip}
                       sala={dest.nume_instanta}
