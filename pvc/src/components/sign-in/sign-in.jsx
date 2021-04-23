@@ -9,7 +9,7 @@ import CustomButton from "../custom-button/custom-button";
 
 import "./sign-in.scss";
 
-const SignIn = ({ history, dispatch, csrf }) => {
+const SignIn = ({ history, dispatch, csrf, currentUser }) => {
   const [credentials, setCredentials] = useState({
     instanta: "",
     utilizator: "",
@@ -17,8 +17,10 @@ const SignIn = ({ history, dispatch, csrf }) => {
   });
 
   useEffect(() => {
-    history.push("/login");
-  }, []);
+    if (currentUser) {
+      history.push("/home");
+    }
+  }, [currentUser, history]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +31,7 @@ const SignIn = ({ history, dispatch, csrf }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(("gfsghfsdghfshgfdhgfhdhdgfhfghdf", credentials));
+    // history.push("/home");
     dispatch(
       setCurrentUser(
         credentials.instanta,

@@ -35,7 +35,6 @@ class CustomBackend(BaseBackend):
     def authenticate(self, request, utilizator=None, password=None, instanta=None):
 
         if (instanta == None):
-            # print(f'Instanta invalida----------------')
             return
 
         login_servers = {'117': 'usersTRCJ', '211': 'usersJCN',

@@ -7,7 +7,6 @@ import { userLogOutAsync } from "../../redux/users/user.actions";
 
 const HomePage = ({ dispatch, history }) => {
   const signOut = () => {
-    console.log("Signing out");
     history.push("/login");
     dispatch(userLogOutAsync());
   };

@@ -1,6 +1,6 @@
 import UserActionTypes from "./user.types";
 
-export const setCurrentUser = (username, password, instanta, csrf) => {
+export const setCurrentUser = (instanta, username, password, csrf) => {
   return (dispatch) => {
     dispatch(userLogInStarted());
 
@@ -19,9 +19,13 @@ export const setCurrentUser = (username, password, instanta, csrf) => {
     })
       .then((res) => {
         console.log(res);
-        return res.json();
+        if (res.ok) {
+          return res.json();
+        }
       })
-      .then((data) => dispatch(userLoginSuccess(data)))
+      .then((data) => {
+        dispatch(userLoginSuccess(data));
+      })
       .catch((err) => {
         console.log(err);
         dispatch(userLogInFailure(err));

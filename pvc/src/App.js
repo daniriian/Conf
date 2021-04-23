@@ -1,8 +1,9 @@
 import "./App.css";
 import React, { useEffect } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 
+import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import SignInPage from "./pages/sign-in-page/sign-in-page.jsx";
 import HomePage from "./pages/home-page/home-page";
 
@@ -12,20 +13,17 @@ import { getSessionAsync } from "./redux/session/session.actions";
 const App = ({ currentUser, dispatch }) => {
   useEffect(() => {
     dispatch(getSessionAsync());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className='App'>
       <Switch>
-        <Route
+        <ProtectedRoute
           exact
-          path='/login'
-          render={() =>
-            currentUser ? <Redirect to='/home' /> : <SignInPage />
-          }
-        ></Route>
-
-        <Route exact path='/home' component={HomePage}></Route>
+          path='/home'
+          component={HomePage}
+        ></ProtectedRoute>
+        <Route exact path='/login' component={SignInPage}></Route>
       </Switch>
     </div>
   );

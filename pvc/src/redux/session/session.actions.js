@@ -14,9 +14,7 @@ export const getCsrf = () => {
     })
       .then((res) => {
         let csrfToken = res.headers.get("X-CSRFToken");
-        console.log("Dispatching getSession()");
         dispatch(getSession(csrfToken));
-        console.log(csrfToken);
       })
       .catch((err) => console.log(err));
   };
@@ -28,14 +26,12 @@ export const getSessionAsync = () => {
       credentials: "same-origin",
     })
       .then((res) => {
-        console.log(res);
         return res.json();
       })
       .then((data) => {
         if (data.isAuthenticated) {
           dispatch(userLoginSuccess(data.username));
         } else {
-          console.log("gfdsgdf");
           dispatch(getCsrf());
         }
       })

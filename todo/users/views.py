@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes, permission_classes
 
 from .models import MyUser
+from todoapp.serializers import MyUserSerializer
+
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import (
@@ -52,15 +54,14 @@ def login_view(request):
         user = authenticate(utilizator=utilizator,
                             password=password, instanta=instanta)
 
-        print('****************************')
-        print(utilizator, password, instanta) 
-
         # if user == (-1):
         #     messages.error(request, "Eroare la conectarea bazei de date")
         #     return redirect("/")
         if user:
             login(request, user)
-            return Response({'detail': 'Successfully logged in !!!'}, status=200)
+            userDetails = MyUser.objects.get(utilizator=user.utilizator)
+            serializer = MyUserSerializer(userDetails)
+            return Response(serializer.data, status=200)
         else:
             return JsonResponse({'detail': 'Invalid credentials'}, status=400)
     else:
@@ -81,7 +82,6 @@ class SessionView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        print(request.user.utilizator)
         return JsonResponse({'isAuthenticated': True, 'username': request.user.utilizator})
 
 
