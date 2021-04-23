@@ -18,12 +18,8 @@ const App = ({ currentUser, dispatch }) => {
   return (
     <div className='App'>
       <Switch>
-        <ProtectedRoute
-          exact
-          path='/home'
-          component={HomePage}
-        ></ProtectedRoute>
         <Route exact path='/login' component={SignInPage}></Route>
+        <ProtectedRoute path='/' component={HomePage}></ProtectedRoute>
       </Switch>
     </div>
   );
