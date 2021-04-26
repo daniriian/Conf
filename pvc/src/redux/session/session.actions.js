@@ -22,16 +22,21 @@ export const getCsrf = () => {
 
 export const getSessionAsync = () => {
   return (dispatch) => {
+    console.log("Fetching users/session");
     fetch("/users/session/", {
       credentials: "same-origin",
     })
       .then((res) => {
+        console.log(res);
         return res.json();
       })
       .then((data) => {
-        if (data.isAuthenticated) {
-          dispatch(userLoginSuccess(data.username));
+        console.log(data);
+        if (data.utilizator) {
+          console.log("Dispatching userLoginSuccess");
+          dispatch(userLoginSuccess(data));
         } else {
+          console.log("Dispatching getCsrf");
           dispatch(getCsrf());
         }
       })

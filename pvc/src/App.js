@@ -3,15 +3,20 @@ import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 
+// import Header from "./components/header/header";
+
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import SignInPage from "./pages/sign-in-page/sign-in-page.jsx";
 import HomePage from "./pages/home-page/home-page";
 
 import { getSessionAsync } from "./redux/session/session.actions";
-// import { setCurrentUser } from "./redux/users/user.actions";
 
-const App = ({ currentUser, dispatch }) => {
+import { createStructuredSelector } from "reselect";
+import { selectSession } from "./redux/session/session.selectors";
+
+const App = ({ dispatch }) => {
   useEffect(() => {
+    console.log("Running useEffect from App.js");
     dispatch(getSessionAsync());
   }, [dispatch]);
 
@@ -25,8 +30,8 @@ const App = ({ currentUser, dispatch }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
+const mapStateToProps = createStructuredSelector({
+  csrfToken: selectSession,
 });
 
 // const mapDispatchToProps = (dispatch) => ({

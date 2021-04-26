@@ -82,7 +82,10 @@ class SessionView(APIView):
 
     @staticmethod
     def get(request, format=None):
-        return JsonResponse({'isAuthenticated': True, 'username': request.user.utilizator})
+        serializer = MyUserSerializer(request.user)
+        print(serializer)
+        return Response(serializer.data)
+
 
 
 class WhoAmIView(APIView):

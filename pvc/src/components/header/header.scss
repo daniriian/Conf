@@ -1,0 +1,56 @@
+.header {
+  width: 100%;
+  padding: 5px 2rem;
+  display: flex;
+  border-bottom: 1px solid lightsteelblue;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+  align-items: center;
+
+  .logo {
+    width: 60px;
+    height: auto;
+    &__img {
+      width: 100%;
+    }
+  }
+
+  .nav {
+  }
+
+  .react-datepicker-wrapper {
+    margin-left: auto;
+    width: 150px;
+    .react-datepicker__input-container {
+      height: 2rem;
+
+      input {
+        text-align: center;
+        height: 100%;
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+        &:focus {
+          color: #495057;
+          background-color: #fff;
+          border-color: #80bdff;
+          outline: 0;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+      }
+    }
+  }
+
+  .user {
+    margin-left: 2rem;
+  }
+}

@@ -1,11 +1,15 @@
 import React from "react";
 import { withRouter } from "react-router";
 
+import Header from "../../components//header/header";
+
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { userLogOutAsync } from "../../redux/users/user.actions";
+import { selectCurrentUser } from "../../redux/users/user.selectors";
 
-const HomePage = ({ dispatch, history }) => {
+const HomePage = ({ dispatch, history, ...currentUser }) => {
   const signOut = () => {
     history.push("/login");
     dispatch(userLogOutAsync());
@@ -13,10 +17,14 @@ const HomePage = ({ dispatch, history }) => {
 
   return (
     <div>
-      This is the HomePage
+      <Header />
       <button onClick={signOut}>SIGN OUT</button>
     </div>
   );
 };
 
-export default withRouter(connect()(HomePage));
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
+
+export default withRouter(connect(mapStateToProps)(HomePage));

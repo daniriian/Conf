@@ -19,11 +19,14 @@ export const setCurrentUser = (instanta, username, password, csrf) => {
     })
       .then((res) => {
         console.log(res);
-        if (res.ok) {
+        if (res.status === 200) {
           return res.json();
+        } else {
+          throw new Error(res.statusText);
         }
       })
       .then((data) => {
+        console.log(data);
         dispatch(userLoginSuccess(data));
       })
       .catch((err) => {
