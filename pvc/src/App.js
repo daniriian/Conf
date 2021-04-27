@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 // import Header from "./components/header/header";
@@ -14,7 +14,7 @@ import { getSessionAsync } from "./redux/session/session.actions";
 import { createStructuredSelector } from "reselect";
 import { selectSession } from "./redux/session/session.selectors";
 
-const App = ({ dispatch }) => {
+const App = ({ dispatch, currentUser }) => {
   useEffect(() => {
     console.log("Running useEffect from App.js");
     dispatch(getSessionAsync());
@@ -23,8 +23,12 @@ const App = ({ dispatch }) => {
   return (
     <div className='App'>
       <Switch>
-        <Route exact path='/login' component={SignInPage}></Route>
-        <ProtectedRoute path='/' component={HomePage}></ProtectedRoute>
+        <Route exact path='/' component={HomePage} />
+        <Route
+          exact
+          path='/login'
+          render={() => (currentUser ? <Redirect to='/' /> : <SignInPage />)}
+        />
       </Switch>
     </div>
   );

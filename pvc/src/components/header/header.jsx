@@ -15,8 +15,7 @@ import "./header.scss";
 
 registerLocale("ro", ro);
 
-const Header = ({ selectedDate, currentUser: { utilizator, instanta } }) => {
-  console.log(utilizator, instanta);
+const Header = ({ selectedDate, currentUser }) => {
   return (
     <header className='header'>
       <div className='logo'>
@@ -28,7 +27,11 @@ const Header = ({ selectedDate, currentUser: { utilizator, instanta } }) => {
 
       <div className='user'>
         <div className='user__icon'></div>
-        <span className='user__name'>{utilizator}</span>
+        {currentUser ? (
+          <span className='user__name'>{currentUser.utilizator}</span>
+        ) : (
+          "Vizitator"
+        )}
         {/* <span className='user__instanta'>{instanta.nume}</span> */}
       </div>
     </header>

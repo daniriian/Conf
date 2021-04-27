@@ -16,11 +16,11 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
     parola: "",
   });
 
-  useEffect(() => {
-    if (currentUser) {
-      history.push("/home");
-    }
-  }, [currentUser, history]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     history.push("/home");
+  //   }
+  // }, [currentUser, history]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +45,8 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
       utilizator: "",
       parola: "",
     });
+
+    history.push("/");
   };
 
   return (

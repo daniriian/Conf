@@ -11,9 +11,12 @@ import { selectCurrentUser } from "../../redux/users/user.selectors";
 
 const HomePage = ({ dispatch, history, ...currentUser }) => {
   const signOut = () => {
-    history.push("/login");
     dispatch(userLogOutAsync());
+    console.log("Pushing /login to history");
+    history.push("/login");
   };
+
+  console.log("Rendering HomePage");
 
   return (
     <div>

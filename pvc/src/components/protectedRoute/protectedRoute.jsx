@@ -3,6 +3,8 @@ import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 const ProtectedRoute = ({ component, currentUser }) => {
+  console.log("Rendering ProtectedRoute");
+  console.log(currentUser);
   const Component = component;
   return currentUser ? <Component /> : <Redirect to={{ pathname: "/login" }} />;
 };
