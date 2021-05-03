@@ -1,97 +1,83 @@
-import json
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
-from django.views.decorators.http import require_POST
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
+from django.utils.decorators import method_decorator
+from rest_framework import permissions
 
 
-from rest_framework.decorators import api_view, renderer_classes, permission_classes
+from rest_framework.decorators import permission_classes
 
 from .models import MyUser
 from todoapp.serializers import MyUserSerializer
 
-from django.shortcuts import render
-from django.contrib import messages
 from django.contrib.auth import (
     authenticate,
     logout,
     login
 )
-from django.shortcuts import (
-    render,
-    get_object_or_404,
-    redirect
-)
-from .forms import (
-    RegistrationForm,
-    AccountAuthenticationForm,
-    AccountUpdateform
-)
 
 
-def get_csrf(request):
-    response = JsonResponse({'detail': 'CSRF cookie set'})
-    response['X-CSRFToken'] = get_token(request)
-    return response
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class getCSRFToken(APIView):
+    permission_classes = (permissions.AllowAny, )
+
+    def get(self, request, format=None):
+        return Response({'success': 'csrf cookie set'})
 
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def login_view(request):
-    """
-      Renders Login Form
-    """
-    # context = {}
+class CheckAuthenticationView(APIView):
+    def get(self, request, format=None):
 
-    if request.method == 'POST':
-        # form = AccountAuthenticationForm(request.POST)
-        utilizator = request.data['username']
-        password = request.data['password']
-        instanta = request.data['instanta']
-        user = authenticate(utilizator=utilizator,
-                            password=password, instanta=instanta)
+        user = self.request.user
+        print(self.request.user.is_authenticated)
+        try:
+            isAuthenticated = user.is_authenticated
 
-        # if user == (-1):
-        #     messages.error(request, "Eroare la conectarea bazei de date")
-        #     return redirect("/")
-        if user:
-            login(request, user)
-            userDetails = MyUser.objects.get(utilizator=user.utilizator)
-            serializer = MyUserSerializer(userDetails)
-            return Response(serializer.data, status=200)
-        else:
-            return JsonResponse({'detail': 'Invalid credentials'}, status=400)
-    else:
-        return Response({"details": "Nu este POST"})
+            if (isAuthenticated):
+                return Response({"isAuthenticated": "success"})
+            else:
+                return Response({"isAuthenticated": "error"})
+        except:
+            return Response({"error": "Something went wrong when checking authentication status"})
 
 
-def logout_view(request):
-    if not request.user.is_authenticated:
-        return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
+@method_decorator(csrf_protect, name='dispatch')
+class LoginView(APIView):
+    permission_classes = (permissions.AllowAny, )
 
-    logout(request)
-    return JsonResponse({'detail': 'Successfully logged out.'})
+    def post(self, request, format=None):
+        data = self.request.data
+
+        utilizator = data['username']
+        password = data['password']
+        instanta = data['instanta']
+
+        try:
+            user = authenticate(utilizator=utilizator,
+                                password=password, instanta=instanta)
+            if user is not None:
+                login(request, user)
+                return Response({"success": "User logged in successfully"})
+            else:
+                return Response({"error": "Error logging in"})
+        except:
+            return Response({"error": "Something went wrong with logging in"})
 
 
-class SessionView(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+class LogoutView(APIView):
+    def post(self, request, format=None):
+        try:
+            logout(request)
+            return Response({"success": "Logged out"})
+        except:
+            return Response({"error": "Something went wrong with user logging out"})
 
-    @staticmethod
-    def get(request, format=None):
-        serializer = MyUserSerializer(request.user)
-        print(serializer)
+
+class GetUsersView(APIView):
+    permission_classes = (permissions.AllowAny, )
+
+    def get(self, request, format=None):
+        users = MyUser.objects.all()
+
+        serializer = MyUserSerializer(users, many=True)
         return Response(serializer.data)
-
-
-
-class WhoAmIView(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    @staticmethod
-    def get(request, format=None):
-        return Response({'username': request.user.utilizator, 'id': request.user.id})

@@ -1,16 +1,17 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import {createStructuredSelector} from 'reselect'
+import { selectIsAuthenticated } from '../../redux/users/user.selectors'
 
-const ProtectedRoute = ({ component, currentUser }) => {
-  console.log("Rendering ProtectedRoute");
-  console.log(currentUser);
+const ProtectedRoute = ({ component, isAuthenticated }) => {
+
   const Component = component;
-  return currentUser ? <Component /> : <Redirect to={{ pathname: "/login" }} />;
+  return isAuthenticated ? <Component /> : <Redirect to={{ pathname: "/login" }} />;
 };
 
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
+const mapStateToProps = createStructuredSelector  ({
+  isAuthenticated: selectIsAuthenticated
 });
 
 export default connect(mapStateToProps)(ProtectedRoute);

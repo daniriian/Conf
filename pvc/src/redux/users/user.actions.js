@@ -1,14 +1,16 @@
 import UserActionTypes from "./user.types";
+import Cookies from "js-cookie";
+import axios from "axios";
 
-export const setCurrentUser = (instanta, username, password, csrf) => {
+export const setCurrentUser = (instanta, username, password) => {
   return (dispatch) => {
     dispatch(userLogInStarted());
 
-    fetch("/users/login/", {
+    fetch("/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": csrf,
+        "X-CSRFToken": Cookies.get("csrftoken"),
       },
       credentials: "same-origin",
       body: JSON.stringify({
@@ -54,14 +56,68 @@ export const userLogOut = () => ({
   type: UserActionTypes.LOG_USER_OUT,
 });
 
-export const userLogOutAsync = () => {
-  return (dispatch) => {
-    fetch("/users/logout", {
-      credentials: "same-origin",
-    })
-      .then(() => dispatch(userLogOut()))
-      .catch((err) => {
-        console.log(err);
-      });
+export const userLogOutAsync = () => async (dispatch) => {
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
   };
+  const body = JSON.stringify({
+    withCredentials: true,
+  });
+
+  try {
+    const res = await axios.post("/users/logout", body, config);
+
+    if (res.data.error) {
+      dispatch({
+        type: UserActionTypes.USER_LOG_OUT_FAIL,
+      });
+    } else {
+      dispatch({
+        type: UserActionTypes.USER_LOG_OUT_SUCCESS,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: UserActionTypes.USER_LOG_OUT_FAIL,
+    });
+  }
+};
+
+export const checkAuthenticated = () => async (dispatch) => {
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const res = await axios.get("/users/authenticated", config);
+
+    if (res.data.error || res.data.isAuthenticated === "error") {
+      dispatch({
+        type: UserActionTypes.AUTHENTICATED_FAIL,
+        payload: false,
+      });
+    } else if (res.data.isAuthenticated === "success") {
+      dispatch({
+        type: UserActionTypes.AUTHENTICATED_SUCCESS,
+        payload: true,
+      });
+    } else {
+      dispatch({
+        type: UserActionTypes.AUTHENTICATED_FAIL,
+        payload: false,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: UserActionTypes.AUTHENTICATED_FAIL,
+      payload: false,
+    });
+  }
 };

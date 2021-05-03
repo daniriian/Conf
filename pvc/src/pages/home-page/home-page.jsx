@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter } from "react-router";
+import {Redirect} from 'react-router-dom'
 
 import Header from "../../components//header/header";
 
@@ -7,16 +7,18 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { userLogOutAsync } from "../../redux/users/user.actions";
-import { selectCurrentUser } from "../../redux/users/user.selectors";
+import { selectIsAuthenticated } from "../../redux/users/user.selectors";
 
-const HomePage = ({ dispatch, history, ...currentUser }) => {
+const HomePage = ({ dispatch, isAuthenticated}) => {
   const signOut = () => {
     dispatch(userLogOutAsync());
     console.log("Pushing /login to history");
-    history.push("/login");
+    // history.push("/login");
   };
 
-  console.log("Rendering HomePage");
+ if (!isAuthenticated) {
+   return <Redirect to="/login" />
+ }
 
   return (
     <div>
@@ -27,7 +29,7 @@ const HomePage = ({ dispatch, history, ...currentUser }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
+  isAuthenticated: selectIsAuthenticated,
 });
 
-export default withRouter(connect(mapStateToProps)(HomePage));
+export default connect(mapStateToProps)(HomePage);

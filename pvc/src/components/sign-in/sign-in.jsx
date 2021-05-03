@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { withRouter } from "react-router";
+import React, { useState } from "react";
+
 
 import { connect } from "react-redux";
 import { setCurrentUser } from "../../redux/users/user.actions.js";
 
 import FormInput from "../form-input/form-input";
 import CustomButton from "../custom-button/custom-button";
+import CSRFToken from '../CSRFToken/CSRFToken'
 
 import "./sign-in.scss";
 
@@ -16,11 +17,7 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
     parola: "",
   });
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     history.push("/home");
-  //   }
-  // }, [currentUser, history]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +28,7 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // history.push("/home");
+   
     dispatch(
       setCurrentUser(
         credentials.instanta,
@@ -46,7 +43,7 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
       parola: "",
     });
 
-    history.push("/");
+ 
   };
 
   return (
@@ -54,6 +51,7 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
       <h1 className='sign-in__title'>Autentificare</h1>
 
       <form onSubmit={handleSubmit} className='sign-in-form'>
+        <CSRFToken />
         <FormInput
           type='text'
           name='instanta'
@@ -94,4 +92,4 @@ const mapStateToProps = (state) => ({
   csrf: state.session.csrfToken,
 });
 
-export default withRouter(connect(mapStateToProps)(SignIn));
+export default connect(mapStateToProps)(SignIn);

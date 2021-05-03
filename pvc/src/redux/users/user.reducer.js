@@ -4,10 +4,18 @@ const INITIAL_STATE = {
   currentUser: null,
   loading: false,
   errorMessage: undefined,
+  isAuthenticated: undefined,
 };
 
 const UserReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case UserActionTypes.AUTHENTICATED_SUCCESS:
+    case UserActionTypes.AUTHENTICATED_FAIL:
+      return {
+        ...state,
+        isAuthenticated: action.payload,
+      };
+
     case UserActionTypes.START_USER_LOG_IN: {
       return {
         ...state,
@@ -21,6 +29,7 @@ const UserReducer = (state = INITIAL_STATE, action) => {
         currentUser: action.payload,
         loading: false,
         errorMessage: undefined,
+        isAuthenticated: true,
       };
     }
 
@@ -32,11 +41,15 @@ const UserReducer = (state = INITIAL_STATE, action) => {
       };
     }
 
-    case UserActionTypes.LOG_USER_OUT: {
+    case UserActionTypes.USER_LOG_OUT_SUCCESS: {
       return {
         ...state,
-        currentUser: null,
+        isAuthenticated: false,
       };
+    }
+
+    case UserActionTypes.USER_LOG_OUT_FAIL: {
+      return state;
     }
 
     default:

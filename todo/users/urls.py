@@ -1,17 +1,12 @@
 from django.urls import path, include
-
-
-from . import views
+from .views import getCSRFToken, LoginView, LogoutView, GetUsersView, CheckAuthenticationView
 
 
 urlpatterns = [
-    # path('register/', registration_view, name="register"),
-    # path('logout/', logout_view, name="logout"),
-    path('csrf/', views.get_csrf, name='csrf'),
-    path('login/', views.login_view, name="login"),
-    path('logout/', views.logout_view, name='api-logout'),
-    path('session/', views.SessionView.as_view(), name='session'),
-    path('whoami/', views.WhoAmIView.as_view(), name='whoami'),
-    # path('home/', home, name="home"),
-    # path('profile/', account_view, name="account"),
+    path('authenticated', CheckAuthenticationView.as_view()),
+    path('csrf_cookie', getCSRFToken.as_view(), name='csrf'),
+    path('login', LoginView.as_view(), name="login"),
+    path('logout', LogoutView.as_view(), name='api-logout'),
+    path('users', GetUsersView.as_view()),
+
 ]

@@ -1,5 +1,6 @@
 node_modules
 todo/frontend/.eslintcache
+todo/todo/settings.py
 .eslintcache
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
@@ -142,3 +143,4 @@ media/
 # **/migrations/**
 # !**/migrations
 # !**/migrations/__init__.py
+
