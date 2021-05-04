@@ -175,14 +175,6 @@ class VideoDeleteView(APIView):
             return Response({"error": "Eroare grava la stergerea videoconferintei"})
 
 
-# @ api_view(['DELETE'])
-# @permission_classes([IsAdminUser])
-# def TodoDeleteView(request, *args, **kwargs):
-#     qs = Todo.objects.get(id=request.data["id"])
-#     qs.delete()
-#     return Response({}, status=200)
-
-
 @ api_view(['GET', 'PUT'])
 @ permission_classes([IsAdminUser])
 def todoDetailsView(request, todo_id, *args, **kwargs):
