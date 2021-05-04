@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 
-
 import { connect } from "react-redux";
 import { setCurrentUser } from "../../redux/users/user.actions.js";
 
 import FormInput from "../form-input/form-input";
 import CustomButton from "../custom-button/custom-button";
-import CSRFToken from '../CSRFToken/CSRFToken'
+import CSRFToken from "../CSRFToken/CSRFToken";
 
 import "./sign-in.scss";
 
-const SignIn = ({ history, dispatch, csrf, currentUser }) => {
+const SignIn = ({ dispatch }) => {
   const [credentials, setCredentials] = useState({
     instanta: "",
     utilizator: "",
     parola: "",
   });
 
-
+  const { instanta, utilizator, parola } = credentials;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,22 +27,13 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
-    dispatch(
-      setCurrentUser(
-        credentials.instanta,
-        credentials.utilizator,
-        credentials.parola,
-        csrf
-      )
-    );
+
+    dispatch(setCurrentUser(instanta, utilizator, parola));
     setCredentials({
       instanta: "",
       utilizator: "",
       parola: "",
     });
-
- 
   };
 
   return (
@@ -55,7 +45,7 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
         <FormInput
           type='text'
           name='instanta'
-          value={credentials.instanta}
+          value={instanta}
           label='Instanta'
           placeholder='Instanta'
           onChange={handleChange}
@@ -64,7 +54,7 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
         <FormInput
           type='text'
           name='utilizator'
-          value={credentials.utilizator}
+          value={utilizator}
           label='Utilizator'
           placeholder='Utilizator'
           onChange={handleChange}
@@ -73,7 +63,7 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
         <FormInput
           type='password'
           name='parola'
-          value={credentials.parola}
+          value={parola}
           label='Parola'
           placeholder='Parola'
           onChange={handleChange}
@@ -89,7 +79,6 @@ const SignIn = ({ history, dispatch, csrf, currentUser }) => {
 
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
-  csrf: state.session.csrfToken,
 });
 
 export default connect(mapStateToProps)(SignIn);
