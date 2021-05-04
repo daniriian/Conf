@@ -2,40 +2,30 @@ import UserActionTypes from "./user.types";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-export const setCurrentUser = (instanta, username, password) => {
-  return (dispatch) => {
-    dispatch(userLogInStarted());
-
-    fetch("/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": Cookies.get("csrftoken"),
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        instanta: instanta,
-      }),
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          return res.json();
-        } else {
-          throw new Error(res.statusText);
-        }
-      })
-      .then((data) => {
-        console.log(data);
-        dispatch(userLoginSuccess(data));
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch(userLogInFailure(err));
-      });
+export const setCurrentUser = (instanta, username, password) => async (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
   };
+
+  const body = JSON.stringify({ instanta, username, password });
+
+  try {
+    const res = await axios.post("/users/login", body, config);
+
+    if (res.data.error) {
+      dispatch(userLogInFailure(res.data.error));
+    } else {
+      dispatch(userLoginSuccess(res.data));
+    }
+  } catch (err) {
+    dispatch(userLogInFailure(err));
+  }
 };
 
 export const userLogInStarted = () => ({
@@ -118,6 +108,33 @@ export const checkAuthenticated = () => async (dispatch) => {
     dispatch({
       type: UserActionTypes.AUTHENTICATED_FAIL,
       payload: false,
+    });
+  }
+};
+
+export const loadUser = () => async (dispatch) => {
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const res = await axios.get("/users/user", config);
+    if (res.data.error) {
+      dispatch({
+        type: UserActionTypes.LOAD_USER_PROFILE_FAIL,
+      });
+    } else {
+      dispatch({
+        type: UserActionTypes.LOAD_USER_PROFILE_SUCCESS,
+        payload: res.data.currentUser,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: UserActionTypes.LOAD_USER_PROFILE_FAIL,
     });
   }
 };

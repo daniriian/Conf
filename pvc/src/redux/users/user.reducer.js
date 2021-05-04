@@ -48,9 +48,15 @@ const UserReducer = (state = INITIAL_STATE, action) => {
       };
     }
 
-    case UserActionTypes.USER_LOG_OUT_FAIL: {
+    case UserActionTypes.USER_LOG_OUT_FAIL:
+    case UserActionTypes.LOAD_USER_PROFILE_FAIL:
       return state;
-    }
+
+    case UserActionTypes.LOAD_USER_PROFILE_SUCCESS:
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
 
     default:
       return state;

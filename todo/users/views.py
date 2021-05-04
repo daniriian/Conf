@@ -29,6 +29,7 @@ class CheckAuthenticationView(APIView):
     def get(self, request, format=None):
 
         user = self.request.user
+        print("CheckAuthenticationView")
         print(self.request.user.is_authenticated)
         try:
             isAuthenticated = user.is_authenticated
@@ -57,7 +58,8 @@ class LoginView(APIView):
                                 password=password, instanta=instanta)
             if user is not None:
                 login(request, user)
-                return Response({"success": "User logged in successfully"})
+                serializer = MyUserSerializer(user)
+                return Response({"success": "User logged in successfully", "curentUser": serializer.data})
             else:
                 return Response({"error": "Error logging in"})
         except:
@@ -81,3 +83,24 @@ class GetUsersView(APIView):
 
         serializer = MyUserSerializer(users, many=True)
         return Response(serializer.data)
+
+
+class GetUserProfileView(APIView):
+    def get(self, request, format=None):
+
+        try:
+            user = self.request.user
+            currentUser = MyUser.objects.get(id=user.id)
+            serializer = MyUserSerializer(currentUser)
+
+            if serializer.data:
+                print("Successfully retrieved user details")
+                print(serializer.data)
+                return Response({"success":"Successfully retrieved user details", "currentUser": serializer.data})
+            else:
+                 return Response({"Error":"Error while trying to get user details"})
+
+        except:
+
+            return Response({"Error":"Error while trying to get user details"})
+            

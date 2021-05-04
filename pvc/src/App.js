@@ -12,20 +12,21 @@ import HomePage from "./pages/home-page/home-page";
 import { createStructuredSelector } from "reselect";
 import { selectIsAuthenticated } from "./redux/users/user.selectors";
 
-import { checkAuthenticated } from "./redux/users/user.actions";
+import { checkAuthenticated, loadUser } from "./redux/users/user.actions";
 
-const App = ({ isAuthenticated, checkAuthenticated }) => {
+const App = ({ isAuthenticated, checkAuthenticated, loadUser }) => {
   useEffect(() => {
     checkAuthenticated();
-  }, [isAuthenticated, checkAuthenticated]);
+    loadUser();
+  }, [isAuthenticated, checkAuthenticated, loadUser]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path='/' component={HomePage} />
 
-        <ProtectedRoute exact path="/home" component={HomePage} />
-        <Route exact path="/login" component={SignInPage} />
+        <ProtectedRoute exact path='/home' component={HomePage} />
+        <Route exact path='/login' component={SignInPage} />
       </Switch>
     </div>
   );
@@ -35,4 +36,4 @@ const mapStateToProps = createStructuredSelector({
   isAuthenticated: selectIsAuthenticated,
 });
 
-export default connect(mapStateToProps, { checkAuthenticated })(App);
+export default connect(mapStateToProps, { checkAuthenticated, loadUser })(App);
