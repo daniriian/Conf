@@ -1,3 +1,4 @@
+from django.core import serializers
 from rest_framework.views import APIView
 from rest_framework import permissions
 
@@ -11,7 +12,7 @@ from django.contrib import messages
 from datetime import datetime
 from django.views import generic
 from django.http import JsonResponse, HttpResponse
-from .serializers import TodoSerializer, TodoCreateSerializer, SalaJudecataSerializer, TerminalSerializer
+from .serializers import TodoSerializer, TodoCreateSerializer, SalaJudecataSerializer, TerminalSerializer, MyUserSerializer
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 
@@ -81,7 +82,7 @@ def isFree(currentTodo, todayTodos):
     for todo in todayTodos:
         if (current_start_time >= todo.start_time and current_start_time < todo.end_time) or (current_end_time > todo.start_time and current_end_time <= todo.end_time):
             if (currentTodo['caller'].id == todo.caller.id):
-                return ({"error": "Apelantul nu este liber in intervalul specificat"})
+                return ({"status": "error", "message": "Apelantul nu este liber in intervalul specificat"})
 
             else:
                 dest = todo.call_to.all()
@@ -96,95 +97,94 @@ def isFree(currentTodo, todayTodos):
 @method_decorator(csrf_protect, name='dispatch')
 class AddVideoconferenceView(APIView):
     def post(self, request, format=None):
-       
+
         data = self.request.data
-        serializer = TodoCreateSerializer(data=data)
-        dailyVC = Todo.objects.filter(data=data['data'])
+        try:
+            serializer = TodoCreateSerializer(data=data)
+            dailyVC = Todo.objects.filter(data=data['data'])
 
-        if serializer.is_valid():
-            result = isFree(serializer.validated_data, dailyVC)
+            if serializer.is_valid():
+                result = isFree(serializer.validated_data, dailyVC)
 
-            if result["status"]=="success":
-                serializer.save()
-                return Response({"success": "Videoconferinta a fost adaugata cu succes", "vc": serializer.data})
+                if result["status"] == "success":
+                    serializer.save()
+                    return Response({"success": "Videoconferinta a fost adaugata cu succes", "vc": serializer.data})
 
-            else:
-                return Response({"error": "Eroare la adaugarea videoconferintei"})
-        return Response({"error": "Eroare la adaugarea videoconferintei"})
-
-# @api_view(['POST'])
-# @permission_classes([AllowAny])
-# def TodoCreateView(request, *args, **kwargs):
-#     serializer = TodoCreateSerializer(data=request.data)
-#     todayTodos = Todo.objects.filter(data=request.data['data'])
-#     if serializer.is_valid():
-#         result = isFree(serializer.validated_data, todayTodos)
-#         if result['status']:
-#             serializer.save()
-#             return Response(serializer.data, status=201)
-#         else:
-#             message = result['message']
-#             return Response(message, status=400)
-#     return Response(serializer.errors, status=400)
-
+                else:
+                    return Response({"error": result['message']})
+        except:
+            return Response({"error": "A intervenit o eroare la adaugarea videoconferintei"})
 
 
 class GetVCListView(APIView):
-     permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.AllowAny, )
 
-     def get(self, request, format=None):
+    def get(self, request, format=None):
         data = self.request.data
 
         try:
-            qs = Todo.objects.filter(data=data['data']).order_by('data', 'start_time', 'caller')
+            qs = Todo.objects.filter(data=data['data']).order_by(
+                'data', 'start_time', 'caller')
             serializer = TodoSerializer(qs, many=True)
-            return Response({"success":"Lista de videoconferinte a fost obtinuta cu succes", "vc_list": serializer.data})
+            return Response({"success": "Lista de videoconferinte a fost obtinuta cu succes", "vc_list": serializer.data})
         except:
-            return Respone({"error":"Eroare la obtinerea listei de videoconferinte"})
+            return Respone({"error": "Eroare la obtinerea listei de videoconferinte"})
 
 
+class CallersListView(APIView):
+    def get(self, request, format="None"):
 
-# @ api_view(['GET'])
-# def todoListView(request, *args, **kwargs):
-#     qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
-
-#     selectedDate = request.GET.get('data', '')
-#     if selectedDate:
-#         qs = qs.filter(data=selectedDate)
-#     else:
-#         print("Nu avem acest parametru")
-
-#     serializer = TodoSerializer(qs, many=True)
-#     return Response(serializer.data, status=200)
+        try:
+            qs = SalaJudecata.objects.all()
+            serializer = SalaJudecataSerializer(qs, many=True)
+            return Response({"success": "Callers retrieved successfully", "callersList": serializer.data})
+        except:
+            return Response({"error": "Something went wrong while trying to get callers"})
 
 
-@ api_view(['GET'])
-def callersView(request, *args, **kwargs):
+class TerminalListView(APIView):
+    def get(self, request, format=None):
 
-    qs = SalaJudecata.objects.all()
-    serializer = SalaJudecataSerializer(qs, many=True)
-
-    return Response(serializer.data, status=200)
-
-
-@ api_view(['GET'])
-def terminalsView(request, *args, **kwargs):
-    qs = Terminal.objects.all()
-
-    serializer = TerminalSerializer(qs, many=True)
-    return Response(serializer.data, status=200)
+        try:
+            qs = Terminal.objects.all()
+            serializer = TerminalSerializer(qs, many=True)
+            return Response({"success": "Terminals list retrieved successfully", "terminalsList": serializer.data})
+        except:
+            return Response({"error": "Something went wrong while trying to get terminals"})
 
 
-@ api_view(['DELETE'])
-@permission_classes([IsAdminUser])
-def TodoDeleteView(request, *args, **kwargs):
-    qs = Todo.objects.get(id=request.data["id"])
-    qs.delete()
-    return Response({}, status=200)
+@method_decorator(csrf_protect, name='dispatch')
+class VideoDeleteView(APIView):
+    def delete(self, request, format=None):
+        user_id = self.request.user.id
+        data = self.request.data
+
+        try:
+            qs = Todo.objects.get(id=data['id'])
+            print(qs)
+            serializer = TodoSerializer(qs)
+            print(serializers)
+            userSerializer = MyUserSerializer(serializer.data['adaugat_de'])
+            print(userSerializer)
+            if user_id == userSerializer.data['id']:
+                qs.delete()
+                return Response({"success": "Videoconferinta a fost stearsa cu succes"})
+            else:
+                return Response({"error": "Nu puteti sterge videoconferinta adaugata de alta persoana"})
+        except:
+            return Response({"error": "Eroare grava la stergerea videoconferintei"})
+
+
+# @ api_view(['DELETE'])
+# @permission_classes([IsAdminUser])
+# def TodoDeleteView(request, *args, **kwargs):
+#     qs = Todo.objects.get(id=request.data["id"])
+#     qs.delete()
+#     return Response({}, status=200)
 
 
 @ api_view(['GET', 'PUT'])
-@permission_classes([IsAdminUser])
+@ permission_classes([IsAdminUser])
 def todoDetailsView(request, todo_id, *args, **kwargs):
     qs = Todo.objects.get(id=todo_id)
 
@@ -212,7 +212,7 @@ def todoDetailsView(request, todo_id, *args, **kwargs):
 
 # -------------------------------------------------------------------
 @ api_view(['GET', 'POST'])
-@permission_classes([AllowAny])
+@ permission_classes([AllowAny])
 def call_to_ip(request, *args, **kwargs):
 
     print('Initiating the call')

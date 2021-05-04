@@ -2,14 +2,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-   
-    path("/vc", views.GetVCListView.as_view()),
+
+    path("vc", views.GetVCListView.as_view()),
     path("<int:todo_id>", views.todoDetailsView),
-    path("/adauga", views.AddVideoconferenceView.as_view()),
+    path("adauga", views.AddVideoconferenceView.as_view()),
     # path("create/", views.TodoCreateView),
-    path("callers/", views.callersView),
-    path("terminals/", views.terminalsView),
-    path("delete/", views.TodoDeleteView),
+    path("callers", views.CallersListView.as_view()),
+    path("terminals", views.TerminalListView.as_view()),
+    path("delete", views.VideoDeleteView.as_view()),
     path("scraper/", views.call_to_ip),
     #     path('delete/<int:todo_id>', views.delete, name='delete'),
     #     path('mark_complete/<int:todo_id>',
