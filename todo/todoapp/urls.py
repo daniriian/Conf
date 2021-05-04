@@ -6,7 +6,7 @@ urlpatterns = [
     path("/vc", views.GetVCListView.as_view()),
     path("<int:todo_id>", views.todoDetailsView),
     path("/adauga", views.AddVideoconferenceView.as_view()),
-    path("create/", views.TodoCreateView),
+    # path("create/", views.TodoCreateView),
     path("callers/", views.callersView),
     path("terminals/", views.terminalsView),
     path("delete/", views.TodoDeleteView),

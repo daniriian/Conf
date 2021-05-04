@@ -89,8 +89,8 @@ def isFree(currentTodo, todayTodos):
                 if currentTodo['call_to'][0] in dest:
                     print(
                         'Unul dintre destinari este ocupat in perioada specificata')
-                    return ({"error": str(currentTodo['call_to'][0]) + " este deja ocupat in perioada selectata ..."})
-    return ({"success": "All OK"})
+                    return ({"status": "error", "message": str(currentTodo['call_to'][0]) + " este deja ocupat in perioada selectata ..."})
+    return ({"status": "success", "message": "All OK"})
 
 
 @method_decorator(csrf_protect, name='dispatch')
@@ -98,36 +98,34 @@ class AddVideoconferenceView(APIView):
     def post(self, request, format=None):
        
         data = self.request.data
-        print(f'*************************************************  {data}')
         serializer = TodoCreateSerializer(data=data)
         dailyVC = Todo.objects.filter(data=data['data'])
 
         if serializer.is_valid():
             result = isFree(serializer.validated_data, dailyVC)
 
-            if result == 'success':
+            if result["status"]=="success":
                 serializer.save()
-                return Response({"success": "Videoconferinta a fost adaugata cu succes", vc: serializer.data})
+                return Response({"success": "Videoconferinta a fost adaugata cu succes", "vc": serializer.data})
 
             else:
                 return Response({"error": "Eroare la adaugarea videoconferintei"})
         return Response({"error": "Eroare la adaugarea videoconferintei"})
 
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def TodoCreateView(request, *args, **kwargs):
-    print(f'*************************************************  {request.data}')
-    serializer = TodoCreateSerializer(data=request.data)
-    todayTodos = Todo.objects.filter(data=request.data['data'])
-    if serializer.is_valid():
-        result = isFree(serializer.validated_data, todayTodos)
-        if result['status']:
-            serializer.save()
-            return Response(serializer.data, status=201)
-        else:
-            message = result['message']
-            return Response(message, status=400)
-    return Response(serializer.errors, status=400)
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def TodoCreateView(request, *args, **kwargs):
+#     serializer = TodoCreateSerializer(data=request.data)
+#     todayTodos = Todo.objects.filter(data=request.data['data'])
+#     if serializer.is_valid():
+#         result = isFree(serializer.validated_data, todayTodos)
+#         if result['status']:
+#             serializer.save()
+#             return Response(serializer.data, status=201)
+#         else:
+#             message = result['message']
+#             return Response(message, status=400)
+#     return Response(serializer.errors, status=400)
 
 
 
