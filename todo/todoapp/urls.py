@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
 
     path("vc", views.GetVCListView.as_view()),
-    path("<int:todo_id>", views.todoDetailsView),
+    path("<int:todo_id>", views.VideoDetailsView.as_view()),
     path("adauga", views.AddVideoconferenceView.as_view()),
     # path("create/", views.TodoCreateView),
     path("callers", views.CallersListView.as_view()),

@@ -175,6 +175,14 @@ class VideoDeleteView(APIView):
             return Response({"error": "Eroare grava la stergerea videoconferintei"})
 
 
+class VideoDetailsView(APIView):
+    def get(self, request, todo_id, format=None):
+
+        qs = Todo.objects.get(id=todo_id)
+        serializer = TodoSerializer(qs)
+        return Response({"success": "Detaliile videoconferintei s-au obtinut cu succes", "videoconferinta": serializer.data})
+
+
 @ api_view(['GET', 'PUT'])
 @ permission_classes([IsAdminUser])
 def todoDetailsView(request, todo_id, *args, **kwargs):
