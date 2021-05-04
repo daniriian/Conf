@@ -1,0 +1,28 @@
+.lista {
+  width: 95%;
+  margin: 0 auto;
+  .header-container {
+    width: 100%;
+
+    .header-list {
+      width: 100%;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: nowrap;
+
+      &__item {
+        flex: 1;
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .h-line {
+    border-bottom: 1px solid rgb(158, 158, 158);
+    margin-top: 8px;
+  }
+}

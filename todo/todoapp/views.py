@@ -1,3 +1,9 @@
+from rest_framework.views import APIView
+from rest_framework import permissions
+
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
+
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Todo, SalaJudecata, Terminal
 from .forms import TodoForm
@@ -75,7 +81,7 @@ def isFree(currentTodo, todayTodos):
     for todo in todayTodos:
         if (current_start_time >= todo.start_time and current_start_time < todo.end_time) or (current_end_time > todo.start_time and current_end_time <= todo.end_time):
             if (currentTodo['caller'].id == todo.caller.id):
-                return ({"status": False, "message": "Apelantul nu este liber in intervalul specificat"})
+                return ({"error": "Apelantul nu este liber in intervalul specificat"})
 
             else:
                 dest = todo.call_to.all()
@@ -83,9 +89,29 @@ def isFree(currentTodo, todayTodos):
                 if currentTodo['call_to'][0] in dest:
                     print(
                         'Unul dintre destinari este ocupat in perioada specificata')
-                    return ({"status": False, "message": str(currentTodo['call_to'][0]) + " este deja ocupat in perioada selectata ..."})
-    return ({"status": True, "message": "All OK"})
+                    return ({"error": str(currentTodo['call_to'][0]) + " este deja ocupat in perioada selectata ..."})
+    return ({"success": "All OK"})
 
+
+@method_decorator(csrf_protect, name='dispatch')
+class AddVideoconferenceView(APIView):
+    def post(self, request, format=None):
+       
+        data = self.request.data
+        print(f'*************************************************  {data}')
+        serializer = TodoCreateSerializer(data=data)
+        dailyVC = Todo.objects.filter(data=data['data'])
+
+        if serializer.is_valid():
+            result = isFree(serializer.validated_data, dailyVC)
+
+            if result == 'success':
+                serializer.save()
+                return Response({"success": "Videoconferinta a fost adaugata cu succes", vc: serializer.data})
+
+            else:
+                return Response({"error": "Eroare la adaugarea videoconferintei"})
+        return Response({"error": "Eroare la adaugarea videoconferintei"})
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -104,18 +130,34 @@ def TodoCreateView(request, *args, **kwargs):
     return Response(serializer.errors, status=400)
 
 
-@ api_view(['GET'])
-def todoListView(request, *args, **kwargs):
-    qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
 
-    selectedDate = request.GET.get('data', '')
-    if selectedDate:
-        qs = qs.filter(data=selectedDate)
-    else:
-        print("Nu avem acest parametru")
+class GetVCListView(APIView):
+     permission_classes = (permissions.AllowAny, )
 
-    serializer = TodoSerializer(qs, many=True)
-    return Response(serializer.data, status=200)
+     def get(self, request, format=None):
+        data = self.request.data
+
+        try:
+            qs = Todo.objects.filter(data=data['data']).order_by('data', 'start_time', 'caller')
+            serializer = TodoSerializer(qs, many=True)
+            return Response({"success":"Lista de videoconferinte a fost obtinuta cu succes", "vc_list": serializer.data})
+        except:
+            return Respone({"error":"Eroare la obtinerea listei de videoconferinte"})
+
+
+
+# @ api_view(['GET'])
+# def todoListView(request, *args, **kwargs):
+#     qs = Todo.objects.all().order_by('data', 'start_time', 'caller')
+
+#     selectedDate = request.GET.get('data', '')
+#     if selectedDate:
+#         qs = qs.filter(data=selectedDate)
+#     else:
+#         print("Nu avem acest parametru")
+
+#     serializer = TodoSerializer(qs, many=True)
+#     return Response(serializer.data, status=200)
 
 
 @ api_view(['GET'])

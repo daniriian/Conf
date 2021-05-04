@@ -25,7 +25,7 @@ const HomePage = ({ isAuthenticated, selectedDate }) => {
       <Header />
       <section className='videoconferinte'>
         <h1 className='title'>
-          Lista videoconferintelor din data:
+          Lista videoconferinţelor din data:
           <span className='videoconferinte__data'>
             {format_date(selectedDate)}
           </span>

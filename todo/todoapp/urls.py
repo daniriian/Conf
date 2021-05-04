@@ -2,9 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.todoListView),
-    # path("", views.todoListViewByDate),
+   
+    path("/vc", views.GetVCListView.as_view()),
     path("<int:todo_id>", views.todoDetailsView),
+    path("/adauga", views.AddVideoconferenceView.as_view()),
     path("create/", views.TodoCreateView),
     path("callers/", views.callersView),
     path("terminals/", views.terminalsView),
