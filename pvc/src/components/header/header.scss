@@ -16,41 +16,70 @@
   }
 
   .nav {
-  }
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  .react-datepicker-wrapper {
-    margin-left: auto;
-    width: 150px;
-    .react-datepicker__input-container {
-      height: 2rem;
+    .react-datepicker-wrapper {
+      margin-left: auto;
+      width: 150px;
+      .react-datepicker__input-container {
+        height: 2rem;
 
-      input {
-        text-align: center;
-        height: 100%;
-        display: block;
-        width: 100%;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-radius: 0.25rem;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-        &:focus {
+        input {
+          text-align: center;
+          height: 100%;
+          display: block;
+          width: 100%;
+          padding: 0.375rem 0.75rem;
+          font-size: 1rem;
+          line-height: 1.5;
           color: #495057;
           background-color: #fff;
-          border-color: #80bdff;
-          outline: 0;
-          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          background-clip: padding-box;
+          border: 1px solid #ced4da;
+          border-radius: 0.25rem;
+          transition: border-color 0.15s ease-in-out,
+            box-shadow 0.15s ease-in-out;
+
+          &:focus {
+            color: #495057;
+            background-color: #fff;
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          }
         }
+      }
+    }
+
+    &__item {
+      padding: 5px 1rem;
+    }
+
+    &__link {
+      text-transform: capitalize;
+      text-decoration: none;
+      color: rgb(0, 123, 255);
+      cursor: pointer;
+
+      &:visited,
+      &:active {
+        color: rgb(0, 123, 255);
+      }
+
+      &:hover {
+        color: rgb(41, 5, 199);
       }
     }
   }
 
   .user {
     margin-left: 2rem;
+
+    &__name {
+      text-transform: capitalize;
+    }
   }
 }

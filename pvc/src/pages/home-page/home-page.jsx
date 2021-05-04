@@ -1,21 +1,21 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import Header from "../../components//header/header";
+import Header from "../../components/header/header";
 
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { userLogOutAsync } from "../../redux/users/user.actions";
 import { selectIsAuthenticated } from "../../redux/users/user.selectors";
+import { selectPickedDate } from "../../redux/date/date.selectors";
 
-const HomePage = ({ dispatch, isAuthenticated }) => {
-  const signOut = () => {
-    dispatch(userLogOutAsync());
-    console.log("Pushing /login to history");
-    // history.push("/login");
-  };
+import ListaVideoconferinte from "../../components/ListaVideoconferinte/ListaVideoconferinte";
 
+import { format_date } from "../../utils/index";
+
+import "./home-page.scss";
+
+const HomePage = ({ isAuthenticated, selectedDate }) => {
   if (!isAuthenticated) {
     return <Redirect to='/login' />;
   }
@@ -23,13 +23,22 @@ const HomePage = ({ dispatch, isAuthenticated }) => {
   return (
     <div>
       <Header />
-      <button onClick={signOut}>SIGN OUT</button>
+      <section className='videoconferinte'>
+        <h1 className='title'>
+          Lista videoconferintelor din data:
+          <span className='videoconferinte__data'>
+            {format_date(selectedDate)}
+          </span>
+        </h1>
+        <ListaVideoconferinte />
+      </section>
     </div>
   );
 };
 
 const mapStateToProps = createStructuredSelector({
   isAuthenticated: selectIsAuthenticated,
+  selectedDate: selectPickedDate,
 });
 
 export default connect(mapStateToProps)(HomePage);
