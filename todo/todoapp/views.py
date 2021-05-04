@@ -161,11 +161,8 @@ class VideoDeleteView(APIView):
 
         try:
             qs = Todo.objects.get(id=data['id'])
-            print(qs)
             serializer = TodoSerializer(qs)
-            print(serializers)
             userSerializer = MyUserSerializer(serializer.data['adaugat_de'])
-            print(userSerializer)
             if user_id == userSerializer.data['id']:
                 qs.delete()
                 return Response({"success": "Videoconferinta a fost stearsa cu succes"})
@@ -177,37 +174,41 @@ class VideoDeleteView(APIView):
 
 class VideoDetailsView(APIView):
     def get(self, request, todo_id, format=None):
+        try:
+            qs = Todo.objects.get(id=todo_id)
+            serializer = TodoSerializer(qs)
+            return Response({"success": "Detaliile videoconferintei s-au obtinut cu succes", "videoconferinta": serializer.data})
+        except:
+            return Response({"error": "Eroare grava la obtinerea detaliilor videoconferintei"})
 
-        qs = Todo.objects.get(id=todo_id)
-        serializer = TodoSerializer(qs)
-        return Response({"success": "Detaliile videoconferintei s-au obtinut cu succes", "videoconferinta": serializer.data})
+    def put(self, request, todo_id, format=None):
+        user_id = self.request.user.id
 
+        try:
+            qs = Todo.objects.get(id=todo_id)
 
-@ api_view(['GET', 'PUT'])
-@ permission_classes([IsAdminUser])
-def todoDetailsView(request, todo_id, *args, **kwargs):
-    qs = Todo.objects.get(id=todo_id)
+            serializer = TodoSerializer(qs)
 
-    if request.method == 'GET':
-        serializer = TodoSerializer(qs)
-        return Response(serializer.data, status=200)
+            adaugat_de = serializer.data['adaugat_de']['id']
 
-    elif request.method == 'PUT':
-        todo_data = JSONParser().parse(request)
-        serializer = TodoCreateSerializer(qs, data=todo_data)
+            if user_id == adaugat_de:
 
-        todayTodos = Todo.objects.filter(
-            data=todo_data['data']).exclude(id=qs.id)
-        if serializer.is_valid():
+                incoming_data = JSONParser().parse(request)
 
-            result = isFree(serializer.validated_data, todayTodos)
-            if result['status']:
-                serializer.save()
-                return Response(serializer.data, status=200)
-            else:
-                message = result['message']
-                return Response(message, status=400)
-        return Response(serializer.errors, status=400)
+                serializer = TodoCreateSerializer(qs, data=incoming_data)
+                if serializer.is_valid():
+                    todos_of_day = Todo.objects.filter(
+                        data=incoming_data['data']).exclude(id=qs.id)
+                    result = isFree(serializer.validated_data, todos_of_day)
+
+                    if result["status"] == "success":
+                        serializer.save()
+                        return Response({"success": "Videoconferinta a fost modificata cu succes", "videoconferinta": serializer.data})
+                    else:
+                        return Response({"error": result['message']})
+                return Response({"error": serializer.errors})
+        except:
+            return Response({"error": "Eroare grava la modificarea videoconferintei"})
 
 
 # -------------------------------------------------------------------
