@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+
+import { createStructuredSelector } from "reselect";
+import { selectVideoCallsList } from "../../redux/videoconferinte/videocall.selectors";
+
+import { getVideoConferenceListByDate } from "../../redux/videoconferinte/videocall.actions";
 
 import Videoconferinta from "../Videoconferinta/Videoconferinta";
 
 import "./ListaVideoconferinte.scss";
 
-const ListaVideoconferinte = () => {
+const ListaVideoconferinte = ({
+  data,
+  getVideoConferenceListByDate,
+  videoCallsList,
+}) => {
+  useEffect(() => {
+    getVideoConferenceListByDate(data);
+  }, []);
+
   return (
     <div className='lista'>
       <header className='header-container'>
@@ -20,9 +34,17 @@ const ListaVideoconferinte = () => {
         </ul>
       </header>
       <div className='h-line'></div>
-      <Videoconferinta />
+      {videoCallsList.map((item) => (
+        <Videoconferinta key={item.id} videocall={item} />
+      ))}
     </div>
   );
 };
 
-export default ListaVideoconferinte;
+const mapStateToProps = createStructuredSelector({
+  videoCallsList: selectVideoCallsList,
+});
+
+export default connect(mapStateToProps, { getVideoConferenceListByDate })(
+  ListaVideoconferinte
+);

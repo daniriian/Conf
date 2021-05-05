@@ -27,10 +27,10 @@ const HomePage = ({ isAuthenticated, selectedDate }) => {
         <h1 className='title'>
           Lista videoconferinţelor din data:
           <span className='videoconferinte__data'>
-            {format_date(selectedDate)}
+            {format_date(selectedDate).ddmmyyy}
           </span>
         </h1>
-        <ListaVideoconferinte />
+        <ListaVideoconferinte data={selectedDate} />
       </section>
     </div>
   );

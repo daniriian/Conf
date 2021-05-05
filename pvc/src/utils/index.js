@@ -3,6 +3,7 @@ export const format_date = (date) => {
   let mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
   let yyyy = date.getFullYear();
 
-  let formated_date = dd + "/" + mm + "/" + yyyy;
-  return formated_date;
+  let ddmmyyyy = dd + "/" + mm + "/" + yyyy;
+  let yyyymmdd = yyyy + "-" + mm + "-" + dd;
+  return { ddmmyyy: ddmmyyyy, yyyymmdd: yyyymmdd };
 };
