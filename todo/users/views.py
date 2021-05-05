@@ -29,8 +29,8 @@ class CheckAuthenticationView(APIView):
     def get(self, request, format=None):
 
         user = self.request.user
-        print("CheckAuthenticationView")
-        print(self.request.user.is_authenticated)
+        # print("CheckAuthenticationView")
+        # print(self.request.user.is_authenticated)
         try:
             isAuthenticated = user.is_authenticated
 
@@ -94,8 +94,8 @@ class GetUserProfileView(APIView):
             serializer = MyUserSerializer(currentUser)
 
             if serializer.data:
-                print("Successfully retrieved user details")
-                print(serializer.data)
+                # print("Successfully retrieved user details")
+                # print(serializer.data)
                 return Response({"success":"Successfully retrieved user details", "currentUser": serializer.data})
             else:
                  return Response({"Error":"Error while trying to get user details"})

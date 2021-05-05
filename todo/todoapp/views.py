@@ -119,16 +119,17 @@ class AddVideoconferenceView(APIView):
 class GetVCListView(APIView):
     permission_classes = (permissions.AllowAny, )
 
-    def get(self, request, format=None):
-        data = self.request.data
+    def post(self, request, format=None):
+        datax = self.request.data
+        print(f'********************************************{datax}')
 
         try:
-            qs = Todo.objects.filter(data=data['data']).order_by(
+            qs = Todo.objects.filter(data=datax['data']).order_by(
                 'data', 'start_time', 'caller')
             serializer = TodoSerializer(qs, many=True)
             return Response({"success": "Lista de videoconferinte a fost obtinuta cu succes", "vc_list": serializer.data})
         except:
-            return Respone({"error": "Eroare la obtinerea listei de videoconferinte"})
+            return Response({"error": "Eroare la obtinerea listei de videoconferinte"})
 
 
 class CallersListView(APIView):
@@ -237,7 +238,7 @@ def call_to_ip(request, *args, **kwargs):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     MESSAGE = "dial auto " + destinatar + "\r\n"
     print(f'Calling {destinatar}')
-#     # Connect the socket to the port where the server is listening
+    # Connect the socket to the port where the server is listening
     s.connect((HOST, PORT))
     s.send(MESSAGE.encode())
 
