@@ -12,6 +12,7 @@ import {
   selectIsAuthenticated,
 } from "../../redux/users/user.selectors";
 import { userLogOutAsync } from "../../redux/users/user.actions";
+import { setSelectedDate } from "../../redux/date/date.actions";
 import { selectPickedDate } from "../../redux/date/date.selectors";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,7 +20,16 @@ import "./header.scss";
 
 registerLocale("ro", ro);
 
-const Header = ({ selectedDate, currentUser, userLogOutAsync }) => {
+const Header = ({
+  selectedDate,
+  currentUser,
+  userLogOutAsync,
+  setSelectedDate,
+}) => {
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   return (
     <header className='header'>
       <div className='logo'>
@@ -30,6 +40,7 @@ const Header = ({ selectedDate, currentUser, userLogOutAsync }) => {
           locale='ro'
           selected={selectedDate}
           dateFormat='dd.MM.yyyy'
+          onChange={(date) => handleDateChange(date)}
         />
 
         <div className='user nav__item'>
@@ -60,4 +71,6 @@ const mapStateToProps = createStructuredSelector({
   isAuthenticated: selectIsAuthenticated,
 });
 
-export default connect(mapStateToProps, { userLogOutAsync })(Header);
+export default connect(mapStateToProps, { userLogOutAsync, setSelectedDate })(
+  Header
+);

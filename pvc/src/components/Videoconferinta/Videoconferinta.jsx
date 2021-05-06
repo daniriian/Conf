@@ -1,16 +1,21 @@
 import React from "react";
+import { format_date } from "../../utils//index";
 
 import "./Videoconferinta.scss";
 
 const Videoconferinta = ({ videocall }) => {
   const { nume, prenume } = videocall.adaugat_de;
 
+  const data = format_date(new Date(videocall.data)).ddmmyyyy;
+  const start = videocall.start_time.substring(0, 5);
+  const end = videocall.end_time.substring(0, 5);
+
   return (
     <div className='videoconferinta'>
       <ul className='vc-list'>
-        <li className='vc-list__item'>{videocall.data}</li>
+        <li className='vc-list__item'>{data}</li>
         <li className='vc-list__item'>
-          {videocall.start_time} - {videocall.end_time}
+          {start} - {end}
         </li>
         <li className='vc-list__item'>
           {videocall.caller.id_echipament.nume_instanta}

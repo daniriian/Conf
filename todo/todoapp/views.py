@@ -121,8 +121,7 @@ class GetVCListView(APIView):
 
     def post(self, request, format=None):
         datax = self.request.data
-        print(f'********************************************{datax}')
-
+        
         try:
             qs = Todo.objects.filter(data=datax['data']).order_by(
                 'data', 'start_time', 'caller')

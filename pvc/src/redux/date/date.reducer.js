@@ -5,7 +5,7 @@ const INITIAL_STATE = {
 };
 
 const dateReducer = (state = INITIAL_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case DateActionTypes.SET_SELECTED_DATE: {
       return {
         ...state,
