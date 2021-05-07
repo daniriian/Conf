@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   padding-top: 5rem;
+  position: relative;
 
   .title {
     font-size: 2rem;
@@ -12,5 +13,30 @@
 
   &__data {
     padding-left: 10px;
+  }
+}
+
+.adauga-vc {
+  background-image: none;
+  background-color: rgb(228, 120, 42);
+  position: fixed;
+  top: 5rem;
+  right: 3rem;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  &:hover {
+    background-color: white;
+    border: 1px solid rgb(228, 120, 42);
+    color: #e4782a;
+
+    a {
+      color: rgb(228, 120, 42);
+    }
   }
 }

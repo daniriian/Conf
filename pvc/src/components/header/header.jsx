@@ -32,9 +32,9 @@ const Header = ({
 
   return (
     <header className='header'>
-      <div className='logo'>
+      <a href='/home' className='logo'>
         <img src={Logo} alt='videoconferinte-logo' className='logo__img' />
-      </div>
+      </a>
       <nav className='nav'>
         <DatePicker
           locale='ro'

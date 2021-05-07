@@ -17,7 +17,7 @@ const ListaVideoconferinte = ({
 }) => {
   useEffect(() => {
     getVideoConferenceListByDate(data);
-  }, [data]);
+  }, [data, getVideoConferenceListByDate]);
 
   return (
     <div className='lista'>
