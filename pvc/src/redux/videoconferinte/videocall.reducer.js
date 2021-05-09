@@ -1,7 +1,7 @@
 import { VideoCallTypes } from "./videocall.types";
 
 const INITIAL_STATE = {
-  videoCallsList: [],
+  videoCallsList: [], //videoconferintele dintr-o zi
 };
 
 const videoCallReducer = (state = INITIAL_STATE, action) => {

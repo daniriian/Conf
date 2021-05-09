@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {connect} from 'react-redux'
+
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -12,6 +14,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import CustomButton from "../../components/custom-button/custom-button";
 
+import {getCallersList} from '../../redux/videocallParticipants/participants.actions'
+
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -23,10 +27,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DialogSelect() {
+const DialogSelect = ({getCallersList}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState("");
+
+  useEffect(() => {
+    console.log("Mounting DialogSelect");
+    getCallersList();
+  }, [])
 
   const handleChange = (event) => {
     setAge(Number(event.target.value) || "");
@@ -99,3 +108,6 @@ export default function DialogSelect() {
     </React.Fragment>
   );
 }
+
+
+export default connect(null, {getCallersList})(DialogSelect);
