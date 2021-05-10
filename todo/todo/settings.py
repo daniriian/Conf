@@ -95,83 +95,22 @@ DATABASES = {
         'NAME': 'videoconferinte',
         'USER': 'admin_v',
         'PASSWORD': '22043Nicu!',
-        'HOST': '10.15.63.19',   # Or an IP Address that your DB is hosted on
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     },
+
     'usersTRCJ': {
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '10.15.60.52',
-        'USER': 'ecris_readonly',
-        'PASSWORD': 'P@ssw0rd384',
+        'HOST': '127.0.0.1',
+        'PORT': '1433',
+        'USER': 'sa',
+        'PASSWORD': '22043Nicu',
         'NAME': 'ecris_cdms',
 
         'OPTIONS': {
-            'driver': 'ODBC Driver 13 for SQL Server',
+            'driver': 'ODBC Driver 17 for SQL Server',
         },
     },
-    'usersTRCCJ': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': '10.15.65.22',
-        'USER': 'ecris_readonly',
-        'PASSWORD': 'P@ssw0rd384',
-        'NAME': 'videoconferinte',
-        'PORT': '3306',
-    },
-    'usersJCN': {
-        'ENGINE': 'sql_server.pyodbc',
-        'HOST': '10.15.101.22',
-        'USER': 'ecris_readonly',
-        'PASSWORD': 'P@ssw0rd384',
-        'NAME': 'ecris_cdms',
-
-        'OPTIONS': {
-            'driver': 'ODBC Driver 13 for SQL Server',
-        },
-    },
-    'usersJD': {
-        'ENGINE': 'sql_server.pyodbc',
-        'HOST': '10.15.102.22',
-        'USER': 'ecris_readonly',
-        'PASSWORD': 'P@ssw0rd384',
-        'NAME': 'ecris_cdms',
-
-        'OPTIONS': {
-            'driver': 'ODBC Driver 13 for SQL Server',
-        },
-    },
-    'usersJG': {
-        'ENGINE': 'sql_server.pyodbc',
-        'HOST': '10.15.103.22',
-        'USER': 'ecris_readonly',
-        'PASSWORD': 'P@ssw0rd384',
-        'NAME': 'ecris_cdms',
-
-        'OPTIONS': {
-            'driver': 'ODBC Driver 13 for SQL Server',
-        },
-    },
-    'usersJH': {
-        'ENGINE': 'sql_server.pyodbc',
-        'HOST': '10.15.104.22',
-        'USER': 'ecris_readonly',
-        'PASSWORD': 'P@ssw0rd384',
-        'NAME': 'ecris_cdms',
-
-        'OPTIONS': {
-            'driver': 'ODBC Driver 13 for SQL Server',
-        },
-    },
-    'usersJT': {
-        'ENGINE': 'sql_server.pyodbc',
-        'HOST': '10.15.105.22',
-        'USER': 'ecris_readonly',
-        'PASSWORD': 'P@ssw0rd384',
-        'NAME': 'ecris_cdms',
-
-        'OPTIONS': {
-            'driver': 'ODBC Driver 13 for SQL Server',
-        },
-    }
 }
 
 AUTH_USER_MODEL = 'users.MyUser'

@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import "date-fns";
 import { connect } from "react-redux";
 
+import moment from "moment";
+import "moment/locale/ro";
+
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -36,6 +39,9 @@ import {
   getCallersList,
   getConsigneesList,
 } from "../../redux/videocallParticipants/participants.actions";
+
+moment.locale("ro")
+const locale = "ro"
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -84,6 +90,8 @@ const DialogSelect = ({
   const [caller, setCaller] = React.useState("");
   const [dest, setDest] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [startTime, setStartTime] = React.useState("")
+  const [endTime, setEndTime] = React.useState("")
 
   useEffect(() => {
     getCallersList();
@@ -108,6 +116,11 @@ const DialogSelect = ({
     setDest([]);
   };
 
+  const handleDateChange = (date) => {
+    console.log(date);
+    setSelectedDate(date)
+  }
+
   return (
     <React.Fragment>
       <CustomButton onClick={handleClickOpen} className='adauga-vc'>
@@ -123,17 +136,16 @@ const DialogSelect = ({
         <DialogTitle>Adaugă o videoconferinţă nouă</DialogTitle>
         <DialogContent>
           <form className={classes.container}>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
+            <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils} locale={"ro"}>
               <FormControl className={classes.formControl}>
                 <KeyboardDatePicker
-                  disableToolbar
-                  variant='inline'
+                  
                   format='DD/MM/yyyy'
                   margin='normal'
                   id='date-picker-inline'
                   label='Selectati data'
                   value={selectedDate}
-                  // onChange={handleDateChange}
+                  onChange={handleDateChange}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
@@ -146,7 +158,7 @@ const DialogSelect = ({
                   id='start-hour'
                   label='Ora inceperii'
                   value={selectedDate}
-                  // onChange={handleDateChange}
+                  onChange={handleDateChange}
                   KeyboardButtonProps={{
                     "aria-label": "change time",
                   }}
@@ -159,7 +171,7 @@ const DialogSelect = ({
                   id='end-hour'
                   label='Ora terminarii'
                   value={selectedDate}
-                  // onChange={handleDateChange}
+                  onChange={handleDateChange}
                   KeyboardButtonProps={{
                     "aria-label": "change time",
                   }}
