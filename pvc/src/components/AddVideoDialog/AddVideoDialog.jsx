@@ -1,5 +1,15 @@
 import React, { useEffect } from "react";
+import "date-fns";
 import { connect } from "react-redux";
+
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
+import MomentUtils from "@date-io/moment";
 
 import { createStructuredSelector } from "reselect";
 import {
@@ -17,16 +27,20 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Chip from "@material-ui/core/Chip";
+
 import CustomButton from "../../components/custom-button/custom-button";
 
 import {
   getCallersList,
-  getConsigneeSList,
+  getConsigneesList,
 } from "../../redux/videocallParticipants/participants.actions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
+    flexDirection: "column",
     flexWrap: "wrap",
   },
   formControl: {
@@ -37,40 +51,61 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 350,
   },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  chip: {
+    margin: 2,
+    height: 16,
+  },
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 300,
+    },
+  },
+  getContentAnchorEl: null,
+};
 
 const DialogSelect = ({
   callers,
   destinatari,
   getCallersList,
-  getConsigneeSList,
+  getConsigneesList,
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [age, setAge] = React.useState("");
+  const [caller, setCaller] = React.useState("");
+  const [dest, setDest] = React.useState([]);
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   useEffect(() => {
-    console.log("Mounting DialogSelect");
+    getCallersList();
+    getConsigneesList();
   }, []);
 
-  const handleChange = (event) => {
-    setAge(Number(event.target.value) || "");
+  const handleCallersChange = (event) => {
+    setCaller(event.target.value);
+  };
+
+  const handleChangeDestinatari = (event) => {
+    setDest(event.target.value);
   };
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleCallersClick = () => {
-    getCallersList();
-  };
-
-  const handleConsigneesClick = () => {
-    getConsigneeSList();
-  };
-
   const handleClose = () => {
     setOpen(false);
+    setCaller("");
+    setDest([]);
   };
 
   return (
@@ -83,17 +118,61 @@ const DialogSelect = ({
         disableEscapeKeyDown
         open={open}
         onClose={handleClose}
+        maxWidth='lg'
       >
         <DialogTitle>Adaugă o videoconferinţă nouă</DialogTitle>
         <DialogContent>
           <form className={classes.container}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <FormControl className={classes.formControl}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant='inline'
+                  format='DD/MM/yyyy'
+                  margin='normal'
+                  id='date-picker-inline'
+                  label='Selectati data'
+                  value={selectedDate}
+                  // onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </FormControl>
+
+              <FormControl className={classes.formControl}>
+                <KeyboardTimePicker
+                  margin='normal'
+                  id='start-hour'
+                  label='Ora inceperii'
+                  value={selectedDate}
+                  // onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change time",
+                  }}
+                />
+              </FormControl>
+
+              <FormControl className={classes.formControl}>
+                <KeyboardTimePicker
+                  margin='normal'
+                  id='end-hour'
+                  label='Ora terminarii'
+                  value={selectedDate}
+                  // onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change time",
+                  }}
+                />
+              </FormControl>
+            </MuiPickersUtilsProvider>
+
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor='apelant'>Apelant</InputLabel>
               <Select
                 native
-                value={age}
-                onChange={handleChange}
-                onClick={handleCallersClick}
+                value={caller}
+                onChange={handleCallersChange}
                 input={<Input id='apelant' />}
               >
                 <option aria-label='None' value='' />
@@ -109,20 +188,33 @@ const DialogSelect = ({
             <FormControl className={classes.formControl__Destinatari}>
               <InputLabel id='destinatari'>Destinatari</InputLabel>
               <Select
-                native
                 labelId='destinatari'
                 id='destinatari'
-                value='-'
-                // onChange={handleChange}
-                onClick={handleConsigneesClick}
-                input={<Input id='destinatari' />}
+                multiple
+                value={dest}
+                onChange={handleChangeDestinatari}
+                input={<Input />}
+                MenuProps={MenuProps}
+                renderValue={(selected) =>
+                  selected.map((value) => (
+                    <Chip
+                      key={value.id}
+                      label={value.nume_instanta}
+                      className={classes.chip}
+                    />
+                  ))
+                }
+                autoWidth
               >
-                <option aria-label='None' value='' />
                 {destinatari
                   ? destinatari.map((destinatar) => (
-                      <option key={destinatar.id} value={destinatar.id}>
+                      <MenuItem
+                        key={destinatar.id}
+                        value={destinatar}
+                        variant='menu'
+                      >
                         {destinatar.nume_instanta}
-                      </option>
+                      </MenuItem>
                     ))
                   : ""}
               </Select>
@@ -147,6 +239,6 @@ const mapStateToProps = createStructuredSelector({
   destinatari: selectConsignees,
 });
 
-export default connect(mapStateToProps, { getCallersList, getConsigneeSList })(
+export default connect(mapStateToProps, { getCallersList, getConsigneesList })(
   DialogSelect
 );

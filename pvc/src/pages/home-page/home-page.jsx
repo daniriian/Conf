@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import Header from "../../components/header/header";
 
@@ -10,7 +10,7 @@ import { selectIsAuthenticated } from "../../redux/users/user.selectors";
 import { selectPickedDate } from "../../redux/date/date.selectors";
 
 import ListaVideoconferinte from "../../components/ListaVideoconferinte/ListaVideoconferinte";
-import CustomButton from "../../components/custom-button/custom-button";
+// import CustomButton from "../../components/custom-button/custom-button";
 import DialogSelect from "../../components/AddVideoDialog/AddVideoDialog";
 
 import { format_date } from "../../utils/index";
