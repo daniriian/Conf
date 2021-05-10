@@ -8,10 +8,15 @@ const INITIAL_STATE = {
 const ParticipantsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ParticipantsTypes.GET_CALLERS:
-    case ParticipantsTypes.GET_CONSIGNEES:
       return {
         ...state,
         callers: action.payload,
+      };
+
+    case ParticipantsTypes.GET_CONSIGNEES:
+      return {
+        ...state,
+        consignees: action.payload,
       };
     default:
       return state;

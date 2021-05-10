@@ -9,5 +9,5 @@ export default combineReducers({
   user: UserReducer,
   selectedDate: dateReducer,
   videoCalls: videoCallReducer,
-  participats: ParticipantsReducer,
+  participants: ParticipantsReducer,
 });

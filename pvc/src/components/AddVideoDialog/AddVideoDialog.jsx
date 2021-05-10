@@ -1,5 +1,11 @@
-import React, {useEffect} from "react";
-import {connect} from 'react-redux'
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+
+import { createStructuredSelector } from "reselect";
+import {
+  selectCallers,
+  selectConsignees,
+} from "../../redux/videocallParticipants//paticipants.selectors";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -9,12 +15,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import CustomButton from "../../components/custom-button/custom-button";
 
-import {getCallersList} from '../../redux/videocallParticipants/participants.actions'
+import {
+  getCallersList,
+  getConsigneeSList,
+} from "../../redux/videocallParticipants/participants.actions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -25,17 +33,25 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  formControl__Destinatari: {
+    margin: theme.spacing(1),
+    minWidth: 350,
+  },
 }));
 
-const DialogSelect = ({getCallersList}) => {
+const DialogSelect = ({
+  callers,
+  destinatari,
+  getCallersList,
+  getConsigneeSList,
+}) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState("");
 
   useEffect(() => {
     console.log("Mounting DialogSelect");
-    getCallersList();
-  }, [])
+  }, []);
 
   const handleChange = (event) => {
     setAge(Number(event.target.value) || "");
@@ -43,6 +59,14 @@ const DialogSelect = ({getCallersList}) => {
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleCallersClick = () => {
+    getCallersList();
+  };
+
+  const handleConsigneesClick = () => {
+    getConsigneeSList();
   };
 
   const handleClose = () => {
@@ -64,34 +88,43 @@ const DialogSelect = ({getCallersList}) => {
         <DialogContent>
           <form className={classes.container}>
             <FormControl className={classes.formControl}>
-              <InputLabel htmlFor='apelant'>Age</InputLabel>
+              <InputLabel htmlFor='apelant'>Apelant</InputLabel>
               <Select
                 native
                 value={age}
                 onChange={handleChange}
+                onClick={handleCallersClick}
                 input={<Input id='apelant' />}
               >
                 <option aria-label='None' value='' />
-                <option value={10}>Ten</option>
-                <option value={20}>Twenty</option>
-                <option value={30}>Thirty</option>
+                {callers
+                  ? callers.map((caller) => (
+                      <option key={caller.id} value={caller.id}>
+                        {caller.id_echipament.nume_instanta}
+                      </option>
+                    ))
+                  : ""}
               </Select>
             </FormControl>
-            <FormControl className={classes.formControl}>
-              <InputLabel id='destinatari'>Age</InputLabel>
+            <FormControl className={classes.formControl__Destinatari}>
+              <InputLabel id='destinatari'>Destinatari</InputLabel>
               <Select
+                native
                 labelId='destinatari'
-                id='demo-dialog-select'
-                value={age}
-                onChange={handleChange}
-                input={<Input />}
+                id='destinatari'
+                value='-'
+                // onChange={handleChange}
+                onClick={handleConsigneesClick}
+                input={<Input id='destinatari' />}
               >
-                <MenuItem value=''>
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <option aria-label='None' value='' />
+                {destinatari
+                  ? destinatari.map((destinatar) => (
+                      <option key={destinatar.id} value={destinatar.id}>
+                        {destinatar.nume_instanta}
+                      </option>
+                    ))
+                  : ""}
               </Select>
             </FormControl>
           </form>
@@ -107,7 +140,13 @@ const DialogSelect = ({getCallersList}) => {
       </Dialog>
     </React.Fragment>
   );
-}
+};
 
+const mapStateToProps = createStructuredSelector({
+  callers: selectCallers,
+  destinatari: selectConsignees,
+});
 
-export default connect(null, {getCallersList})(DialogSelect);
+export default connect(mapStateToProps, { getCallersList, getConsigneeSList })(
+  DialogSelect
+);
