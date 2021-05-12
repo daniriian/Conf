@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import moment from "moment";
 import "moment/locale/ro";
 
-import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -30,8 +29,13 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import Chip from "@material-ui/core/Chip";
+/* eslint-disable no-use-before-define */
+
+import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
 
 import CustomButton from "../../components/custom-button/custom-button";
 
@@ -40,8 +44,10 @@ import {
   getConsigneesList,
 } from "../../redux/videocallParticipants/participants.actions";
 
-moment.locale("ro")
-const locale = "ro"
+const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
+const checkedIcon = <CheckBoxIcon fontSize='small' />;
+
+moment.locale("ro");
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -67,18 +73,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 300,
-    },
-  },
-  getContentAnchorEl: null,
-};
-
 const DialogSelect = ({
   callers,
   destinatari,
@@ -90,8 +84,8 @@ const DialogSelect = ({
   const [caller, setCaller] = React.useState("");
   const [dest, setDest] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
-  const [startTime, setStartTime] = React.useState("")
-  const [endTime, setEndTime] = React.useState("")
+  const [startTime, setStartTime] = React.useState(new Date());
+  const [endTime, setEndTime] = React.useState(new Date());
 
   useEffect(() => {
     getCallersList();
@@ -99,11 +93,13 @@ const DialogSelect = ({
   }, []);
 
   const handleCallersChange = (event) => {
+    console.log(event.target.value);
     setCaller(event.target.value);
   };
 
-  const handleChangeDestinatari = (event) => {
-    setDest(event.target.value);
+  const handleChangeDestinatari = (value) => {
+    console.log("se schimba destinatarii", value);
+    setDest(value);
   };
 
   const handleClickOpen = () => {
@@ -111,6 +107,7 @@ const DialogSelect = ({
   };
 
   const handleClose = () => {
+    console.log(caller, dest);
     setOpen(false);
     setCaller("");
     setDest([]);
@@ -118,8 +115,16 @@ const DialogSelect = ({
 
   const handleDateChange = (date) => {
     console.log(date);
-    setSelectedDate(date)
-  }
+    setSelectedDate(date);
+  };
+
+  const handleStartTimeChange = (time) => {
+    setStartTime(time);
+  };
+
+  const handleEndTimeChange = (time) => {
+    setEndTime(time);
+  };
 
   return (
     <React.Fragment>
@@ -136,10 +141,13 @@ const DialogSelect = ({
         <DialogTitle>Adaugă o videoconferinţă nouă</DialogTitle>
         <DialogContent>
           <form className={classes.container}>
-            <MuiPickersUtilsProvider libInstance={moment} utils={MomentUtils} locale={"ro"}>
+            <MuiPickersUtilsProvider
+              libInstance={moment}
+              utils={MomentUtils}
+              locale={"ro"}
+            >
               <FormControl className={classes.formControl}>
                 <KeyboardDatePicker
-                  
                   format='DD/MM/yyyy'
                   margin='normal'
                   id='date-picker-inline'
@@ -155,10 +163,11 @@ const DialogSelect = ({
               <FormControl className={classes.formControl}>
                 <KeyboardTimePicker
                   margin='normal'
+                  ampm={false}
                   id='start-hour'
                   label='Ora inceperii'
-                  value={selectedDate}
-                  onChange={handleDateChange}
+                  value={startTime}
+                  onChange={handleStartTimeChange}
                   KeyboardButtonProps={{
                     "aria-label": "change time",
                   }}
@@ -168,10 +177,11 @@ const DialogSelect = ({
               <FormControl className={classes.formControl}>
                 <KeyboardTimePicker
                   margin='normal'
+                  ampm={false}
                   id='end-hour'
                   label='Ora terminarii'
-                  value={selectedDate}
-                  onChange={handleDateChange}
+                  value={endTime}
+                  onChange={handleEndTimeChange}
                   KeyboardButtonProps={{
                     "aria-label": "change time",
                   }}
@@ -197,39 +207,36 @@ const DialogSelect = ({
                   : ""}
               </Select>
             </FormControl>
+
             <FormControl className={classes.formControl__Destinatari}>
-              <InputLabel id='destinatari'>Destinatari</InputLabel>
-              <Select
-                labelId='destinatari'
-                id='destinatari'
+              <Autocomplete
                 multiple
-                value={dest}
-                onChange={handleChangeDestinatari}
-                input={<Input />}
-                MenuProps={MenuProps}
-                renderValue={(selected) =>
-                  selected.map((value) => (
-                    <Chip
-                      key={value.id}
-                      label={value.nume_instanta}
-                      className={classes.chip}
+                id='destinatari'
+                options={destinatari}
+                disableCloseOnSelect
+                getOptionLabel={(option) => option.nume_instanta}
+                renderOption={(option, { selected }) => (
+                  <React.Fragment>
+                    <Checkbox
+                      icon={icon}
+                      checkedIcon={checkedIcon}
+                      style={{ marginRight: 8 }}
+                      checked={selected}
                     />
-                  ))
-                }
-                autoWidth
-              >
-                {destinatari
-                  ? destinatari.map((destinatar) => (
-                      <MenuItem
-                        key={destinatar.id}
-                        value={destinatar}
-                        variant='menu'
-                      >
-                        {destinatar.nume_instanta}
-                      </MenuItem>
-                    ))
-                  : ""}
-              </Select>
+                    {option.nume_instanta}
+                  </React.Fragment>
+                )}
+                style={{ width: 500 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant='outlined'
+                    label='Destinatari'
+                    placeholder='Destinatari'
+                  />
+                )}
+                onChange={(event, value) => handleChangeDestinatari(value)}
+              />
             </FormControl>
           </form>
         </DialogContent>
