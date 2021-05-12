@@ -115,7 +115,7 @@ const DialogSelect = ({
   };
 
   const handleAdd = () => {
-    let data = format_date(selectedDate).yyyymmdd;
+    let data = selectedDate;
     let startTime1 = startTime.getHours() + ":" + startTime.getMinutes();
     let endTime1 = endTime.getHours() + ":" + endTime.getMinutes();
     let call_to = dest.map((el) => el.id);
@@ -123,7 +123,7 @@ const DialogSelect = ({
 
     addVidecall({
       caller: caller,
-      data: data,
+      data: selectedDate._d,
       start_time: startTime1,
       end_time: endTime1,
       call_to: call_to,

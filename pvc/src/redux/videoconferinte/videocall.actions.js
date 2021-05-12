@@ -12,11 +12,25 @@ export const addVidecall = (videocall) => async (dispatch) => {
     },
   };
 
+  videocall.data = format_date(videocall.data).yyyymmdd;
   console.log(videocall);
+
   let body = JSON.stringify(videocall);
 
   let res = await axios.post("/videoconferinte/adauga", body, config);
   console.log(res);
+
+  if (res.data.success) {
+    dispatch({
+      type: VideoCallTypes.ADD_VIDEOCONFERENCE_SUCCESS,
+      payload: res.data.success,
+    });
+  } else {
+    dispatch({
+      type: VideoCallTypes.ADD_VIDEOCONFERENCE_FAIL,
+      payload: res.data.error,
+    });
+  }
 };
 
 export const getVideoConferenceListByDate = (date) => async (dispatch) => {
