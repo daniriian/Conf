@@ -3,6 +3,22 @@ import { format_date } from "../../utils/index";
 import Cookies from "js-cookie";
 import axios from "axios";
 
+export const addVidecall = (videocall) => async (dispatch) => {
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
+  };
+
+  console.log(videocall);
+  let body = JSON.stringify(videocall);
+
+  let res = await axios.post("/videoconferinte/adauga", body, config);
+  console.log(res);
+};
+
 export const getVideoConferenceListByDate = (date) => async (dispatch) => {
   const config = {
     headers: {

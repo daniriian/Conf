@@ -43,6 +43,9 @@ import {
   getCallersList,
   getConsigneesList,
 } from "../../redux/videocallParticipants/participants.actions";
+import { addVidecall } from "../../redux/videoconferinte//videocall.actions";
+
+import { format_date } from "../../utils//index";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
@@ -78,6 +81,7 @@ const DialogSelect = ({
   destinatari,
   getCallersList,
   getConsigneesList,
+  addVidecall,
 }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -93,12 +97,10 @@ const DialogSelect = ({
   }, []);
 
   const handleCallersChange = (event) => {
-    console.log(event.target.value);
     setCaller(event.target.value);
   };
 
   const handleChangeDestinatari = (value) => {
-    console.log("se schimba destinatarii", value);
     setDest(value);
   };
 
@@ -107,10 +109,27 @@ const DialogSelect = ({
   };
 
   const handleClose = () => {
-    console.log(caller, dest);
     setOpen(false);
     setCaller("");
     setDest([]);
+  };
+
+  const handleAdd = () => {
+    let data = format_date(selectedDate).yyyymmdd;
+    let startTime1 = startTime.getHours() + ":" + startTime.getMinutes();
+    let endTime1 = endTime.getHours() + ":" + endTime.getMinutes();
+    let call_to = dest.map((el) => el.id);
+    console.log(startTime1, endTime1, call_to);
+
+    addVidecall({
+      caller: caller,
+      data: data,
+      start_time: startTime1,
+      end_time: endTime1,
+      call_to: call_to,
+      completed: false,
+      adaugat_de: 2,
+    });
   };
 
   const handleDateChange = (date) => {
@@ -244,7 +263,7 @@ const DialogSelect = ({
           <Button onClick={handleClose} color='primary'>
             Renunţă
           </Button>
-          <Button onClick={handleClose} color='primary'>
+          <Button onClick={handleAdd} color='primary'>
             Adaugă
           </Button>
         </DialogActions>
@@ -258,6 +277,8 @@ const mapStateToProps = createStructuredSelector({
   destinatari: selectConsignees,
 });
 
-export default connect(mapStateToProps, { getCallersList, getConsigneesList })(
-  DialogSelect
-);
+export default connect(mapStateToProps, {
+  getCallersList,
+  getConsigneesList,
+  addVidecall,
+})(DialogSelect);
