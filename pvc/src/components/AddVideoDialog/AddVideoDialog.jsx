@@ -17,7 +17,7 @@ import { createStructuredSelector } from "reselect";
 import {
   selectCallers,
   selectConsignees,
-} from "../../redux/videocallParticipants//paticipants.selectors";
+} from "../../redux/videocallParticipants/paticipants.selectors";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -37,15 +37,16 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 
-import CustomButton from "../../components/custom-button/custom-button";
-
 import {
   getCallersList,
   getConsigneesList,
 } from "../../redux/videocallParticipants/participants.actions";
-import { addVidecall } from "../../redux/videoconferinte//videocall.actions";
+import {
+  addVidecall,
+  addVideocallFail,
+} from "../../redux/videoconferinte/videocall.actions";
 
-import { format_date } from "../../utils//index";
+// import { format_date } from "../../utils//index";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
@@ -82,9 +83,10 @@ const DialogSelect = ({
   getCallersList,
   getConsigneesList,
   addVidecall,
+  addVideocallFail,
 }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
   const [caller, setCaller] = React.useState("");
   const [dest, setDest] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
@@ -92,8 +94,13 @@ const DialogSelect = ({
   const [endTime, setEndTime] = React.useState(new Date());
 
   useEffect(() => {
+    console.log("UseEffect from AddVideoDialog");
     getCallersList();
     getConsigneesList();
+
+    return () => {
+      console.log("Unmounting AddVideoDialog");
+    };
   }, []);
 
   const handleCallersChange = (event) => {
@@ -104,37 +111,37 @@ const DialogSelect = ({
     setDest(value);
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
-    setOpen(false);
-    setCaller("");
-    setDest([]);
+    addVideocallFail();
+    // setOpen(false);
+    // setCaller("");
+    // setDest([]);
+    // setSelectedDate(new Date());
+    // setStartTime(new Date());
+    // setEndTime(new Date());
   };
 
   const handleAdd = () => {
-    let data = selectedDate;
     let startTime1 = startTime.getHours() + ":" + startTime.getMinutes();
     let endTime1 = endTime.getHours() + ":" + endTime.getMinutes();
     let call_to = dest.map((el) => el.id);
-    console.log(startTime1, endTime1, call_to);
+    console.log(startTime1, endTime1, call_to, selectedDate);
 
     addVidecall({
       caller: caller,
-      data: selectedDate._d,
+      data: selectedDate,
       start_time: startTime1,
       end_time: endTime1,
       call_to: call_to,
       completed: false,
       adaugat_de: 2,
     });
+    // setOpen(false);
   };
 
   const handleDateChange = (date) => {
     console.log(date);
-    setSelectedDate(date);
+    setSelectedDate(date._d);
   };
 
   const handleStartTimeChange = (time) => {
@@ -147,13 +154,10 @@ const DialogSelect = ({
 
   return (
     <React.Fragment>
-      <CustomButton onClick={handleClickOpen} className='adauga-vc'>
-        Adaugă
-      </CustomButton>
       <Dialog
         disableBackdropClick
         disableEscapeKeyDown
-        open={open}
+        open
         onClose={handleClose}
         maxWidth='lg'
       >
@@ -281,4 +285,5 @@ export default connect(mapStateToProps, {
   getCallersList,
   getConsigneesList,
   addVidecall,
+  addVideocallFail,
 })(DialogSelect);

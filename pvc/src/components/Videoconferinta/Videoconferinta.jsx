@@ -20,7 +20,13 @@ const Videoconferinta = ({ videocall }) => {
         <li className='vc-list__item'>
           {videocall.caller.id_echipament.nume_instanta}
         </li>
-        <li className='vc-list__item'>{videocall.call_to[0].beneficiar}</li>
+        <li className='vc-list__item vc-list__item--column'>
+          {videocall.call_to.map((item) => (
+            <div key={item.id} className='destinatar'>
+              {item.nume_instanta}
+            </div>
+          ))}
+        </li>
         <li className='vc-list__item'>{videocall.completed}</li>
         <li className='vc-list__item'>
           {nume} {prenume}

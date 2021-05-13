@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import SignInPage from "./pages/sign-in-page/sign-in-page.jsx";
 import HomePage from "./pages/home-page/home-page";
-import AddVideocallPage from "./pages/add-Videocall-page/Add-Videocall";
+// import AddVideocallPage from "./pages/add-Videocall-page/Add-Videocall";
 
 import { createStructuredSelector } from "reselect";
 import { selectIsAuthenticated } from "./redux/users/user.selectors";
@@ -27,7 +27,7 @@ const App = ({ isAuthenticated, checkAuthenticated, loadUser }) => {
         <Route exact path='/' component={HomePage} />
 
         <ProtectedRoute exact path='/home' component={HomePage} />
-        <ProtectedRoute exact path='/adauga' component={AddVideocallPage} />
+        {/* <ProtectedRoute exact path='/adauga' component={AddVideocallPage} /> */}
         <Route exact path='/login' component={SignInPage} />
       </Switch>
     </div>
