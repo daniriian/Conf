@@ -86,7 +86,6 @@ const DialogSelect = ({
   addVideocallFail,
 }) => {
   const classes = useStyles();
-  // const [open, setOpen] = React.useState(false);
   const [caller, setCaller] = React.useState("");
   const [dest, setDest] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
