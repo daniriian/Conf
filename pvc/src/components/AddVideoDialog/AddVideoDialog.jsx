@@ -94,14 +94,9 @@ const DialogSelect = ({
   const [endTime, setEndTime] = React.useState(new Date());
 
   useEffect(() => {
-    console.log("UseEffect from AddVideoDialog");
     getCallersList();
     getConsigneesList();
-
-    return () => {
-      console.log("Unmounting AddVideoDialog");
-    };
-  }, []);
+  }, [getCallersList, getConsigneesList]);
 
   const handleCallersChange = (event) => {
     setCaller(event.target.value);
@@ -113,19 +108,12 @@ const DialogSelect = ({
 
   const handleClose = () => {
     addVideocallFail();
-    // setOpen(false);
-    // setCaller("");
-    // setDest([]);
-    // setSelectedDate(new Date());
-    // setStartTime(new Date());
-    // setEndTime(new Date());
   };
 
   const handleAdd = () => {
     let startTime1 = startTime.getHours() + ":" + startTime.getMinutes();
     let endTime1 = endTime.getHours() + ":" + endTime.getMinutes();
     let call_to = dest.map((el) => el.id);
-    console.log(startTime1, endTime1, call_to, selectedDate);
 
     addVidecall({
       caller: caller,
@@ -136,11 +124,9 @@ const DialogSelect = ({
       completed: false,
       adaugat_de: 2,
     });
-    // setOpen(false);
   };
 
   const handleDateChange = (date) => {
-    console.log(date);
     setSelectedDate(date._d);
   };
 
