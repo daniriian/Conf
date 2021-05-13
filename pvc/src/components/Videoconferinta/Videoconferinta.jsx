@@ -1,5 +1,8 @@
 import React from "react";
-import { format_date } from "../../utils//index";
+import { format_date } from "../../utils/index";
+
+import { AiOutlineEdit } from "react-icons/ai";
+import { ImBin } from "react-icons/im";
 
 import "./Videoconferinta.scss";
 
@@ -31,8 +34,12 @@ const Videoconferinta = ({ videocall }) => {
         <li className='vc-list__item'>
           {nume} {prenume}
         </li>
-        <li className='vc-list__item'>{videocall.data}</li>
-        <li className='vc-list__item'>{videocall.data}</li>
+        <li className='vc-list__item'>
+          <AiOutlineEdit className='icon icon__edit' />
+        </li>
+        <li className='vc-list__item'>
+          <ImBin className='icon icon__delete' />
+        </li>
       </ul>
     </div>
   );
