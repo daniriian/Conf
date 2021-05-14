@@ -18,6 +18,7 @@ import {
   selectCallers,
   selectConsignees,
 } from "../../redux/videocallParticipants/paticipants.selectors";
+import { selectCurrentUser } from "../../redux/users/user.selectors";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -84,6 +85,7 @@ const DialogSelect = ({
   getConsigneesList,
   addVidecall,
   addVideocallFail,
+  currentUser,
 }) => {
   const classes = useStyles();
   const [caller, setCaller] = React.useState("");
@@ -121,7 +123,7 @@ const DialogSelect = ({
       end_time: endTime1,
       call_to: call_to,
       completed: false,
-      adaugat_de: 2,
+      adaugat_de: currentUser.id,
     });
   };
 
@@ -264,6 +266,7 @@ const DialogSelect = ({
 const mapStateToProps = createStructuredSelector({
   callers: selectCallers,
   destinatari: selectConsignees,
+  currentUser: selectCurrentUser,
 });
 
 export default connect(mapStateToProps, {

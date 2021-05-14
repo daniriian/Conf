@@ -99,12 +99,14 @@ class AddVideoconferenceView(APIView):
     def post(self, request, format=None):
 
         data = self.request.data
+        # print(data)
         try:
             serializer = TodoCreateSerializer(data=data)
             dailyVC = Todo.objects.filter(data=data['data'])
 
             if serializer.is_valid():
                 result = isFree(serializer.validated_data, dailyVC)
+                # print(serializer.data)
 
                 if result["status"] == "success":
                     serializer.save()
