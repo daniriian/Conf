@@ -25,7 +25,6 @@ const Videoconferinta = ({
   const end = videocall.end_time.substring(0, 5);
 
   const handleDelete = (id) => {
-    console.log("Stergem videoconferinta", id);
     markVideoCall(id);
     deleteVideocallStarted();
   };

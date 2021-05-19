@@ -3,7 +3,7 @@ import { format_date } from "../../utils/index";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-export const addVidecall = (videocall) => async (dispatch) => {
+export const addVidecall = (videocall) => async (dispatch, getState) => {
   const config = {
     headers: {
       Accept: "application/json",
@@ -27,6 +27,7 @@ export const addVidecall = (videocall) => async (dispatch) => {
       type: VideoCallTypes.ADD_VIDEOCONFERENCE_SUCCESS,
       payload: { message: res.data.success, data: videocall.data },
     });
+    dispatch(getVideoConferenceListByDate(getState().selectedDate.date));
   } else {
     dispatch({
       type: VideoCallTypes.ADD_VIDEOCONFERENCE_FAIL,

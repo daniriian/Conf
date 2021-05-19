@@ -148,7 +148,7 @@ class TerminalListView(APIView):
     def get(self, request, format=None):
 
         try:
-            qs = Terminal.objects.all()
+            qs = Terminal.objects.all().order_by('nume_instanta')
             serializer = TerminalSerializer(qs, many=True)
             return Response({"success": "Terminals list retrieved successfully", "terminalsList": serializer.data})
         except:

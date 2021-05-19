@@ -19,6 +19,7 @@ import {
   selectConsignees,
 } from "../../redux/videocallParticipants/paticipants.selectors";
 import { selectCurrentUser } from "../../redux/users/user.selectors";
+import { selectPickedDate } from "../../redux/date/date.selectors";
 
 import {
   createMuiTheme,
@@ -101,11 +102,12 @@ const DialogSelect = ({
   addVidecall,
   addVideocallFail,
   currentUser,
+  userSelectedDate,
 }) => {
   const classes = useStyles();
   const [caller, setCaller] = React.useState("");
   const [dest, setDest] = React.useState([]);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState(userSelectedDate);
   const [startTime, setStartTime] = React.useState(new Date());
   const [endTime, setEndTime] = React.useState(new Date());
 
@@ -285,6 +287,7 @@ const mapStateToProps = createStructuredSelector({
   callers: selectCallers,
   destinatari: selectConsignees,
   currentUser: selectCurrentUser,
+  userSelectedDate: selectPickedDate,
 });
 
 export default connect(mapStateToProps, {

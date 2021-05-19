@@ -3,8 +3,19 @@ import { connect } from "react-redux";
 
 import Logo from "../../assets/logo.png";
 import DatePicker from "react-datepicker";
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import moment from "moment";
+import "moment/locale/ro";
+import MomentUtils from "@date-io/moment";
+
 import { registerLocale } from "react-datepicker";
 import ro from "date-fns/locale/ro";
+
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 import { createStructuredSelector } from "reselect";
 import {
@@ -20,6 +31,22 @@ import "./header.scss";
 
 registerLocale("ro", ro);
 
+const theme = createMuiTheme({
+  typography: {
+    // ...
+    // Tell Material-UI what's the font-size on the html element is.
+    htmlFontSize: 10,
+    // ...
+  },
+  overrides: {
+    MuiPickersDay: {
+      current: {
+        color: "red",
+      },
+    },
+  },
+});
+
 const Header = ({
   selectedDate,
   currentUser,
@@ -27,7 +54,8 @@ const Header = ({
   setSelectedDate,
 }) => {
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    console.log(date._d);
+    setSelectedDate(date._d);
   };
 
   return (
@@ -36,12 +64,31 @@ const Header = ({
         <img src={Logo} alt='videoconferinte-logo' className='logo__img' />
       </a>
       <nav className='nav'>
-        <DatePicker
+        {/* <DatePicker
           locale='ro'
           selected={selectedDate}
           dateFormat='dd.MM.yyyy'
           onChange={(date) => handleDateChange(date)}
-        />
+        /> */}
+        <ThemeProvider theme={theme}>
+          <MuiPickersUtilsProvider
+            libInstance={moment}
+            utils={MomentUtils}
+            locale={"ro"}
+          >
+            <KeyboardDatePicker
+              format='DD.MM.yyyy'
+              className='date-picker'
+              id='date-picker-inline'
+              label='Selectati data'
+              value={selectedDate}
+              onChange={(date) => handleDateChange(date)}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </ThemeProvider>
 
         <div className='user nav__item'>
           <div className='user__icon'></div>

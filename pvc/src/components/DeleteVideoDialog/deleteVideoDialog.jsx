@@ -45,7 +45,6 @@ const DeleteVideoDialog = ({
   };
 
   const handleDelete = () => {
-    console.log("Delete");
     deleteVideocall(currentVideocall);
   };
 
