@@ -84,3 +84,63 @@ export const addVideocallSuccess = () => ({
 export const addVideocallFail = () => ({
   type: VideoCallTypes.ADD_VIDEOCONFERENCE_FAIL,
 });
+
+export const deleteVideocallStarted = () => ({
+  type: VideoCallTypes.DELETE_VIDEOCONFERENCE_STARTED,
+  payload: true,
+});
+
+export const deleteVideocallSuccess = () => ({
+  type: VideoCallTypes.DELETE_VIDEOCONFERENCE_SUCCESS,
+  payload: false,
+});
+
+export const deleteVideocallFail = () => ({
+  type: VideoCallTypes.DELETE_VIDEOCONFERENCE_FAIL,
+  payload: false,
+});
+
+export const deleteVideocall = (id) => async (dispatch, getState) => {
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
+  };
+
+  let res = await axios.delete("/videoconferinte/delete/" + id, config);
+
+  console.log(res);
+
+  if (res.data.success) {
+    console.log(res);
+
+    dispatch(unMarkVideoCall());
+    dispatch(getVideoConferenceListByDate(getState().selectedDate.date));
+    dispatch(deleteVideocallSuccess());
+  } else {
+    console.log("Eroare la stergerea videoconferintei", res.data.error);
+    deleteVideocallFail();
+  }
+};
+
+export const approveVideocallDelete = () => ({
+  type: VideoCallTypes.APPROVE_VIDEOCONFERENCE_DELETE,
+  payload: true,
+});
+
+export const denyVideocallDelete = () => ({
+  type: VideoCallTypes.DENY_VIDEOCONFERENCE_DELETE,
+  payload: false,
+});
+
+export const markVideoCall = (id) => ({
+  type: VideoCallTypes.MARK_VIDEOCALL,
+  payload: id,
+});
+
+export const unMarkVideoCall = () => ({
+  type: VideoCallTypes.UNMARK_VIDEOCALL,
+  payload: null,
+});

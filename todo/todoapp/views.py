@@ -157,12 +157,14 @@ class TerminalListView(APIView):
 
 @method_decorator(csrf_protect, name='dispatch')
 class VideoDeleteView(APIView):
-    def delete(self, request, format=None):
+    def delete(self, request, todo_id, format=None):
         user_id = self.request.user.id
         data = self.request.data
+        print(todo_id)
 
+        # return Response({"id": todo_id})
         try:
-            qs = Todo.objects.get(id=data['id'])
+            qs = Todo.objects.get(id=todo_id)
             serializer = TodoSerializer(qs)
             userSerializer = MyUserSerializer(serializer.data['adaugat_de'])
             if user_id == userSerializer.data['id']:

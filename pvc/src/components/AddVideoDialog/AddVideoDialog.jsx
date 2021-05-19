@@ -20,7 +20,11 @@ import {
 } from "../../redux/videocallParticipants/paticipants.selectors";
 import { selectCurrentUser } from "../../redux/users/user.selectors";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -47,12 +51,23 @@ import {
   addVideocallFail,
 } from "../../redux/videoconferinte/videocall.actions";
 
+import "./AddVideoDialog.scss";
+
 // import { format_date } from "../../utils//index";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 moment.locale("ro");
+
+const theme = createMuiTheme({
+  typography: {
+    // ...
+    // Tell Material-UI what's the font-size on the html element is.
+    htmlFontSize: 10,
+    // ...
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -140,16 +155,19 @@ const DialogSelect = ({
   };
 
   return (
-    <React.Fragment>
+    <ThemeProvider theme={theme}>
       <Dialog
         disableBackdropClick
         disableEscapeKeyDown
         open
         onClose={handleClose}
         maxWidth='lg'
+        className='datePicker'
       >
-        <DialogTitle>Adaugă o videoconferinţă nouă</DialogTitle>
-        <DialogContent>
+        <DialogTitle className='dialog-title'>
+          Adaugă o videoconferinţă nouă
+        </DialogTitle>
+        <DialogContent className='datePicker'>
           <form className={classes.container}>
             <MuiPickersUtilsProvider
               libInstance={moment}
@@ -259,7 +277,7 @@ const DialogSelect = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </ThemeProvider>
   );
 };
 

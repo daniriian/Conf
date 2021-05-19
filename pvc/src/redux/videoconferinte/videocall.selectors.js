@@ -11,3 +11,13 @@ export const selectAddDialogStatus = createSelector(
   [selectVideoCalls],
   (videoCalls) => videoCalls.showAddVideocallDialog
 );
+
+export const selectShowDeleteDialog = createSelector(
+  [selectVideoCalls],
+  (videocalls) => videocalls.showDeleteDialog
+);
+
+export const selectCurrentVideocall = createSelector(
+  [selectVideoCalls],
+  (videocalls) => videocalls.selectedVideocall
+);

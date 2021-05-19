@@ -7,11 +7,15 @@ import Header from "../../components/header/header";
 import ListaVideoconferinte from "../../components/ListaVideoconferinte/ListaVideoconferinte";
 import CustomButton from "../../components/custom-button/custom-button";
 import DialogSelect from "../../components/AddVideoDialog/AddVideoDialog";
+import DeleteVideoDialog from "../../components/DeleteVideoDialog//deleteVideoDialog";
 
 import { selectIsAuthenticated } from "../../redux/users/user.selectors";
 import { selectPickedDate } from "../../redux/date/date.selectors";
 import { addVideocallStarted } from "../../redux/videoconferinte/videocall.actions";
-import { selectAddDialogStatus } from "../../redux/videoconferinte/videocall.selectors";
+import {
+  selectAddDialogStatus,
+  selectShowDeleteDialog,
+} from "../../redux/videoconferinte/videocall.selectors";
 
 import { format_date } from "../../utils/index";
 
@@ -22,6 +26,7 @@ const HomePage = ({
   selectedDate,
   addVideocallStarted,
   open,
+  showDeleteDialog,
 }) => {
   if (!isAuthenticated) {
     return <Redirect to='/login' />;
@@ -49,6 +54,7 @@ const HomePage = ({
       </CustomButton>
 
       {open ? <DialogSelect /> : ""}
+      {showDeleteDialog ? <DeleteVideoDialog /> : ""}
     </div>
   );
 };
@@ -57,6 +63,7 @@ const mapStateToProps = createStructuredSelector({
   isAuthenticated: selectIsAuthenticated,
   selectedDate: selectPickedDate,
   open: selectAddDialogStatus,
+  showDeleteDialog: selectShowDeleteDialog,
 });
 
 export default connect(mapStateToProps, { addVideocallStarted })(HomePage);

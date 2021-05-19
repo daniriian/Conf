@@ -45,7 +45,18 @@
   }
 
   .icon {
-    font-size: 2rem;
+    font-size: 4rem;
+    padding: 1rem;
+
+    &:hover {
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(1px);
+      box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.5);
+    }
 
     &__edit {
       color: green;

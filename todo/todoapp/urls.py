@@ -9,7 +9,7 @@ urlpatterns = [
     # path("create/", views.TodoCreateView),
     path("callers", views.CallersListView.as_view()),
     path("terminals", views.TerminalListView.as_view()),
-    path("delete", views.VideoDeleteView.as_view()),
+    path("delete/<int:todo_id>", views.VideoDeleteView.as_view()),
     path("scraper/", views.call_to_ip),
     #     path('delete/<int:todo_id>', views.delete, name='delete'),
     #     path('mark_complete/<int:todo_id>',
