@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import {
   deleteVideocallStarted,
   markVideoCall,
+  editVideocall,
 } from "../../redux/videoconferinte/videocall.actions";
 
 import { format_date } from "../../utils/index";
@@ -17,6 +18,7 @@ const Videoconferinta = ({
   videocall,
   deleteVideocallStarted,
   markVideoCall,
+  editVideocall,
 }) => {
   const { nume, prenume } = videocall.adaugat_de;
 
@@ -27,6 +29,11 @@ const Videoconferinta = ({
   const handleDelete = (id) => {
     markVideoCall(id);
     deleteVideocallStarted();
+  };
+
+  const handleEdit = (id) => {
+    console.log(id);
+    editVideocall(videocall);
   };
 
   return (
@@ -53,7 +60,10 @@ const Videoconferinta = ({
           {nume} {prenume}
         </li>
         <li className='vc-list__item'>
-          <AiOutlineEdit className='icon icon__edit' />
+          <AiOutlineEdit
+            className='icon icon__edit'
+            onClick={() => handleEdit(videocall.id)}
+          />
         </li>
         <li className='vc-list__item'>
           <ImBin
@@ -66,6 +76,8 @@ const Videoconferinta = ({
   );
 };
 
-export default connect(null, { deleteVideocallStarted, markVideoCall })(
-  Videoconferinta
-);
+export default connect(null, {
+  deleteVideocallStarted,
+  markVideoCall,
+  editVideocall,
+})(Videoconferinta);

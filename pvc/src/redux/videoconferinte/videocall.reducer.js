@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   aproveRemoval: false,
   showDeleteDialog: false,
   selectedVideocall: null,
+  dialogMode: "Add",
 };
 
 const videoCallReducer = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,7 @@ const videoCallReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         showAddVideocallDialog: true,
+        dialogMode: "Add",
       };
     case VideoCallTypes.ADD_VIDEOCONFERENCE_SUCCESS:
     case VideoCallTypes.ADD_VIDEOCONFERENCE_FAIL:
@@ -46,6 +48,20 @@ const videoCallReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedVideocall: action.payload,
+      };
+
+    case VideoCallTypes.EDIT_VIDEOCALL_STARTED:
+      return {
+        ...state,
+        dialogMode: "Edit",
+        showAddVideocallDialog: "true",
+      };
+
+    case VideoCallTypes.EDIT_VIDEOCALL_SUCCESS:
+    case VideoCallTypes.EDIT_VIDEOCALL_FAIL:
+      return {
+        ...state,
+        showAddVideocallDialog: false,
       };
 
     default:

@@ -21,3 +21,8 @@ export const selectCurrentVideocall = createSelector(
   [selectVideoCalls],
   (videocalls) => videocalls.selectedVideocall
 );
+
+export const selectDialogMode = createSelector(
+  [selectVideoCalls],
+  (videocalls) => videocalls.dialogMode
+);

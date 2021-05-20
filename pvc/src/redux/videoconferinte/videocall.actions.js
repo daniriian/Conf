@@ -36,6 +36,31 @@ export const addVidecall = (videocall) => async (dispatch, getState) => {
   }
 };
 
+export const editVideocallStarted = () => ({
+  type: VideoCallTypes.EDIT_VIDEOCALL_STARTED,
+});
+
+export const editVideocallSuccess = () => ({
+  type: VideoCallTypes.EDIT_VIDEOCALL_SUCCESS,
+});
+
+export const editVideocallFail = () => ({
+  type: VideoCallTypes.EDIT_VIDEOCALL_FAIL,
+});
+
+export const editVideocall = (videocall) => async (dispatch) => {
+  const config = {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-CSRFToken": Cookies.get("csrftoken"),
+    },
+  };
+
+  dispatch(editVideocallStarted());
+  dispatch(markVideoCall(videocall.id));
+};
+
 export const getVideoConferenceListByDate = (date) => async (dispatch) => {
   const config = {
     headers: {

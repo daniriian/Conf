@@ -20,6 +20,11 @@ import {
 } from "../../redux/videocallParticipants/paticipants.selectors";
 import { selectCurrentUser } from "../../redux/users/user.selectors";
 import { selectPickedDate } from "../../redux/date/date.selectors";
+import {
+  selectDialogMode,
+  selectCurrentVideocall,
+  selectVideoCallsList,
+} from "../../redux/videoconferinte/videocall.selectors";
 
 import {
   createMuiTheme,
@@ -50,6 +55,7 @@ import {
 import {
   addVidecall,
   addVideocallFail,
+  addVideocallStarted,
 } from "../../redux/videoconferinte/videocall.actions";
 
 import "./AddVideoDialog.scss";
@@ -103,6 +109,9 @@ const DialogSelect = ({
   addVideocallFail,
   currentUser,
   userSelectedDate,
+  dialogMode,
+  selectedVideocallId,
+  videocallsList,
 }) => {
   const classes = useStyles();
   const [caller, setCaller] = React.useState("");
@@ -112,8 +121,21 @@ const DialogSelect = ({
   const [endTime, setEndTime] = React.useState(new Date());
 
   useEffect(() => {
+    let editVC = null;
+
     getCallersList();
     getConsigneesList();
+
+    if (dialogMode === "Edit") {
+      editVC = videocallsList.find((el) => el.id === selectedVideocallId);
+      setSelectedDate(editVC.data);
+
+      setStartTime(new Date(editVC.data + " " + editVC.start_time));
+      setEndTime(new Date(editVC.data + " " + editVC.end_time));
+
+      setCaller(editVC.caller.id);
+      setDest(editVC.call_to);
+    }
   }, [getCallersList, getConsigneesList]);
 
   const handleCallersChange = (event) => {
@@ -155,6 +177,8 @@ const DialogSelect = ({
   const handleEndTimeChange = (time) => {
     setEndTime(time);
   };
+
+  console.log(dest);
 
   return (
     <ThemeProvider theme={theme}>
@@ -288,6 +312,9 @@ const mapStateToProps = createStructuredSelector({
   destinatari: selectConsignees,
   currentUser: selectCurrentUser,
   userSelectedDate: selectPickedDate,
+  dialogMode: selectDialogMode,
+  selectedVideocallId: selectCurrentVideocall,
+  videocallsList: selectVideoCallsList,
 });
 
 export default connect(mapStateToProps, {
