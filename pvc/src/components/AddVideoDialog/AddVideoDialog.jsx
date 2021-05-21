@@ -175,6 +175,7 @@ const DialogSelect = ({
       });
     } else if (dialogMode === "Edit") {
       console.log("Modifica in baza de date");
+
       editVideocall({
         id: selectedVideocallId,
         caller: caller,
@@ -304,7 +305,7 @@ const DialogSelect = ({
                       style={{ marginRight: 8 }}
                       checked={selected}
                     />
-                    {option.nume_instanta}
+                    {option.nume_instanta} IP-{option.ip} VMR-{option.vmr}
                   </React.Fragment>
                 )}
                 style={{ width: 500 }}

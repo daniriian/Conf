@@ -7,9 +7,11 @@
     list-style: none;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: space-between;
     flex-wrap: nowrap;
+    border-bottom: 1px solid rgb(183, 213, 252);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
     &__item {
       min-height: 6rem;
@@ -19,7 +21,6 @@
       justify-content: center;
       text-align: center;
       font-size: 1.4rem;
-      border-bottom: 1px solid rgb(183, 213, 252);
       padding-left: 1rem;
       padding-right: 1rem;
 
@@ -32,14 +33,43 @@
 
       .destinatar {
         // border: 1px solid olivedrab;
+
+        .icon-button {
+          width: auto;
+          height: 2rem;
+          font-size: 0.9rem;
+          margin: auto 0.5rem;
+          padding: 5px 10px;
+          background: lightgrey;
+          border-radius: 2px;
+          color: black;
+        }
+
+        &__nume {
+          font-weight: bold;
+          font-size: 1.7rem;
+        }
+        &__address {
+          color: rgb(14, 67, 136);
+          font-size: 1.6rem;
+          margin-left: 3rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
       }
       &:nth-last-child(-n + 2),
-      &:nth-child(5) {
+      &:nth-child(5),
+      &:nth-child(-n + 2) {
         flex: 0 1 7rem;
       }
 
+      &:nth-child(-n + 2) {
+        flex: 0 1 13rem;
+      }
+
       &:nth-child(4) {
-        flex: 12;
+        flex: 0 0 30%;
       }
     }
   }

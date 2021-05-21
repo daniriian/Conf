@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+
+import { selectCurrentUser } from "../../redux/users/user.selectors";
 
 import {
   deleteVideocallStarted,
@@ -10,17 +13,18 @@ import {
 
 import { format_date } from "../../utils/index";
 
+import CustomButton from "../custom-button/custom-button";
 import { AiOutlineEdit } from "react-icons/ai";
 import { ImBin } from "react-icons/im";
 
 import "./Videoconferinta.scss";
 
 const Videoconferinta = ({
+  currentUser,
   videocall,
   deleteVideocallStarted,
   editVideocallStarted,
   markVideoCall,
-  editVideocall,
 }) => {
   const { nume, prenume } = videocall.adaugat_de;
 
@@ -34,9 +38,14 @@ const Videoconferinta = ({
   };
 
   const handleEdit = (id) => {
-    console.log(id);
-    editVideocallStarted();
-    markVideoCall(id);
+    if (currentUser.id !== videocall.adaugat_de.id) {
+      alert(
+        "Nu puteţi edita această programare deoarece nu a fost adăgată de dvs. "
+      );
+    } else {
+      editVideocallStarted();
+      markVideoCall(id);
+    }
   };
 
   return (
@@ -52,7 +61,21 @@ const Videoconferinta = ({
         <li className='vc-list__item vc-list__item--column'>
           {videocall.call_to.map((item) => (
             <div key={item.id} className='destinatar'>
-              {item.nume_instanta}
+              <div className='destinatar__nume'>{item.nume_instanta}</div>
+              <div className='destinatar__address'>
+                <span>(IP: {item.ip})</span>
+                <div className='buttons'>
+                  <CustomButton className='icon-button'>Apel IP</CustomButton>
+                  <CustomButton className='icon-button'>STOP</CustomButton>
+                </div>
+              </div>
+              <div className='destinatar__address'>
+                <span>(VMR: {item.vmr})</span>
+                <div className='buttons'>
+                  <CustomButton className='icon-button'>Apel VMR</CustomButton>
+                  <CustomButton className='icon-button'>STOP</CustomButton>
+                </div>
+              </div>
             </div>
           ))}
         </li>
@@ -79,7 +102,11 @@ const Videoconferinta = ({
   );
 };
 
-export default connect(null, {
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
+
+export default connect(mapStateToProps, {
   deleteVideocallStarted,
   markVideoCall,
   editVideocall,

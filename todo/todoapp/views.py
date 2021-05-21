@@ -121,19 +121,14 @@ class AddVideoconferenceView(APIView):
 class EditVideoconferenceView(APIView):
     def put(self, request, todo_id, format=None):
         data=request.data
-        print(data)
         todo = Todo.objects.get(id=todo_id)
 
         serializer = TodoCreateSerializer(todo, data=data)
 
         if (serializer.is_valid()):
-            print("is VALID")
-            print(serializer)
             serializer.save()
         else:
-            print("NU ESTE VALID")
-            print(serializer.errors)
-            print(serializer)
+            return Response({"error": serializer.errors})
         
         # print(f'************************{todo}*************{data}**************************')
         return Response({"success": "Editata cu succes"})
