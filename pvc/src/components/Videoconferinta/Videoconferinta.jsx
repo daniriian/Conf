@@ -5,6 +5,7 @@ import {
   deleteVideocallStarted,
   markVideoCall,
   editVideocall,
+  editVideocallStarted,
 } from "../../redux/videoconferinte/videocall.actions";
 
 import { format_date } from "../../utils/index";
@@ -17,6 +18,7 @@ import "./Videoconferinta.scss";
 const Videoconferinta = ({
   videocall,
   deleteVideocallStarted,
+  editVideocallStarted,
   markVideoCall,
   editVideocall,
 }) => {
@@ -33,7 +35,8 @@ const Videoconferinta = ({
 
   const handleEdit = (id) => {
     console.log(id);
-    editVideocall(videocall);
+    editVideocallStarted();
+    markVideoCall(id);
   };
 
   return (
@@ -80,4 +83,5 @@ export default connect(null, {
   deleteVideocallStarted,
   markVideoCall,
   editVideocall,
+  editVideocallStarted,
 })(Videoconferinta);

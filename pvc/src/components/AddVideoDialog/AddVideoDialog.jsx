@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "date-fns";
 import { connect } from "react-redux";
-
+import { format_date } from "../../utils/index";
 import moment from "moment";
 import "moment/locale/ro";
 
@@ -55,6 +55,7 @@ import {
 import {
   addVidecall,
   addVideocallFail,
+  editVideocall,
 } from "../../redux/videoconferinte/videocall.actions";
 
 import "./AddVideoDialog.scss";
@@ -106,6 +107,7 @@ const DialogSelect = ({
   getConsigneesList,
   addVidecall,
   addVideocallFail,
+  editVideocall,
   currentUser,
   userSelectedDate,
   dialogMode,
@@ -127,12 +129,12 @@ const DialogSelect = ({
 
     if (dialogMode === "Edit") {
       editVC = videocallsList.find((el) => el.id === selectedVideocallId);
+      console.log(editVC);
       setSelectedDate(editVC.data);
-
       setStartTime(new Date(editVC.data + " " + editVC.start_time));
       setEndTime(new Date(editVC.data + " " + editVC.end_time));
 
-      setCaller(editVC.caller);
+      setCaller(editVC.caller.id);
       setDest(editVC.call_to);
     }
   }, [
@@ -156,34 +158,47 @@ const DialogSelect = ({
   };
 
   const handleAdd = () => {
+    console.log(startTime, endTime);
     let startTime1 = startTime.getHours() + ":" + startTime.getMinutes();
     let endTime1 = endTime.getHours() + ":" + endTime.getMinutes();
     let call_to = dest.map((el) => el.id);
 
-    addVidecall({
-      caller: caller,
-      data: selectedDate,
-      start_time: startTime1,
-      end_time: endTime1,
-      call_to: call_to,
-      completed: false,
-      adaugat_de: currentUser.id,
-    });
+    if (dialogMode === "Add") {
+      addVidecall({
+        caller: caller,
+        data: selectedDate,
+        start_time: startTime1,
+        end_time: endTime1,
+        call_to: call_to,
+        completed: false,
+        adaugat_de: currentUser.id,
+      });
+    } else if (dialogMode === "Edit") {
+      console.log("Modifica in baza de date");
+      editVideocall({
+        id: selectedVideocallId,
+        caller: caller,
+        data: selectedDate,
+        start_time: startTime1,
+        end_time: endTime1,
+        call_to: call_to,
+        completed: false,
+        adaugat_de: currentUser.id,
+      });
+    }
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date._d);
+    setSelectedDate(format_date(date._d).yyyymmdd);
   };
 
   const handleStartTimeChange = (time) => {
-    setStartTime(time);
+    setStartTime(time._d);
   };
 
   const handleEndTimeChange = (time) => {
-    setEndTime(time);
+    setEndTime(time._d);
   };
-
-  console.log(caller);
 
   return (
     <ThemeProvider theme={theme}>
@@ -255,7 +270,7 @@ const DialogSelect = ({
               <Select
                 native
                 input={<Input id='apelant' />}
-                value={caller.id}
+                value={caller}
                 // defaultValue={caller}
                 onChange={handleCallersChange}
               >
@@ -311,7 +326,7 @@ const DialogSelect = ({
             Renunţă
           </Button>
           <Button onClick={handleAdd} color='primary'>
-            Adaugă
+            {dialogMode === "Edit" ? "Salvează" : "Adaugă"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -334,4 +349,5 @@ export default connect(mapStateToProps, {
   getConsigneesList,
   addVidecall,
   addVideocallFail,
+  editVideocall,
 })(DialogSelect);

@@ -48,7 +48,7 @@ export const editVideocallFail = () => ({
   type: VideoCallTypes.EDIT_VIDEOCALL_FAIL,
 });
 
-export const editVideocall = (videocall) => async (dispatch) => {
+export const editVideocall = (videocall) => async (dispatch, getState) => {
   const config = {
     headers: {
       Accept: "application/json",
@@ -57,8 +57,28 @@ export const editVideocall = (videocall) => async (dispatch) => {
     },
   };
 
-  dispatch(editVideocallStarted());
-  dispatch(markVideoCall(videocall.id));
+  console.log(videocall);
+
+  const body = JSON.stringify({
+    ...videocall,
+    // data: format_date(videocall.data).yyyymmdd,
+    withCredentials: true,
+  });
+
+  const res = await axios.put(
+    "/videoconferinte/edit/" + videocall.id,
+    body,
+    config
+  );
+
+  console.log(res);
+
+  if (res.data.success) {
+    dispatch(editVideocallSuccess());
+    dispatch(getVideoConferenceListByDate(getState().selectedDate.date));
+  } else {
+    dispatch(editVideocallFail());
+  }
 };
 
 export const getVideoConferenceListByDate = (date) => async (dispatch) => {
@@ -136,8 +156,6 @@ export const deleteVideocall = (id) => async (dispatch, getState) => {
   };
 
   let res = await axios.delete("/videoconferinte/delete/" + id, config);
-
-  console.log(res);
 
   if (res.data.success) {
     console.log(res);

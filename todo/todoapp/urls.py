@@ -16,7 +16,7 @@ urlpatterns = [
     #          views.mark_complete, name='mark_complete'),
     #     path('mark_incomplete/<int:todo_id>',
     #          views.mark_incomplete, name='mark_incomplete'),
-    #     path('edit/<int:todo_id>', views.edit, name="edit"),
+        path('edit/<int:todo_id>', views.EditVideoconferenceView.as_view()),
     #     path('add_conference', views.add_conference, name='add_conference'),
     #     path('<int:todo_id>/detalii/', views.detalii, name="detalii"),
 ]

@@ -117,6 +117,28 @@ class AddVideoconferenceView(APIView):
         except:
             return Response({"error": "A intervenit o eroare la adaugarea videoconferintei"})
 
+@method_decorator(csrf_protect, name='dispatch')
+class EditVideoconferenceView(APIView):
+    def put(self, request, todo_id, format=None):
+        data=request.data
+        print(data)
+        todo = Todo.objects.get(id=todo_id)
+
+        serializer = TodoCreateSerializer(todo, data=data)
+
+        if (serializer.is_valid()):
+            print("is VALID")
+            print(serializer)
+            serializer.save()
+        else:
+            print("NU ESTE VALID")
+            print(serializer.errors)
+            print(serializer)
+        
+        # print(f'************************{todo}*************{data}**************************')
+        return Response({"success": "Editata cu succes"})
+
+
 
 class GetVCListView(APIView):
     permission_classes = (permissions.AllowAny, )
@@ -162,7 +184,6 @@ class VideoDeleteView(APIView):
         data = self.request.data
         print(todo_id)
 
-        # return Response({"id": todo_id})
         try:
             qs = Todo.objects.get(id=todo_id)
             serializer = TodoSerializer(qs)
