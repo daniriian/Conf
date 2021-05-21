@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import Logo from "../../assets/logo.png";
-import DatePicker from "react-datepicker";
 
 import {
   MuiPickersUtilsProvider,

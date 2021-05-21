@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import "date-fns";
 import { connect } from "react-redux";
 
@@ -56,7 +55,6 @@ import {
 import {
   addVidecall,
   addVideocallFail,
-  addVideocallStarted,
 } from "../../redux/videoconferinte/videocall.actions";
 
 import "./AddVideoDialog.scss";
@@ -120,7 +118,6 @@ const DialogSelect = ({
   const [selectedDate, setSelectedDate] = React.useState(userSelectedDate);
   const [startTime, setStartTime] = React.useState(new Date());
   const [endTime, setEndTime] = React.useState(new Date());
-  const { setValue, register } = useForm();
 
   useEffect(() => {
     let editVC = null;
@@ -136,10 +133,15 @@ const DialogSelect = ({
       setEndTime(new Date(editVC.data + " " + editVC.end_time));
 
       setCaller(editVC.caller);
-      // setValue("apelant", editVC.caller.id_echipament.nume_instanta);
       setDest(editVC.call_to);
     }
-  }, [getCallersList, getConsigneesList]);
+  }, [
+    getCallersList,
+    getConsigneesList,
+    dialogMode,
+    videocallsList,
+    selectedVideocallId,
+  ]);
 
   const handleCallersChange = (event) => {
     setCaller(event.target.value);
@@ -247,15 +249,15 @@ const DialogSelect = ({
             </MuiPickersUtilsProvider>
 
             <FormControl className={classes.formControl}>
-              <InputLabel  htmlFor='apelant' shrink={caller ? true: false}>Apelant</InputLabel>
+              <InputLabel htmlFor='apelant' shrink={caller ? true : false}>
+                Apelant
+              </InputLabel>
               <Select
                 native
                 input={<Input id='apelant' />}
                 value={caller.id}
                 // defaultValue={caller}
                 onChange={handleCallersChange}
-                
-                
               >
                 <option aria-label='None' value='' />
                 {callers
@@ -274,7 +276,9 @@ const DialogSelect = ({
                 id='destinatari'
                 options={destinatari}
                 value={dest}
-                getOptionSelected={option => dest.find(v => v.id === option.id)}
+                getOptionSelected={(option) =>
+                  dest.find((v) => v.id === option.id)
+                }
                 disableCloseOnSelect
                 getOptionLabel={(option) => option.nume_instanta}
                 renderOption={(option, { selected }) => (
@@ -297,7 +301,6 @@ const DialogSelect = ({
                     placeholder='Destinatari'
                   />
                 )}
-                
                 onChange={(event, value) => handleChangeDestinatari(value)}
               />
             </FormControl>
