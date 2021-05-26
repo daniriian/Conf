@@ -20,7 +20,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       padding-left: 1rem;
       padding-right: 1rem;
 
@@ -33,6 +33,19 @@
 
       .destinatar {
         // border: 1px solid olivedrab;
+        width: 100%;
+
+        &__address {
+          height: 2.6rem;
+          display: flex;
+          align-items: center;
+          .buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            margin-left: auto;
+            // margin-bottom: 0.5rem;
+          }
+        }
 
         .icon-button {
           width: auto;
@@ -43,6 +56,16 @@
           background: lightgrey;
           border-radius: 2px;
           color: black;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          &__call {
+            color: rgb(7, 165, 7);
+          }
+
+          &__end-call {
+            color: rgb(180, 0, 0);
+          }
         }
 
         &__nume {

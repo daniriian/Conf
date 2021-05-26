@@ -2,6 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
+import CallIcon from "@material-ui/icons/Call";
+import CallEndIcon from "@material-ui/icons/CallEnd";
+
 import { selectCurrentUser } from "../../redux/users/user.selectors";
 
 import {
@@ -10,6 +13,12 @@ import {
   editVideocall,
   editVideocallStarted,
 } from "../../redux/videoconferinte/videocall.actions";
+
+import {
+  callSomebody,
+  endCall,
+  setCallStarted,
+} from "../../redux/call/call.actions";
 
 import { format_date } from "../../utils/index";
 
@@ -25,6 +34,9 @@ const Videoconferinta = ({
   deleteVideocallStarted,
   editVideocallStarted,
   markVideoCall,
+  callSomebody,
+  setCallStarted,
+  endCall,
 }) => {
   const { nume, prenume } = videocall.adaugat_de;
 
@@ -48,6 +60,20 @@ const Videoconferinta = ({
     }
   };
 
+  const handleCall = (address) => {
+    setCallStarted({
+      caller: videocall.caller.id_echipament.ip,
+      consignee: address,
+    });
+    callSomebody(videocall.caller.id_echipament.ip, address);
+  };
+
+  const handleEndCall = () => {
+    console.log("Ending call");
+    endCall(videocall.caller.id_echipament.ip);
+    callSomebody(videocall.caller.id_echipament.ip, null);
+  };
+
   return (
     <div className='videoconferinta'>
       <ul className='vc-list'>
@@ -65,15 +91,31 @@ const Videoconferinta = ({
               <div className='destinatar__address'>
                 <span>(IP: {item.ip})</span>
                 <div className='buttons'>
-                  <CustomButton className='icon-button'>Apel IP</CustomButton>
-                  <CustomButton className='icon-button'>STOP</CustomButton>
+                  <CustomButton
+                    className='icon-button'
+                    onClick={() => handleCall(item.ip)}
+                  >
+                    <CallIcon className='icon-button__call' />
+                    IP
+                  </CustomButton>
+                  <CustomButton
+                    className='icon-button'
+                    onClick={() => handleCall(item.vmr)}
+                  >
+                    <CallIcon className='icon-button__call' />
+                    VMR
+                  </CustomButton>
+                  <CustomButton className='icon-button' onClick={handleEndCall}>
+                    <CallEndIcon className='icon-button__end-call' />
+                  </CustomButton>
                 </div>
               </div>
               <div className='destinatar__address'>
                 <span>(VMR: {item.vmr})</span>
                 <div className='buttons'>
-                  <CustomButton className='icon-button'>Apel VMR</CustomButton>
-                  <CustomButton className='icon-button'>STOP</CustomButton>
+                  {/* <CustomButton className='icon-button'>
+                    <CallEndIcon className='icon-button__end-call' />
+                  </CustomButton> */}
                 </div>
               </div>
             </div>
@@ -111,4 +153,7 @@ export default connect(mapStateToProps, {
   markVideoCall,
   editVideocall,
   editVideocallStarted,
+  callSomebody,
+  setCallStarted,
+  endCall,
 })(Videoconferinta);

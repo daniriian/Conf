@@ -2,31 +2,30 @@ import UserActionTypes from "./user.types";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-export const setCurrentUser = (instanta, username, password) => async (
-  dispatch
-) => {
-  const config = {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "X-CSRFToken": Cookies.get("csrftoken"),
-    },
-  };
+export const setCurrentUser =
+  (instanta, username, password) => async (dispatch) => {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+    };
 
-  const body = JSON.stringify({ instanta, username, password });
+    const body = JSON.stringify({ instanta, username, password });
 
-  try {
-    const res = await axios.post("/users/login", body, config);
+    try {
+      const res = await axios.post("/users/login", body, config);
 
-    if (res.data.error) {
-      dispatch(userLogInFailure(res.data.error));
-    } else {
-      dispatch(userLoginSuccess(res.data));
+      if (res.data.error) {
+        dispatch(userLogInFailure(res.data.error));
+      } else {
+        dispatch(userLoginSuccess(res.data));
+      }
+    } catch (err) {
+      dispatch(userLogInFailure(err));
     }
-  } catch (err) {
-    dispatch(userLogInFailure(err));
-  }
-};
+  };
 
 export const userLogInStarted = () => ({
   type: UserActionTypes.START_USER_LOG_IN,

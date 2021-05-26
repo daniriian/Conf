@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Todo, SalaJudecata, Terminal
 from .forms import TodoForm
 from django.contrib import messages
-from datetime import datetime
+from datetime import datetime, date
 from django.views import generic
 from django.http import JsonResponse, HttpResponse
 from .serializers import TodoSerializer, TodoCreateSerializer, SalaJudecataSerializer, TerminalSerializer, MyUserSerializer
@@ -22,7 +22,6 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from rest_framework import filters
 
-import datetime
 
 # from urllib.request import urlopen
 
@@ -140,10 +139,19 @@ class GetVCListView(APIView):
 
     def post(self, request, format=None):
         datax = self.request.data
+        print(datax)
         
         try:
             qs = Todo.objects.filter(data=datax['data']).order_by(
                 'data', 'start_time', 'caller')
+            # print(type(datax['data']), type(str(date.today())))
+            if (datax['data'] == str(date.today())):
+               
+                qs = qs.filter(end_time__gte=datetime.now().time().replace(microsecond=0))
+                print(qs)
+            else:
+                print("FALSE")
+
             serializer = TodoSerializer(qs, many=True)
             return Response({"success": "Lista de videoconferinte a fost obtinuta cu succes", "vc_list": serializer.data})
         except:
@@ -154,8 +162,9 @@ class CallersListView(APIView):
     def get(self, request, format="None"):
 
         try:
-            qs = SalaJudecata.objects.all()
+            qs = SalaJudecata.objects.all().order_by("id_echipament__nume_instanta")
             serializer = SalaJudecataSerializer(qs, many=True)
+            print(serializer)
             return Response({"success": "Callers retrieved successfully", "callersList": serializer.data})
         except:
             return Response({"error": "Something went wrong while trying to get callers"})
@@ -232,33 +241,34 @@ class VideoDetailsView(APIView):
 
 
 # -------------------------------------------------------------------
-@ api_view(['GET', 'POST'])
-@ permission_classes([AllowAny])
-def call_to_ip(request, *args, **kwargs):
+@method_decorator(csrf_protect, name='dispatch')
+class CallToIpView(APIView):
+    def post(self, request, format=None):
+        data = self.request.data
 
-    print('Initiating the call')
-    apelant = request.query_params['apelant']
-    destinatar = request.query_params['destinatar']
-    action = request.query_params['action']
+        apelant = data['apelant']
+        destinatar = data['destinatar']
+        action = data['action']
 
-    MESSAGE = ""
+        MESSAGE = ""
 
-    if (action) == "dial":
-        MESSAGE = "dial auto " + destinatar + "\r\n"
-    elif (action == "hang up"):
-        MESSAGE = "button hangup\r\n"
+        if (action) == "dial":
+            MESSAGE = "dial auto " + destinatar + "\r\n"
+        elif (action == "hang-up"):
+            MESSAGE = "button hangup\r\n"
 
-    HOST = apelant
-    PORT = 6024
+        HOST = apelant
+        PORT = 6024
 
-    print('*******************************************')
-    print(apelant)
-   # Create a TCP/IP socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    MESSAGE = "dial auto " + destinatar + "\r\n"
-    print(f'Calling {destinatar}')
-    # Connect the socket to the port where the server is listening
-    s.connect((HOST, PORT))
-    s.send(MESSAGE.encode())
+        print('*******************************************')
+        print(apelant)
+       # Create a TCP/IP socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # MESSAGE = "dial auto " + destinatar + "\r\n"
+        # print(f'Calling {destinatar}')
+        # Connect the socket to the port where the server is listening
+        s.connect((HOST, PORT))
+        s.send(MESSAGE.encode())
+        print(MESSAGE)
 
-    return Response({"Message": "All OK"}, status=200)
+        return Response({"Message": "All OK"}, status=200)

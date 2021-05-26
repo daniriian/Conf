@@ -1,0 +1,7 @@
+export const callTypes = {
+  CALL_STARTED: "CALL_STARTED",
+  CALL_ESTABLISHED: "CALL_ESTABLISHED",
+  CALL_FAIL: "CALL_FAIL",
+
+  CALL_END: "CALL_END",
+};
