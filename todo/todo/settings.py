@@ -109,14 +109,19 @@ DATABASES = {
             'driver': 'ODBC Driver 13 for SQL Server',
         },
     },
+    
     'usersTRCCJ': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'sql_server.pyodbc',
         'HOST': '10.15.65.22',
         'USER': 'ecris_readonly',
         'PASSWORD': 'P@ssw0rd384',
-        'NAME': 'videoconferinte',
-        'PORT': '3306',
+        'NAME': 'ecris_cdms',
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 13 for SQL Server',
+        },
     },
+    
     'usersJCN': {
         'ENGINE': 'sql_server.pyodbc',
         'HOST': '10.15.101.22',

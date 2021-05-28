@@ -37,7 +37,7 @@ class CustomBackend(BaseBackend):
         if (instanta == None):
             return
 
-        login_servers = {'117': 'usersTRCJ', '211': 'usersJCN',
+        login_servers = {'117': 'usersTRCJ', '1285': 'usersTRCCJ', '211': 'usersJCN',
                          '219': 'usersJD', '235': 'usersJG', '242': 'usersJH', '328': 'usersJT'}
 
         connect_server = login_servers.get(instanta)

@@ -7,3 +7,26 @@ export const format_date = (date) => {
   let yyyymmdd = yyyy + "-" + mm + "-" + dd;
   return { ddmmyyyy: ddmmyyyy, yyyymmdd: yyyymmdd };
 };
+
+export const getNextHalfHour = (time) => {
+  let year = time.getFullYear();
+  let month = time.getMonth();
+  let day = time.getDate();
+  let hour = time.getHours();
+  let minutes = time.getMinutes();
+
+  if (minutes < 30) {
+    minutes = 30;
+  } else {
+    minutes = 0;
+    if (hour < 23) {
+      hour++;
+    } else {
+      hour = 0;
+    }
+  }
+
+  let nextHour = new Date(year, month, day, hour, minutes);
+
+  return nextHour;
+};

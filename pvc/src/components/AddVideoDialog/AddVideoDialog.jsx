@@ -60,7 +60,7 @@ import {
 
 import "./AddVideoDialog.scss";
 
-// import { format_date } from "../../utils//index";
+import { getNextHalfHour } from "../../utils//index";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
@@ -195,6 +195,7 @@ const DialogSelect = ({
 
   const handleStartTimeChange = (time) => {
     setStartTime(time._d);
+    setEndTime(getNextHalfHour(time._d));
   };
 
   const handleEndTimeChange = (time) => {

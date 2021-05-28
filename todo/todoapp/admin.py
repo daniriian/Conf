@@ -23,3 +23,4 @@ class InstantaAdmin(admin.ModelAdmin):
 @admin.register(Terminal)
 class Terminal(ImportExportActionModelAdmin):
     list_display = ('beneficiar', 'nume_instanta', 'ip', 'vmr')
+    search_fields=('nume_instanta', 'ip', 'vmr')
