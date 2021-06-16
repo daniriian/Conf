@@ -90,6 +90,8 @@ export const getVideoConferenceListByDate = (date) => async (dispatch) => {
     },
   };
 
+  console.log(date);
+
   let formatted_date = format_date(date).yyyymmdd;
 
   try {

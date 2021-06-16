@@ -53,8 +53,15 @@ const Header = ({
   setSelectedDate,
 }) => {
   const handleDateChange = (date) => {
-    console.log(date._d);
-    setSelectedDate(date._d);
+    if (date) {
+      console.log(date._d);
+      setSelectedDate(date._d);
+    }
+    // else {
+    //   console.log("Data invalida");
+    //   console.log(new Date("1900-01-01"));
+    //   setSelectedDate(new Date("1900-01-01"));
+    // }
   };
 
   return (
@@ -63,12 +70,6 @@ const Header = ({
         <img src={Logo} alt='videoconferinte-logo' className='logo__img' />
       </a>
       <nav className='nav'>
-        {/* <DatePicker
-          locale='ro'
-          selected={selectedDate}
-          dateFormat='dd.MM.yyyy'
-          onChange={(date) => handleDateChange(date)}
-        /> */}
         <ThemeProvider theme={theme}>
           <MuiPickersUtilsProvider
             libInstance={moment}

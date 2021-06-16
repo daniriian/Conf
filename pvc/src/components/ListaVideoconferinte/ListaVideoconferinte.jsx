@@ -35,14 +35,6 @@ const ListaVideoconferinte = ({
       </header>
       <div className='h-line'></div>
       {videoCallsList.map((item) => {
-        // console.log(data, item.data);
-        // if (
-        //   data.toISOString().substring(0, 10) ===
-        //   new Date().toISOString().substring(0, 10)
-        // ) {
-        //   console.log("TRUE");
-        // }
-
         return <Videoconferinta key={item.id} videocall={item} />;
       })}
     </div>

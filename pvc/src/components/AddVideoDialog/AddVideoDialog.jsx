@@ -190,7 +190,7 @@ const DialogSelect = ({
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(format_date(date._d).yyyymmdd);
+    setSelectedDate(date._d);
   };
 
   const handleStartTimeChange = (time) => {
